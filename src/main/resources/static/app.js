@@ -1,4 +1,6 @@
 // Validacion del formulario desde el cliente
+
+/*
 const form = document.getElementById("form");
 form.addEventListener("submit", (evt) => {
 
@@ -9,11 +11,11 @@ form.addEventListener("submit", (evt) => {
         console.log(document.getElementById("createAt").value);
         document.getElementById("nombre").classList.add("is-invalid");
         evt.preventDefault();
+        alert("Algún campo no contiene datos");
     } else {
         document.getElementById("nombre").classList.remove("is-invalid");
         document.getElementById("nombre").classList.add("is-valid");
     }
 
-
-
 })
+*/

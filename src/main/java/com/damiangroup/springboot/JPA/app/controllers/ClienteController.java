@@ -35,7 +35,7 @@ public class ClienteController {
     @PostMapping("/form")
     public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
         if (result.hasErrors()) {
-           
+            model.addAttribute("cliente", cliente);
             return "/form";
         }
         clienteDao.save(cliente);

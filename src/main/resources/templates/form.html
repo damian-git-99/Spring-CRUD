@@ -50,29 +50,29 @@
                         <p th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
                     </div>
 
-                    <table class="table  table-bordered">
+                    <table class="table  table-secondary table-bordered">
 
-                        <tr class="table-success">
+                        <tr>
                             <td>Nombre</td>
-                            <td><input class=" form-control" type="text" th:field="*{nombre}"></td>
+                            <td><input class=" form-control" type="text" th:field="*{nombre}" th:errorclass="'form-control is-invalid'"></td>
                         </tr>
 
-                        <tr class="table-success">
+                        <tr>
                             <td>Apellido</td>
-                            <td><input class=" form-control" type="text" th:field="*{apellido}"></td>
+                            <td><input class=" form-control" type="text" th:field="*{apellido}" th:errorclass="'form-control is-invalid'"></td>
                         </tr>
 
-                        <tr class="table-success">
+                        <tr>
                             <td>Email</td>
-                            <td><input class=" form-control" type="email" th:field="*{email}"></td>
+                            <td><input class=" form-control" type="email" th:field="*{email}" th:errorclass="'form-control is-invalid'"></td>
                         </tr>
 
-                        <tr class="table-success">
+                        <tr>
                             <td>Fecha</td>
-                            <td><input class=" form-control" type="date" th:field="*{createAt}"></td>
+                            <td><input class=" form-control" type="date" th:field="*{createAt}" th:errorclass="'form-control is-invalid'"> </td>
                         </tr>
 
-                        <tr class="table-success">
+                        <tr>
                             <td></td>
                             <td class=" text-center"><button class="btn btn-info" type="submit">Guardar</button></td>
                         </tr>
