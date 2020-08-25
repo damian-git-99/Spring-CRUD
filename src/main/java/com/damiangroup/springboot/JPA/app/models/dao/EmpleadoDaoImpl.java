@@ -25,4 +25,16 @@ public class EmpleadoDaoImpl implements IEmpleadoDao {
 		em.persist(empleado);
 	}
 
+	@Override
+	public Empleado findOne(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

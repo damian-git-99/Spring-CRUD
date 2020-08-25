@@ -51,7 +51,13 @@
                     </div>
 
                     <table class="table  table-secondary table-bordered">
-
+						
+						<tr>
+                            <td>ID</td>
+                            <td th:text="*{id}"></td>
+                            <input class="form-control" type="hidden" th:field="*{id}" >
+                       </tr>
+						
                         <tr>
                             <td>Nombre</td>
                             <td><input class=" form-control" type="text" th:field="*{nombre}" th:errorclass="'form-control is-invalid'"></td>
@@ -78,7 +84,7 @@
                         </tr>
 
                     </table>
-                    <input type="hidden" value="Autoincremental">
+                    
                 </form>
 
             </div>

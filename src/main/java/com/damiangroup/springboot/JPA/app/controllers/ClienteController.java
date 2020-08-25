@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -41,4 +42,23 @@ public class ClienteController {
         clienteDao.save(cliente);
     	return "redirect:listar";
     }
+
+
+    @GetMapping("/form/{id}")
+    public String editar(@PathVariable(value = "id") Long id, Model model) {
+        Cliente cliente = null;
+        if (id>0) cliente = clienteDao.findOne(id);
+        else return "redirect:/listar";
+        model.addAttribute("titulo", "Formulario de Cliente (Update)");
+    	model.addAttribute("cliente", cliente);
+    	return "form";
+    }
+    
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable(value = "id") Long id, Model model) {
+    	if (id>0) clienteDao.delete(id);
+        return "redirect:/listar";
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.damiangroup.springboot.JPA.app.models.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,38 @@ public class ClienteDaoImpl implements IClienteDao {
     @Transactional
 	public void save(Cliente cliente) {
 		// TODO Auto-generated method stub
-		em.persist(cliente);
+    	System.out.println(cliente.getId());
+    	if (cliente.getId() != null) {
+    		//Actualizar datos
+    		em.merge(cliente);
+		}else {
+			//Insertar datos
+			em.persist(cliente);
+		}
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Cliente findOne(Long id) {
+        Cliente cliente = em.find(Cliente.class, id);
+       return cliente;
+    }
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		Cliente cliente = findOne(id);
+		if (cliente != null) {
+			em.remove(cliente);
+		}
 	}
+	
+	/*
+	public void update(Long id) {
+		Cliente cliente = findOne(id);
+		if (cliente != null) em.merge(cliente);
+		
+	}
+	*/
     
 }
