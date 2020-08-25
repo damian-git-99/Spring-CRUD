@@ -33,18 +33,18 @@ public class Cliente implements Serializable {
 
     // @Column(name = "nombre_cliente") si el nombre en la base de datos cambia
    
-    @NotEmpty(message = "El campo Nombre no debe estar vacío")
+    @NotEmpty
     private String nombre;
-    @NotEmpty(message = "El campo Apellido no debe estar vacío")
+    @NotEmpty
     private String apellido;
-    @NotEmpty(message = "El campo Email no debe estar vacío")
-    @Email(message = "Tiene que ser un Email válido")
+    @NotEmpty
+    @Email
     private String email;
 
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE) // formato en el que se va a guardar la fecha
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "El campo Fecha no debe estar vacío")
+    @NotNull(message = "La fecha no puede estar vacia")
     private Date createAt;
 
    /*@PrePersist
