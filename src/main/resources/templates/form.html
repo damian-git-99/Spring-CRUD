@@ -1,100 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="Description" content="Enter your description here" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-
-    <style>
-        body {
-            background: #f2f2f2;
-        }
-    </style>
-    <title>Title</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-        <a class="navbar-brand">Spring boot</a>
-        <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="my-nav" class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/listar}" tabindex="-1" aria-disabled="true">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empleados}" tabindex="-1" aria-disabled="true">Empleados</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <header th:replace="layout/layout :: header"></header>
     <div class="container mt-3">
-        <h1 class=" text-center text-secondary" th:text="${titulo}"></h1>
-        <div class="row">
-            <div class="col">
-                <form th:action="@{/form}" th:object="${cliente}" method="POST" id="form">
-                    <!-- Errores en los campos -->
-                    <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
-                        <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
-                        <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
-                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-                        <p th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class=" text-center text-secondary" th:text="${titulo}"></h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <form th:action="@{/form}" th:object="${cliente}" method="POST" id="form">
+                            <!-- Errores en los campos -->
+                            <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
+                                <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+                                <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                                <p th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
+                            </div>
+
+                            <table class="table  table-secondary table-bordered">
+
+                                <tr>
+                                    <td>ID</td>
+                                    <td th:text="*{id}"></td>
+                                    <input class="form-control" type="hidden" th:field="*{id}">
+                                </tr>
+
+                                <tr>
+                                    <td>Nombre</td>
+                                    <td><input class=" form-control" type="text" th:field="*{nombre}" th:errorclass="'form-control is-invalid'"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Apellido</td>
+                                    <td><input class=" form-control" type="text" th:field="*{apellido}" th:errorclass="'form-control is-invalid'"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Email</td>
+                                    <td><input class=" form-control" type="email" th:field="*{email}" th:errorclass="'form-control is-invalid'"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Fecha</td>
+                                    <td><input class=" form-control" type="date" th:field="*{createAt}" th:errorclass="'form-control is-invalid'"> </td>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+                                    <td class=" text-center"><button class="btn btn-info" type="submit">Guardar</button></td>
+                                </tr>
+
+                            </table>
+
+                        </form>
+
                     </div>
-
-                    <table class="table  table-secondary table-bordered">
-						
-						<tr>
-                            <td>ID</td>
-                            <td th:text="*{id}"></td>
-                            <input class="form-control" type="hidden" th:field="*{id}" >
-                       </tr>
-						
-                        <tr>
-                            <td>Nombre</td>
-                            <td><input class=" form-control" type="text" th:field="*{nombre}" th:errorclass="'form-control is-invalid'"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Apellido</td>
-                            <td><input class=" form-control" type="text" th:field="*{apellido}" th:errorclass="'form-control is-invalid'"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Email</td>
-                            <td><input class=" form-control" type="email" th:field="*{email}" th:errorclass="'form-control is-invalid'"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Fecha</td>
-                            <td><input class=" form-control" type="date" th:field="*{createAt}" th:errorclass="'form-control is-invalid'"> </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td class=" text-center"><button class="btn btn-info" type="submit">Guardar</button></td>
-                        </tr>
-
-                    </table>
-                    
-                </form>
-
+                </div>
             </div>
         </div>
+
+
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="app.js"></script>
+    <footer th:replace="layout/layout :: footer"></footer>
 </body>
 
 </html>
