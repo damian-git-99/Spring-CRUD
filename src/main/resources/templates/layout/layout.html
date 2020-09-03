@@ -8,7 +8,7 @@
     <meta name="Description" content="Enter your description here" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
     <link rel="stylesheet" th:href="@{/styles/style.css}">
     <title>Title</title>
 </head>
@@ -32,14 +32,25 @@
                 </ul>
             </div>
         </nav>
+
+
+        <div class="alert alert-success" id="success" th:if="${success != null}" th:text="${success}"></div>
+        <div class="alert alert-danger" id="danger" th:if="${error != null}" th:text="${error}"></div>
+        <div class="alert alert-warning " th:if="${warning != null}" th:text="${warning}"></div>
+        <div class="alert alert-info " th:if="${info != null}" th:text="${info}"></div>
+        <script src="eliminarAlertas.js"></script>
     </header>
 
-    <div class="container mt-3"></div>
 
-    <footer th:fragment="footer" class="container">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    <div class="container mt-3 "></div>
+
+    <footer th:fragment="footer " class="container ">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js "></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js "></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js "></script>
     </footer>
 
 </body>
