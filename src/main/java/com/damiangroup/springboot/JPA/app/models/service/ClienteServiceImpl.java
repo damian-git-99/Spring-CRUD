@@ -5,19 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.damiangroup.springboot.JPA.app.models.dao.IClienteDao;
+import com.damiangroup.springboot.JPA.app.models.dao.IClienteDaoCrudRepository;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 
 @Service
 public class ClienteServiceImpl implements IClienteService{
 	
 	@Autowired
-	private IClienteDao ClienteDao;
+	private IClienteDaoCrudRepository ClienteDao;
 
 	@Override
 	@Transactional
 	public List<Cliente> findAll() {
-		return ClienteDao.findAll();
+		return (List<Cliente>) ClienteDao.findAll();
 	}
 
 	@Override
@@ -29,13 +29,13 @@ public class ClienteServiceImpl implements IClienteService{
 	@Override
 	@Transactional
 	public Cliente findOne(Long id) {
-		return ClienteDao.findOne(id);
+		return ClienteDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		ClienteDao.delete(id);
+		ClienteDao.deleteById(id);
 	}
 
 }
