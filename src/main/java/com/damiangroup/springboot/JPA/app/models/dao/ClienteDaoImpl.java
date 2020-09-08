@@ -60,20 +60,19 @@ public class ClienteDaoImpl implements IClienteDao {
 
 	@Override
 	public Page<Cliente> findAll(Pageable Pageable) {
-		int pagina = Pageable.getPageNumber();
-		int registros = Pageable.getPageSize();
+		int paginaActual = Pageable.getPageNumber();
+		int registrosPorPagina = Pageable.getPageSize();
 		//pagina++;  para que coincida con PagingAndSortingRepository
-		int comienzo;
+		int comienzoRegistros;
 		
-		if (pagina > 1) comienzo = (pagina * registros - registros);
-		else comienzo = 0;
+		if (paginaActual > 1) comienzoRegistros = (paginaActual * registrosPorPagina - registrosPorPagina);
+		else comienzoRegistros = 0;
 		
-		System.out.println(registros);
-		System.out.println(pagina);
-		System.out.println(comienzo);
-		Query consulta = em.createQuery("from Cliente").setMaxResults(registros).setFirstResult(comienzo);
+		Query consulta = em.createQuery("from Cliente")
+			.setMaxResults(registrosPorPagina) // LIMIT
+			.setFirstResult(comienzoRegistros); // OFFSET
 
-		List<Cliente> clientesLista= consulta.getResultList();
+		List<Cliente> clientesLista = consulta.getResultList();
 		Page<Cliente> clientes = new PageImpl<>(clientesLista);
 		return clientes;	
 	}
