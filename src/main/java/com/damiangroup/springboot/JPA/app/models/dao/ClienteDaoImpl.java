@@ -1,9 +1,17 @@
 package com.damiangroup.springboot.JPA.app.models.dao;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,17 +44,38 @@ public class ClienteDaoImpl implements IClienteDao {
 	}
 
 	@Override
-	public Cliente findOne(Long id) {
+	public Optional<Cliente> findById(Long id) {
 		Cliente cliente = em.find(Cliente.class, id);
-		return cliente;
+		Optional<Cliente> optional = Optional.of(cliente);
+		return optional;
 	}
 
 	@Override
-	public void delete(Long id) {
-		Cliente cliente = findOne(id);
+	public void deleteById(Long id) {
+		Cliente cliente = findById(id).orElse(null);
 		if (cliente != null) {
 			em.remove(cliente);
 		}
+	}
+
+	@Override
+	public Page<Cliente> findAll(Pageable Pageable) {
+		int pagina = Pageable.getPageNumber();
+		int registros = Pageable.getPageSize();
+		//pagina++;  para que coincida con PagingAndSortingRepository
+		int comienzo;
+		
+		if (pagina > 1) comienzo = (pagina * registros - registros);
+		else comienzo = 0;
+		
+		System.out.println(registros);
+		System.out.println(pagina);
+		System.out.println(comienzo);
+		Query consulta = em.createQuery("from Cliente").setMaxResults(registros).setFirstResult(comienzo);
+
+		List<Cliente> clientesLista= consulta.getResultList();
+		Page<Cliente> clientes = new PageImpl<>(clientesLista);
+		return clientes;	
 	}
 
 }
