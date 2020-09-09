@@ -7,3 +7,11 @@ INSERT INTO clientes (id,nombre,apellido,email,create_at) values (6,'Robin','Tor
 INSERT INTO clientes (id,nombre,apellido,email,create_at) values (7,'Mateo','Galvan','damian@gmil.com','2020-08-28')
 INSERT INTO clientes (id,nombre,apellido,email,create_at) values (8,'Talina','Torrez','jose@gmil.com','2020-08-28')
 
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (9,'Damian','Galvan','damian@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (10,'Jose','Torrez','jose@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (11,'irving','Galvan','damian@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (12,'Carlos','Torrez','jose@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (13,'Jazmin','Galvan','damian@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (14,'Robin','Torrez','jose@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (15,'Mateo','Galvan','damian@gmil.com','2020-08-28')
+INSERT INTO clientes (id,nombre,apellido,email,create_at) values (16,'Talina','Torrez','jose@gmil.com','2020-08-28')

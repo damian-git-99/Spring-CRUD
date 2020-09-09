@@ -16,7 +16,7 @@ import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
-	private IClienteDao ClienteDao;
+	private IClienteDaoCrudRepository ClienteDao;
 
 	@Override
 	@Transactional
