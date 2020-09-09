@@ -1,4 +1,9 @@
-package com.damiangroup.springboot.JPA.app.controllers.util.paginator;
+package com.damiangroup.springboot.JPA.app.util.paginator;
+/**
+ * Se encarga de ir guardando los diferentes pages del paginador
+ * 
+ */
+
 
 public class PageItem {
     

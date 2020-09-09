@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.controllers.util.paginator;
+package com.damiangroup.springboot.JPA.app.util.paginator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,12 @@ public class PageRender<T> {
         this.paginaActual = page.getNumber() + 1;
 
         int desde, hasta;
-        // 5 , 50  = 10
+        /**
+         * 
+         * Calcula desde donde se va a empezar ha mostrar el paginador y hasta donde
+         * terminar
+         * 
+         */
         if (totalPaginas <= numeroElementosPorPagina) {
             desde = 1;
             hasta = totalPaginas;
@@ -40,9 +45,15 @@ public class PageRender<T> {
             }
         }
 
+        /**
+         * Guarda los diferentes numeros de paginas que tiene el paginador para despues
+         * poder imprimirlos la vista
+         * 
+         */
         for (int i = 0; i < hasta; i++) {
             paginas.add(new PageItem(desde + i, paginaActual == desde + i));
         }
+
     }
 
     public String getUrl() {
@@ -105,7 +116,7 @@ public class PageRender<T> {
         return page.hasNext();
     }
 
-    public boolean isHasPrevious(){
+    public boolean isHasPrevious() {
         return page.hasPrevious();
     }
 

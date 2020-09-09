@@ -2,9 +2,10 @@ package com.damiangroup.springboot.JPA.app.controllers;
 
 import javax.validation.Valid;
 
-import com.damiangroup.springboot.JPA.app.controllers.util.paginator.PageRender;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
+import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,7 +31,7 @@ public class ClienteController {
         // Page es un iterable
         Page<Cliente> clientes = clienteService.findAll(pageRequest);
         PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
-        System.out.println(clientes.getTotalPages());
+        
         model.addAttribute("page", pageRender);
         model.addAttribute("titulo", "listado de clientes");
         model.addAttribute("clientes", clientes);
