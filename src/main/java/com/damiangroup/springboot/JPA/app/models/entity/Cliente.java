@@ -47,6 +47,9 @@ public class Cliente implements Serializable {
     @NotNull(message = "La fecha no puede estar vacia")
     private Date createAt;
 
+    //@NotNull
+    private String foto;
+
    /*@PrePersist
     public void prePersist(){
         this.createAt = new Date();
@@ -92,6 +95,15 @@ public class Cliente implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     

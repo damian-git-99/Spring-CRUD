@@ -1,5 +1,11 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
@@ -17,71 +23,151 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
 
-    @Autowired
-    private IClienteService clienteService;
+	@Autowired
+	private IClienteService clienteService;
 
-    @GetMapping("/listar")
-    public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
-        Pageable pageRequest = PageRequest.of(page, 5);
-        // Page es un iterable
-        Page<Cliente> clientes = clienteService.findAll(pageRequest);
-        PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
-        
-        model.addAttribute("page", pageRender);
-        model.addAttribute("titulo", "listado de clientes");
-        model.addAttribute("clientes", clientes);
-        return "listar";
-    }
+	/*
+	 * 
+	 * Ver mas informacion del cliente, tambien la foto
+	 * */
+	@GetMapping("/ver/{id}")
+	public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+		Cliente cliente = clienteService.findOne(id);
+		if (cliente == null) {
+			flash.addFlashAttribute("error", "El cliente no existe");
+			return "redirect:/listar";
+		}
 
-    @GetMapping("/form")
-    public String crear(Model model) {
-        Cliente cliente = new Cliente();
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("titulo", "Formulario de Cliente");
-        return "form";
-    }
+		model.addAttribute("cliente", cliente);
+		model.addAttribute("titulo", "Detalle cliente: " + cliente.getNombre());
+		return "ver";
+	}
 
-    @PostMapping("/form")
-    public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash) {
-        if (result.hasErrors()) {
-            model.addAttribute("cliente", cliente);
-            return "/form";
-        }
-        clienteService.save(cliente);
-        flash.addFlashAttribute("success", "Cliente Creado o actualizado con exito");
-        return "redirect:listar";
-    }
+	/*
+	 * Listar clientes
+	 * */
+	@GetMapping("/listar")
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+		Pageable pageRequest = PageRequest.of(page, 5);
 
-    @GetMapping("/form/{id}")
-    public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Cliente cliente = null;
-        if (id > 0) {
-            cliente = clienteService.findOne(id);
-            if (cliente == null) {
-                flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
-                return "redirect:/listar";
-            }
-        } else {
-            flash.addFlashAttribute("error", "Id invalido");
-            return "redirect:/listar";
-        }
+		// Page es un iterable
+		Page<Cliente> clientes = clienteService.findAll(pageRequest);
+		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
 
-        model.addAttribute("titulo", "Formulario de Cliente (Update)");
-        model.addAttribute("cliente", cliente);
-        return "form";
-    }
+		model.addAttribute("page", pageRender);
+		model.addAttribute("titulo", "listado de clientes");
+		model.addAttribute("clientes", clientes);
+		return "listar";
+	}
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        if (id > 0)
-            clienteService.delete(id);
-        flash.addFlashAttribute("success", "Cliente eliminado con exito");
-        return "redirect:/listar";
-    }
+	/*
+	 * Formulario GET para registrar o actualizar un cliente
+	 * */
+	@GetMapping("/form")
+	public String crear(Model model) {
+		Cliente cliente = new Cliente();
+		model.addAttribute("cliente", cliente);
+		model.addAttribute("titulo", "Formulario de Cliente");
+		return "form";
+	}
+	
+
+	/*
+	 * Formulario POST para registrar o actualizar un cliente
+	 * */
+	@PostMapping("/form")
+	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
+			@RequestParam("file") MultipartFile foto) {
+
+		String urlFoto = guardarFoto(foto, flash);
+		if (urlFoto == null)
+			return "redirect:/listar";
+
+		cliente.setFoto(urlFoto);
+
+		if (result.hasErrors()) {
+			model.addAttribute("cliente", cliente);
+			return "/form";
+		}
+
+		clienteService.save(cliente);
+		flash.addFlashAttribute("success", "Cliente Creado o actualizado con exito");
+		return "redirect:/listar";
+	}
+
+	/*
+	 * Se encarga de subir la foto y retornar el nombre de la foto
+	 * */
+	private String guardarFoto(MultipartFile foto, RedirectAttributes flash) {
+		if (foto.isEmpty()) {
+			flash.addFlashAttribute("danger", "Ha ocurrido un error hal intenta subir la foto");
+			return null;
+		}
+		/*
+		Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
+		String rootPath = directorioRecursos.toFile().getAbsolutePath();
+		System.out.println(rootPath);
+		try {
+			byte[] bytes = foto.getBytes();
+			Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+			Files.write(rutaCompleta, bytes);
+			flash.addFlashAttribute("info", "Ha subido correctamente la foto");
+			return (foto.getOriginalFilename());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}*/
+		Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
+		StringBuilder builder = new StringBuilder();
+		builder.append(directorioRecursos.toAbsolutePath());
+		builder.append(File.separator);
+		builder.append(foto.getOriginalFilename());
+		try {
+			byte[] fileByte = foto.getBytes();
+			Path path = Paths.get(builder.toString());
+			Files.write(path, fileByte);
+			flash.addFlashAttribute("info", "Ha subido correctamente la foto");
+			return (foto.getOriginalFilename());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			flash.addFlashAttribute("danger", "Ha ocurrido un error al intenta subir la foto");
+			return null;
+		}
+
+	}
+
+	@GetMapping("/form/{id}")
+	public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+		Cliente cliente = null;
+		if (id > 0) {
+			cliente = clienteService.findOne(id);
+			if (cliente == null) {
+				flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
+				return "redirect:/listar";
+			}
+		} else {
+			flash.addFlashAttribute("error", "Id invalido");
+			return "redirect:/listar";
+		}
+
+		model.addAttribute("titulo", "Formulario de Cliente (Update)");
+		model.addAttribute("cliente", cliente);
+		return "form";
+	}
+
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+		if (id > 0)
+			clienteService.delete(id);
+		flash.addFlashAttribute("success", "Cliente eliminado con exito");
+		return "redirect:/listar";
+	}
 
 }
