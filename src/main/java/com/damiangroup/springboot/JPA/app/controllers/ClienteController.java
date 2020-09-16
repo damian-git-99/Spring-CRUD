@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.UUID;
 import javax.validation.Valid;
-
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
-
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,10 +32,12 @@ public class ClienteController {
 	@Autowired
 	private IClienteService clienteService;
 
+	private final Logger log = (Logger) LoggerFactory.getLogger(getClass());
+
 	/*
 	 * 
 	 * Ver mas informacion del cliente, tambien la foto
-	 * */
+	 */
 	@GetMapping("/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.findOne(id);
@@ -51,7 +53,7 @@ public class ClienteController {
 
 	/*
 	 * Listar clientes
-	 * */
+	 */
 	@GetMapping("/listar")
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 		Pageable pageRequest = PageRequest.of(page, 5);
@@ -68,7 +70,7 @@ public class ClienteController {
 
 	/*
 	 * Formulario GET para registrar o actualizar un cliente
-	 * */
+	 */
 	@GetMapping("/form")
 	public String crear(Model model) {
 		Cliente cliente = new Cliente();
@@ -76,20 +78,16 @@ public class ClienteController {
 		model.addAttribute("titulo", "Formulario de Cliente");
 		return "form";
 	}
-	
 
 	/*
 	 * Formulario POST para registrar o actualizar un cliente
-	 * */
+	 */
 	@PostMapping("/form")
 	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam("file") MultipartFile foto) {
 
 		String urlFoto = guardarFoto(foto, flash);
-		if (urlFoto == null)
-			return "redirect:/listar";
-
-		cliente.setFoto(urlFoto);
+		if (urlFoto != null) cliente.setFoto(urlFoto);
 
 		if (result.hasErrors()) {
 			model.addAttribute("cliente", cliente);
@@ -103,44 +101,28 @@ public class ClienteController {
 
 	/*
 	 * Se encarga de subir la foto y retornar el nombre de la foto
-	 * */
+	 */
 	private String guardarFoto(MultipartFile foto, RedirectAttributes flash) {
 		if (foto.isEmpty()) {
 			flash.addFlashAttribute("danger", "Ha ocurrido un error hal intenta subir la foto");
 			return null;
 		}
-		/*
-		Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
-		String rootPath = directorioRecursos.toFile().getAbsolutePath();
-		System.out.println(rootPath);
+
+		// Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
+		// String rootPath = directorioRecursos.toFile().getAbsolutePath();
+		String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+		Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
+		Path rootAbsolutPath = rootPath.toAbsolutePath();
+		log.info("rootPath: " + rootPath);
+		log.info("rootAbsolutePath " + uniqueFilename);
 		try {
-			byte[] bytes = foto.getBytes();
-			Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-			Files.write(rutaCompleta, bytes);
-			flash.addFlashAttribute("info", "Ha subido correctamente la foto");
-			return (foto.getOriginalFilename());
+			Files.copy(foto.getInputStream(), rootAbsolutPath);
+			flash.addFlashAttribute("info", "Ha subido correctamente la foto: ".concat(uniqueFilename));
+			return (uniqueFilename);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
-		}*/
-		Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
-		StringBuilder builder = new StringBuilder();
-		builder.append(directorioRecursos.toAbsolutePath());
-		builder.append(File.separator);
-		builder.append(foto.getOriginalFilename());
-		try {
-			byte[] fileByte = foto.getBytes();
-			Path path = Paths.get(builder.toString());
-			Files.write(path, fileByte);
-			flash.addFlashAttribute("info", "Ha subido correctamente la foto");
-			return (foto.getOriginalFilename());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			flash.addFlashAttribute("danger", "Ha ocurrido un error al intenta subir la foto");
 			return null;
 		}
-
 	}
 
 	@GetMapping("/form/{id}")
