@@ -32,8 +32,6 @@ public class ClienteController {
 	@Autowired
 	private IClienteService clienteService;
 
-	private final Logger log = (Logger) LoggerFactory.getLogger(getClass());
-
 	/*
 	 * 
 	 * Ver mas informacion del cliente, tambien la foto
@@ -86,8 +84,9 @@ public class ClienteController {
 	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam("file") MultipartFile foto) {
 
-		String urlFoto = guardarFoto(foto, flash);
-		if (urlFoto != null) cliente.setFoto(urlFoto);
+		String urlFoto = guardarFoto(foto, cliente, flash);
+		if (urlFoto != null)
+			cliente.setFoto(urlFoto);
 
 		if (result.hasErrors()) {
 			model.addAttribute("cliente", cliente);
@@ -102,10 +101,18 @@ public class ClienteController {
 	/*
 	 * Se encarga de subir la foto y retornar el nombre de la foto
 	 */
-	private String guardarFoto(MultipartFile foto, RedirectAttributes flash) {
+	private String guardarFoto(MultipartFile foto, Cliente cliente, RedirectAttributes flash) {
+		
 		if (foto.isEmpty()) {
 			flash.addFlashAttribute("danger", "Ha ocurrido un error hal intenta subir la foto");
 			return null;
+		}
+		
+		//Si existe el id quiere decir que el cliente ua existe y si la foto
+		// es diferente de null quiere decir que el usuario actualizo la foto
+		//pr lo cual hay que borrar la foto anterior
+		if (cliente.getId() != null && cliente.getFoto() != null) {
+			eliminarFoto(cliente.getId(), flash);
 		}
 
 		// Path directorioRecursos = Paths.get("src//main//resources//static/uploads");
@@ -113,8 +120,6 @@ public class ClienteController {
 		String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
 		Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
 		Path rootAbsolutPath = rootPath.toAbsolutePath();
-		log.info("rootPath: " + rootPath);
-		log.info("rootAbsolutePath " + uniqueFilename);
 		try {
 			Files.copy(foto.getInputStream(), rootAbsolutPath);
 			flash.addFlashAttribute("info", "Ha subido correctamente la foto: ".concat(uniqueFilename));
@@ -146,10 +151,26 @@ public class ClienteController {
 
 	@GetMapping("/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-		if (id > 0)
+
+		if (id > 0) {
+			eliminarFoto(id, flash);
 			clienteService.delete(id);
+		}
+
 		flash.addFlashAttribute("success", "Cliente eliminado con exito");
 		return "redirect:/listar";
+	}
+
+	private void eliminarFoto(Long id, RedirectAttributes flash) {
+		// Eliminar foto del cliente
+		Cliente cliente = clienteService.findOne(id);
+		Path rootPaths = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
+		File archivoFile = rootPaths.toFile();
+		if (archivoFile.exists() && archivoFile.canRead()) {
+			if (archivoFile.delete()) {
+				flash.addFlashAttribute("success", "Foto eliminada");
+			}
+		}
 	}
 
 }
