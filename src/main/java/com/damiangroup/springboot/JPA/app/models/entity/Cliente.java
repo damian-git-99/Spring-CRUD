@@ -31,23 +31,22 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto incrementable
     private Long id;
 
-    // @Column(name = "nombre_cliente") si el nombre en la base de datos cambia
-   
     @NotEmpty
     private String nombre;
+
     @NotEmpty
     private String apellido;
+    
     @NotEmpty
     @Email
     private String email;
 
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE) // formato en el que se va a guardar la fecha
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // Especificar patron de fecha
     @NotNull(message = "La fecha no puede estar vacia")
     private Date createAt;
 
-    //@NotNull
     private String foto;
 
    /*@PrePersist

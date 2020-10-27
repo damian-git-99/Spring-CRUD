@@ -13,14 +13,19 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <form th:action="@{/form}" th:object="${cliente}" method="POST" id="form" enctype="multipart/form-data" >
+                        <form th:action="@{/form}" th:object="${cliente}" method="POST" id="form" enctype="multipart/form-data">
                             <!-- Errores en los campos -->
-                            <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
+                            <!-- <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
                                 <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
                                 <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
                                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                                 <p th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
                                 <p th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}"></p>
+                            </div> -->
+
+                            <!-- Errores en los campos con un forEach -->
+                            <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
+                                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
                             </div>
 
                             <table class="table  table-secondary table-bordered ">
@@ -53,7 +58,7 @@
 
                                 <tr>
                                     <td>Foto</td>
-                                    <td><input class="form-control-file" type="file"  name="file" ></td>
+                                    <td><input class="form-control-file" type="file" name="file"></td>
                                 </tr>
 
                                 <tr>

@@ -2,19 +2,16 @@ package com.damiangroup.springboot.JPA.app.models.dao;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository // componente de persistencia de datos (suelen ser daos)
 public class ClienteDaoImpl implements IClienteDao {
 
 	/*
@@ -32,8 +29,6 @@ public class ClienteDaoImpl implements IClienteDao {
 
 	@Override
 	public void save(Cliente cliente) {
-		// TODO Auto-generated method stub
-		System.out.println(cliente.getId());
 		if (cliente.getId() != null) {
 			// Actualizar datos
 			em.merge(cliente);
@@ -60,21 +55,22 @@ public class ClienteDaoImpl implements IClienteDao {
 
 	@Override
 	public Page<Cliente> findAll(Pageable Pageable) {
-		int paginaActual = Pageable.getPageNumber();
-		int registrosPorPagina = Pageable.getPageSize();
-		//pagina++;  para que coincida con PagingAndSortingRepository
-		int comienzoRegistros;
-		
-		if (paginaActual > 1) comienzoRegistros = (paginaActual * registrosPorPagina - registrosPorPagina);
-		else comienzoRegistros = 0;
-		
+		int numPagina = Pageable.getPageNumber(); // pagina actual
+		numPagina++; // sumamos uno a a la pagina actual para que coemince desde 0
+		int totalRegistrosAMostrar = Pageable.getPageSize(); // numero total de registros a mostrar
+		int inicio = (numPagina - 1) * totalRegistrosAMostrar; // calculamos desde que numero de registro comenzar
 		Query consulta = em.createQuery("from Cliente")
-			.setMaxResults(registrosPorPagina) // LIMIT
-			.setFirstResult(comienzoRegistros); // OFFSET
-
-		List<Cliente> clientesLista = consulta.getResultList();
-		Page<Cliente> clientes = new PageImpl<>(clientesLista);
-		return clientes;	
+			.setMaxResults(totalRegistrosAMostrar) // LIMIT
+			.setFirstResult(inicio); // Inicio
+		List<Cliente> clientes = consulta.getResultList();
+		Page<Cliente> page = new PageImpl<>(clientes, Pageable, totalRegistros());
+		return page;
 	}
 
+	private long totalRegistros() {
+		Query queryTotal = em.createQuery("Select count(id) from Cliente");
+		long countResult = (long) queryTotal.getSingleResult();
+		return countResult;
+	}
+	
 }

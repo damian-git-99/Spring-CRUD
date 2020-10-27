@@ -10,8 +10,6 @@ import javax.validation.Valid;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
-import ch.qos.logback.classic.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
+	
+	private final String DIRECTORIOIMAGENES = "uploads/";
 
 	@Autowired
 	private IClienteService clienteService;
@@ -70,7 +70,7 @@ public class ClienteController {
 	 * Formulario GET para registrar o actualizar un cliente
 	 */
 	@GetMapping("/form")
-	public String crear(Model model) {
+	public String form(Model model) {
 		Cliente cliente = new Cliente();
 		model.addAttribute("cliente", cliente);
 		model.addAttribute("titulo", "Formulario de Cliente");
@@ -102,15 +102,15 @@ public class ClienteController {
 	 * Se encarga de subir la foto y retornar el nombre de la foto
 	 */
 	private String guardarFoto(MultipartFile foto, Cliente cliente, RedirectAttributes flash) {
-		
+
 		if (foto.isEmpty()) {
-			flash.addFlashAttribute("danger", "Ha ocurrido un error hal intenta subir la foto");
+			flash.addFlashAttribute("danger", "Ha ocurrido un error al intenta subir la foto");
 			return null;
 		}
-		
-		//Si existe el id quiere decir que el cliente ua existe y si la foto
+
+		// Si existe el id quiere decir que el cliente ya existe y si la foto
 		// es diferente de null quiere decir que el usuario actualizo la foto
-		//pr lo cual hay que borrar la foto anterior
+		// pr lo cual hay que borrar la foto anterior
 		if (cliente.getId() != null && cliente.getFoto() != null) {
 			eliminarFoto(cliente.getId(), flash);
 		}
@@ -120,6 +120,8 @@ public class ClienteController {
 		String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
 		Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
 		Path rootAbsolutPath = rootPath.toAbsolutePath();
+		
+		
 		try {
 			Files.copy(foto.getInputStream(), rootAbsolutPath);
 			flash.addFlashAttribute("info", "Ha subido correctamente la foto: ".concat(uniqueFilename));
@@ -144,7 +146,7 @@ public class ClienteController {
 			return "redirect:/listar";
 		}
 
-		model.addAttribute("titulo", "Formulario de Cliente (Update)");
+		model.addAttribute("titulo", "Editar Cliente");
 		model.addAttribute("cliente", cliente);
 		return "form";
 	}
