@@ -3,6 +3,8 @@ package com.damiangroup.springboot.JPA.app.models.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import org.springframework.stereotype.Service;
@@ -28,13 +30,15 @@ public class UploadFileServiceImpl implements IUploadFileService {
             eliminarFoto(cliente);
         }
 
+        // String uniqueFilename = UUID.randomUUID().toString() + "_" +
+        // foto.getOriginalFilename();
+        // String rutaDestino = DIRECTORIO_IMAGENES + uniqueFilename;
+        // File destinoFile = new File(rutaDestino);
+        // Files.copy(foto.getInputStream(), destinoFile.toPath());
+        // return uniqueFilename;
         String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
-        String rutaDestino = DIRECTORIO_IMAGENES + uniqueFilename;
-        File destinoFile = new File(rutaDestino);
-
-        System.err.println(destinoFile.getAbsolutePath());
-
-        Files.copy(foto.getInputStream(), destinoFile.toPath());
+        Path rootPath = Paths.get(DIRECTORIO_IMAGENES).resolve(uniqueFilename).toAbsolutePath();
+        Files.copy(foto.getInputStream(), rootPath);
         return uniqueFilename;
 
     }
@@ -43,15 +47,15 @@ public class UploadFileServiceImpl implements IUploadFileService {
     public boolean eliminarFoto(Cliente cliente) {
         // Eliminar foto del cliente
         // Cliente cliente = clienteService.findOne(id);
-        String fileName = DIRECTORIO_IMAGENES + cliente.getFoto();
-        File archivoFile = new File(fileName);
+        // String fileName = DIRECTORIO_IMAGENES + cliente.getFoto();
+        // File archivoFile = new File(fileName);
+        Path rootPath = Paths.get(DIRECTORIO_IMAGENES).resolve(cliente.getFoto()).toAbsolutePath();
+        File archivoFile = rootPath.toFile();
         if (archivoFile.exists() && archivoFile.canRead()) {
-            if (archivoFile.delete()) {
+            if (archivoFile.delete())
                 return true;
-            } else
-                return false;
-        } else
-            return false;
+        }
+        return false;
     }
 
 }
