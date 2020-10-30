@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.damiangroup.springboot.JPA.app.models.dao.IClienteDao;
 import com.damiangroup.springboot.JPA.app.models.dao.IClienteDaoCrudRepository;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;

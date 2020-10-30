@@ -1,4 +1,4 @@
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (1,'Damian','Galvan','damian@gmil.com','2020-08-28','347b33a6-54a5-4aad-9678-48f4331e3341_ale-romo-photography-CLiwQXx7kT8-unsplash.jpg')
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (1,'Damian','Galvan','damian@gmil.com','2020-08-28','')
 INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (2,'Jose','Torrez','jose@gmil.com','2020-08-28','')
 INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (3,'irving','Galvan','damian@gmil.com','2020-08-28','')
 INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (4,'Carlos','Torrez','jose@gmil.com','2020-08-28','')
