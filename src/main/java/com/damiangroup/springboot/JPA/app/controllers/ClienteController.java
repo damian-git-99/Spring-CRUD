@@ -133,15 +133,14 @@ public class ClienteController {
 			if (cliente == null) {
 				flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
 				return "redirect:/listar";
-			} else {
-				if (uploadFile.eliminarFoto(cliente)) {
-					flash.addFlashAttribute("success", "Imagen Borrada: ".concat(cliente.getFoto()));
-				} else
-					flash.addFlashAttribute("error",
-							"La imagen no se pudo borrar: (El cliente no tiene imagen o hubo un error al intentar borrarla)"
-									.concat(cliente.getFoto()));
-				clienteService.delete(id);
 			}
+			if (uploadFile.eliminarFoto(cliente)) {
+				flash.addFlashAttribute("success", "Imagen Borrada: ".concat(cliente.getFoto()));
+			} else
+				flash.addFlashAttribute("error",
+						"La imagen no se pudo borrar: (El cliente no tiene imagen o hubo un error al intentar borrarla)"
+								.concat(cliente.getFoto()));
+			clienteService.delete(id);
 		}
 
 		flash.addFlashAttribute("success", "Cliente eliminado con exito");
