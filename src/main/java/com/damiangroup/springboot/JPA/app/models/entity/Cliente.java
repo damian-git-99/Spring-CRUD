@@ -1,24 +1,25 @@
 package com.damiangroup.springboot.JPA.app.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-
 import org.springframework.format.annotation.DateTimeFormat;
-
-
 
 
 @Entity
@@ -48,13 +49,21 @@ public class Cliente implements Serializable {
     private Date createAt;
 
     private String foto;
-
-   /*@PrePersist
+    
+    @OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Factura> listFaturas;
+    
+    
+    /*@PrePersist
     public void prePersist(){
         this.createAt = new Date();
     }*/
 
-    public Long getId() {
+    public Cliente() {
+		listFaturas = new ArrayList<>();
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -77,8 +86,6 @@ public class Cliente implements Serializable {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-
-   
 
     public String getEmail() {
         return email;
@@ -103,6 +110,18 @@ public class Cliente implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+	public List<Factura> getListFaturas() {
+		return listFaturas;
+	}
+
+	public void setListFaturas(List<Factura> listFaturas) {
+		this.listFaturas = listFaturas;
+	}
+    
+    public void addFactura(Factura factura) {
+    	listFaturas.add(factura);
     }
 
     
