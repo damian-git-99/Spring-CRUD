@@ -41,7 +41,8 @@ public class ClienteDaoImpl implements IClienteDao {
 	@Override
 	public Optional<Cliente> findById(Long id) {
 		Cliente cliente = em.find(Cliente.class, id);
-		Optional<Cliente> optional = Optional.of(cliente);
+		//Optional<Cliente> optional = Optional.of(cliente); si no se esperan null, si se le psa un null da error
+		Optional<Cliente> optional = Optional.ofNullable(cliente); // Si se esperan null , usamos ofNullable
 		return optional;
 	}
 
@@ -59,9 +60,8 @@ public class ClienteDaoImpl implements IClienteDao {
 		numPagina++; // sumamos uno a a la pagina actual para que coemince desde 0
 		int totalRegistrosAMostrar = Pageable.getPageSize(); // numero total de registros a mostrar
 		int inicio = (numPagina - 1) * totalRegistrosAMostrar; // calculamos desde que numero de registro comenzar
-		Query consulta = em.createQuery("from Cliente")
-			.setMaxResults(totalRegistrosAMostrar) // LIMIT
-			.setFirstResult(inicio); // Inicio
+		Query consulta = em.createQuery("from Cliente").setMaxResults(totalRegistrosAMostrar) // LIMIT
+				.setFirstResult(inicio); // Inicio
 		List<Cliente> clientes = consulta.getResultList();
 		Page<Cliente> page = new PageImpl<>(clientes, Pageable, totalRegistros());
 		return page;
@@ -72,5 +72,5 @@ public class ClienteDaoImpl implements IClienteDao {
 		long countResult = (long) queryTotal.getSingleResult();
 		return countResult;
 	}
-	
+
 }

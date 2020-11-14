@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,14 +30,19 @@ public class ItemFactura implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Integer cantidad;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto_id")
 	private Producto producto;
-	
-	//@ManyToOne(fetch = FetchType.LAZY)
-	//@JoinColumn(name = "factura_id")
-	//private Factura factura;
+
+	public ItemFactura(Integer cantidad, Producto producto) {
+		this.cantidad = cantidad;
+		this.producto = producto;
+	}
+
+	public ItemFactura() {
+
+	}
 
 	public Long getId() {
 		return id;
@@ -53,9 +59,17 @@ public class ItemFactura implements Serializable {
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
-	
+
 	public double calcularImporte() {
-		return cantidad*producto.getPrecio();
+		return cantidad * producto.getPrecio();
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 }
