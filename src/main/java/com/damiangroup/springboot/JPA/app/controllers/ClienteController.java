@@ -52,7 +52,7 @@ public class ClienteController {
 	/*
 	 * Listar clientes
 	 */
-	@GetMapping("/listar")
+	@GetMapping({"/listar","/"})
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 		Pageable pageRequest = PageRequest.of(page, 5);
 
