@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 
 <head th:replace="layout/layout :: head"></head>
 
@@ -11,7 +11,7 @@
             <div class="card-header" th:text="${titulo}"></div>
             <div class="card-body">
                 <h4 class="card-title">
-                    <td class="text-center"><a th:href="@{/factura/form/}+ ${cliente.id}" class="btn btn-success">Crear factura</a></td>
+                    <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/factura/form/}+ ${cliente.id}" class="btn btn-success">Crear factura</a></td>
                 </h4>
                 <img th:if="${#strings.length(cliente.foto) > 0}" class=" img-thumbnail rounded float-left" style="max-width: 25%;" th:src="@{'/uploads/' + ${cliente.foto}}" th:alt="${cliente.nombre}">
                 <ul class=" list-group">
@@ -29,8 +29,8 @@
                             <th>Descripcion</th>
                             <th>Fecha</th>
                             <th>Total</th>
-                            <th>Detalle</th>
-                            <th>Eliminar</th>
+                            <th sec:authorize="hasRole('ADMIN')">Detalle</th>
+                            <th sec:authorize="hasRole('ADMIN')">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,8 +39,8 @@
                             <td th:text="${factura.descripcion}"></td>
                             <td th:text="${factura.createAt}"></td>
                             <td th:text="${factura.granTotal()}"></td>
-                            <td><a th:href="@{/factura/ver/}+${factura.id}" class=" btn btn-secondary">Detalle</a></td>
-                            <td><a th:href="@{/factura/eliminar/}+${factura.id}" class=" btn btn-secondary">Eliminar</a></td>
+                            <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/factura/ver/}+${factura.id}" class=" btn btn-secondary">Detalle</a></td>
+                            <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/factura/eliminar/}+${factura.id}" class=" btn btn-secondary">Eliminar</a></td>
                         </tr>
                     </tbody>
                 </table>
