@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,9 +55,16 @@ public class ClienteController {
 	 * Listar clientes
 	 */
 	@GetMapping({"/listar","/"})
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,Authentication authentication) {
 		Pageable pageRequest = PageRequest.of(page, 5);
 
+		if (authentication!=null) {
+			 //Hacer algo con en usuaruio
+		}
+		
+		//Obtener authentication de forma estatica
+		//Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+		
 		// Page es un iterable
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
