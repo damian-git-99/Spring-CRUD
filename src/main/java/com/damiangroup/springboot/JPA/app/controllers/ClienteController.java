@@ -1,6 +1,9 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.io.IOException;
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
@@ -11,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,17 +60,28 @@ public class ClienteController {
 	/*
 	 * Listar clientes
 	 */
-	@GetMapping({"/listar","/"})
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,Authentication authentication) {
+	@GetMapping({ "/listar", "/" })
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+			Authentication authentication,HttpServletRequest request) {
 		Pageable pageRequest = PageRequest.of(page, 5);
 
-		if (authentication!=null) {
-			 //Hacer algo con en usuaruio
+		if (authentication != null) {
+			// Hacer algo con el usuaruio
 		}
 		
-		//Obtener authentication de forma estatica
-		//Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+		//Manera programatica
+		if (hasRole("ROLE_ADMIN")) System.err.println("Rol ADMIN!!!");
+		else System.err.println("Rol Normal!!!");
 		
+		//Con spring
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,"ROLE_");
+		if (securityContext.isUserInRole("ADMIN")) System.err.println("Rol ADMIN (securityContext)!!!");
+		else System.err.println("Rol Normal (securityContext)!!!");
+		
+
+		// Obtener authentication de forma estatica
+		// Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+
 		// Page es un iterable
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
@@ -154,6 +171,28 @@ public class ClienteController {
 
 		flash.addFlashAttribute("success", "Cliente eliminado con exito");
 		return "redirect:/listar";
+	}
+
+	private boolean hasRole(String role) {
+
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null) {
+			return false;
+		}
+
+		Authentication authentication = context.getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
+
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		for (GrantedAuthority grantedAuthority : authorities) {
+			if (role.equals(grantedAuthority.getAuthority())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
