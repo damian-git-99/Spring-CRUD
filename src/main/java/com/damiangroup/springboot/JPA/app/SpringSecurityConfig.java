@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.damiangroup.springboot.JPA.app.auth.handler.LoginSuccessHandler;
+import com.damiangroup.springboot.JPA.app.models.service.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true) // habilitar anotaciones 
 @Configuration
@@ -26,6 +27,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private DataSource dataSource; // Conexion a la base de datos
+	
+	@Autowired
+	private JpaUserDetailsService JpaUserDetailsService;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -46,12 +50,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.withUser(users.username("admin").password("1234").roles("ADMIN","USER"))
 			.withUser(users.username("andres").password("1234").roles("USER"));*/
 		
+		/*
+		 //JDBC 
 		builder.jdbcAuthentication()
 				.dataSource(dataSource)
 				.passwordEncoder(passwordEncoder())
 				.usersByUsernameQuery("SELECT username,password,enabled FROM users WHERE username=?")
 				.authoritiesByUsernameQuery("SELECT u.username,a.authority FROM authorities a "
 						+ "inner join users u on a.user_id = u.id where u.username=?");
+						*/
+		// JPA
+		builder.userDetailsService(JpaUserDetailsService)
+		.passwordEncoder(passwordEncoder());
+		
+		
 	}
 
 	@Override

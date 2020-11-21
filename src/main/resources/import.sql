@@ -24,3 +24,10 @@ INSERT INTO productos (nombre,precio,create_at) values  ('Pantalla Sony',9999,NO
 
 INSERT INTO facturas(create_at,descripcion,cliente_id) values (NOW(),"Factura del cliente...",1);
 INSERT INTO facturas_items(cantidad,factura_id,producto_id) values (2,1,1);
+
+INSERT INTO users (username,password,enabled) values ("admin","$2a$10$3orGV0sTPlBOxRquI00Z5OGG2e0tLCQQV/Kf4oZYlXG.YC.Xz4Fw6",1);
+INSERT INTO users (username,password,enabled) values ("damian","$2a$10$wSEWMz04Qr3uZoZJaNH.qeQABFb2ApI71VgYxXbEeHaGfGrwXM1/q",1);
+
+INSERT INTO authorities (user_id,authority) values (1,'ROLE_ADMIN');
+INSERT INTO authorities (user_id,authority) values (1,'ROLE_USER');
+INSERT INTO authorities (user_id,authority) values (2,'ROLE_USER');
