@@ -1,5 +1,7 @@
 package com.damiangroup.springboot.JPA.app;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private LoginSuccessHandler loginSuccessHandler;
 	
+	@Autowired
+	private DataSource dataSource; // Conexion a la base de datos
+	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -30,7 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
 		
-		//Como de va a codificar las password
+		/*//Como de va a codificar las password
 		PasswordEncoder encoder = this.passwordEncoder();
 		UserBuilder users = User.builder().passwordEncoder(password -> {
 			return encoder.encode(password);
@@ -39,7 +44,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Creamos un usuario en memoria
 		builder.inMemoryAuthentication()
 			.withUser(users.username("admin").password("1234").roles("ADMIN","USER"))
-			.withUser(users.username("andres").password("1234").roles("USER"));
+			.withUser(users.username("andres").password("1234").roles("USER"));*/
+		
+		builder.jdbcAuthentication()
+				.dataSource(dataSource)
+				.passwordEncoder(passwordEncoder())
+				.usersByUsernameQuery("SELECT username,password,enabled FROM users WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT u.username,a.authority FROM authorities a "
+						+ "inner join users u on a.user_id = u.id where u.username=?");
 	}
 
 	@Override
