@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -95,6 +96,7 @@ public class ClienteController {
 	/*
 	 * Formulario GET para registrar o actualizar un cliente
 	 */
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
 	public String form(Model model) {
 		Cliente cliente = new Cliente();
@@ -106,6 +108,7 @@ public class ClienteController {
 	/*
 	 * Formulario POST para registrar o actualizar un cliente
 	 */
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/form")
 	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam("file") MultipartFile foto, SessionStatus status) {
@@ -132,6 +135,7 @@ public class ClienteController {
 		return "redirect:/listar";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 		Cliente cliente = null;
@@ -151,6 +155,7 @@ public class ClienteController {
 		return "form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
