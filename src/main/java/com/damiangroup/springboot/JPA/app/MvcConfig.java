@@ -1,10 +1,17 @@
 package com.damiangroup.springboot.JPA.app;
 
 import java.nio.file.Paths;
+import java.util.Locale;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer{
@@ -33,6 +40,28 @@ public class MvcConfig implements WebMvcConfigurer{
 	}
 	
 	
+	@Bean
+	public LocaleResolver localeResolver() {
+		// se encarga de guardar el objeto locale con el idioma, y lo guarda en un resolver, en la sesion HTTP
+		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+		localeResolver.setDefaultLocale(new Locale("es", "ES"));
+		return localeResolver;
+	}
+	
+	@Bean
+	public LocaleChangeInterceptor	localeChangeInterceptor() {
+		// cada que se pase por url atravez de get lang se ejecuta este interceptor
+		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+		localeChangeInterceptor.setParamName("lang");
+		return localeChangeInterceptor;
+	}
 
+	//Metodo para registrar el interceptor localeChangeInterceptor
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// TODO Auto-generated method stub
+		registry.addInterceptor(localeChangeInterceptor());
+	}
+	
 	
 }
