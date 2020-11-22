@@ -18,10 +18,10 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th><i class="far fa-envelope"></i> Email</th>
-                                    <th><i class="fas fa-calendar-week"></i> Fecha</th>
+                                    <th th:text="#{text.cliente.nombre}">Nombre</th>
+                                    <th th:text="#{text.cliente.apellido}">Apellido</th>
+                                    <th th:text="#{text.cliente.email}"><i class="far fa-envelope"></i> Email</th>
+                                    <th th:text="#{text.cliente.createat}"><i class="fas fa-calendar-week"></i> Fecha</th>
                                     <th sec:authorize="hasRole('ADMIN')">Crear Factura</th>
                                     <th sec:authorize="hasRole('ADMIN')"><i class="fas fa-user-edit"></i> Editar</th>
                                     <th sec:authorize="hasRole('ADMIN')"><i class="far fa-trash-alt"></i> Eliminar</th>
