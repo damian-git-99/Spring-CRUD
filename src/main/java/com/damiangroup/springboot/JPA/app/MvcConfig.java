@@ -38,30 +38,6 @@ public class MvcConfig implements WebMvcConfigurer{
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/error_403").setViewName("error_403");
 	}
-	
-	
-	@Bean
-	public LocaleResolver localeResolver() {
-		// se encarga de guardar el objeto locale con el idioma, y lo guarda en un resolver, en la sesion HTTP
-		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-		localeResolver.setDefaultLocale(new Locale("es", "ES"));
-		return localeResolver;
-	}
-	
-	@Bean
-	public LocaleChangeInterceptor	localeChangeInterceptor() {
-		// cada que se pase por url atravez de get lang se ejecuta este interceptor
-		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-		localeChangeInterceptor.setParamName("lang");
-		return localeChangeInterceptor;
-	}
 
-	//Metodo para registrar el interceptor localeChangeInterceptor
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		// TODO Auto-generated method stub
-		registry.addInterceptor(localeChangeInterceptor());
-	}
-	
 	
 }
