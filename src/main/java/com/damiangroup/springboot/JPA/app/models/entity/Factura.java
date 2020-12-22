@@ -1,5 +1,7 @@
 package com.damiangroup.springboot.JPA.app.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +40,7 @@ public class Factura implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente_id") // Generar llave foranea de cliente
+	@JsonBackReference
 	private Cliente cliente;
 	
 	//@OneToMany(mappedBy = "factura",fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -18,6 +18,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -45,11 +48,13 @@ public class Cliente implements Serializable {
     @Temporal(TemporalType.DATE) // formato en el que se va a guardar la fecha
     @DateTimeFormat(pattern = "yyyy-MM-dd") // Especificar patron de fecha
     @NotNull(message = "La fecha no puede estar vacia")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createAt;
 
     private String foto;
     
     @OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Factura> listFaturas;
     
     

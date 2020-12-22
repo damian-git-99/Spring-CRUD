@@ -3,6 +3,9 @@
  */
 package com.damiangroup.springboot.JPA.app.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -31,8 +34,9 @@ public class ItemFactura implements Serializable {
 	private Long id;
 	private Integer cantidad;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	private Producto producto;
 
 	public ItemFactura(Integer cantidad, Producto producto) {
