@@ -1,8 +1,8 @@
 ## Example of a CRUD using Spring boot with Thymeleaf and Spring Security
 
-![](C:\Users\damian\Desktop\Spring-CRUD\example-images\crud1.PNG)
-![](C:\Users\damian\Desktop\Spring-CRUD\example-images\crud3.PNG)
-![](C:\Users\damian\Desktop\Spring-CRUD\example-images\crud2.PNG)
+![](https://github.com/damian-git-99/Spring-CRUD/blob/master/example-images/crud1.PNG)
+![](https://github.com/damian-git-99/Spring-CRUD/blob/master/example-images/crud3.PNG)
+![](https://github.com/damian-git-99/Spring-CRUD/blob/master/example-images/crud2.PNG)
 
 
 
