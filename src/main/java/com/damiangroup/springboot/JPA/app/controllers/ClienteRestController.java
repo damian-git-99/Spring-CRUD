@@ -18,7 +18,7 @@ public class ClienteRestController {
     private IClienteService clienteService;
 
     @GetMapping("/listar")
-    public List<Cliente> listar(){;
+    public List<Cliente> listar(){
         return clienteService.findAll();
     }
 

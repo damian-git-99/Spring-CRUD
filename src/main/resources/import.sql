@@ -1,20 +1,11 @@
 INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (1,'Damian','Galvan','damian@gmil.com','2020-08-28','');
 INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (2,'Jose','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (3,'irving','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (4,'Carlos','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (5,'Jazmin','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (6,'Robin','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (7,'Mateo','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (8,'Talina','Torrez','jose@gmil.com','2020-08-28','');
-
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (9,'Damian','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (10,'Jose','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (11,'irving','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (12,'Carlos','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (13,'Jazmin','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (14,'Robin','Torrez','jose@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (15,'Mateo','Galvan','damian@gmil.com','2020-08-28','');
-INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (16,'Talina','Torrez','jose@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (3,'irving','Galvan','irving@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (4,'Carlos','Torrez','carlos@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (5,'Jazmin','Galvan','jazmin@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (6,'Robin','Torrez','robin@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (7,'Mateo','Galvan','mateo@gmil.com','2020-08-28','');
+INSERT INTO clientes (id,nombre,apellido,email,create_at,foto) values (8,'Talina','Torrez','talina@gmil.com','2020-08-28','');
 
 INSERT INTO productos (nombre,precio,create_at) values  ('Celular m20',4999,NOW()); 
 INSERT INTO productos (nombre,precio,create_at) values  ('Celular m30',6999,NOW()); 
