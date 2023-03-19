@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,12 +25,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private LoginSuccessHandler loginSuccessHandler;
-	
+
 	@Autowired
-	private DataSource dataSource; // Conexion a la base de datos
-	
-	@Autowired
-	private JpaUserDetailsService JpaUserDetailsService;
+	private UserDetailsService userDetailsService;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -38,32 +36,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-		
-		/*//Como de va a codificar las password
-		PasswordEncoder encoder = this.passwordEncoder();
-		UserBuilder users = User.builder().passwordEncoder(password -> {
-			return encoder.encode(password);
-		});
-		
-		// Creamos un usuario en memoria
-		builder.inMemoryAuthentication()
-			.withUser(users.username("admin").password("1234").roles("ADMIN","USER"))
-			.withUser(users.username("andres").password("1234").roles("USER"));*/
-		
-		/*
-		 //JDBC 
-		builder.jdbcAuthentication()
-				.dataSource(dataSource)
-				.passwordEncoder(passwordEncoder())
-				.usersByUsernameQuery("SELECT username,password,enabled FROM users WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT u.username,a.authority FROM authorities a "
-						+ "inner join users u on a.user_id = u.id where u.username=?");
-						*/
-		// JPA
-		builder.userDetailsService(JpaUserDetailsService)
+		builder.userDetailsService(userDetailsService)
 		.passwordEncoder(passwordEncoder());
-		
-		
 	}
 
 	@Override
