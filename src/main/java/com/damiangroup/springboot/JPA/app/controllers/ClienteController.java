@@ -33,19 +33,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-    @Autowired
-    private CustomerService clienteService;
+    private final CustomerService customerService;
+    private final IUploadFileService uploadFile;
+
 
     @Autowired
-    private IUploadFileService uploadFile;
+    public ClienteController(CustomerService customerService, IUploadFileService uploadFile) {
+        this.customerService = customerService;
+        this.uploadFile = uploadFile;
+    }
 
-    /*
-     *
-     * Ver mas informacion del cliente, tambien la foto
-     */
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Customer customer = clienteService.findOne(id);
+        Customer customer = customerService.findOne(id);
         if (customer == null) {
             flash.addFlashAttribute("error", "El customer no existe");
             return "redirect:/listar";
@@ -56,9 +56,6 @@ public class ClienteController {
         return "ver";
     }
 
-    /*
-     * Listar clientes
-     */
     @GetMapping({"/listar", "/"})
     public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
                          Authentication authentication, HttpServletRequest request) {
@@ -82,7 +79,7 @@ public class ClienteController {
         // Authentication auth= SecurityContextHolder.getContext().getAuthentication();
 
         // Page es un iterable
-        Page<Customer> clientes = clienteService.findAll(pageRequest);
+        Page<Customer> clientes = customerService.findAll(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/listar", clientes);
 
         model.addAttribute("page", pageRender);
@@ -126,7 +123,7 @@ public class ClienteController {
             return "/form";
         }
 
-        clienteService.save(customer);
+        customerService.save(customer);
         flash.addFlashAttribute("info", "Imagen subida correctamente");
         flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
@@ -138,7 +135,7 @@ public class ClienteController {
     public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = null;
         if (id > 0) {
-            customer = clienteService.findOne(id);
+            customer = customerService.findOne(id);
             if (customer == null) {
                 flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
                 return "redirect:/listar";
@@ -158,7 +155,7 @@ public class ClienteController {
     public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
         if (id > 0) {
-            Customer customer = clienteService.findOne(id);
+            Customer customer = customerService.findOne(id);
             if (customer == null) {
                 flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
                 return "redirect:/listar";
@@ -169,7 +166,7 @@ public class ClienteController {
                 flash.addFlashAttribute("error",
                         "La imagen no se pudo borrar: (El customer no tiene imagen o hubo un error al intentar borrarla)"
                                 .concat(customer.getPhoto()));
-            clienteService.delete(id);
+            customerService.delete(id);
         }
 
         flash.addFlashAttribute("success", "Customer eliminado con exito");
@@ -202,8 +199,7 @@ public class ClienteController {
     @GetMapping("/listarRest")
     @ResponseBody
     public List<Customer> listarRest() {
-        ;
-        return clienteService.findAll();
+        return customerService.findAll();
     }
 
 }

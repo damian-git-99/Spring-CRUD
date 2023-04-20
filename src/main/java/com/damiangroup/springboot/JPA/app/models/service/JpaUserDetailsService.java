@@ -17,7 +17,7 @@ import com.damiangroup.springboot.JPA.app.models.entity.User;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
-    
+
     private final UserDao userDao;
 
     @Autowired
