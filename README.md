@@ -19,7 +19,7 @@
 
 ## Roles
 La aplicación tiene dos roles USUARIO y ADMINISTRADOR,
-El USUARIO solo tiene permiso para realizar ciertas acciones mientras que el ADMINISTRADOR tiene todos los permisos (Eliminar usuario, Editar usuario, Crear factura)
+El USUARIO solo tiene permiso para realizar ciertas acciones mientras que el ADMINISTRADOR tiene todos los permisos (Eliminar usuario, Editar usuario, Crear invoice)
 
 Cuentas de usuario predeterminadas
 - ADMIN: username: admin , password: 1234

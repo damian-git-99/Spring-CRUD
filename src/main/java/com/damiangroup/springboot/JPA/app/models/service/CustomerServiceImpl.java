@@ -2,6 +2,7 @@ package com.damiangroup.springboot.JPA.app.models.service;
 
 import java.util.List;
 
+import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.damiangroup.springboot.JPA.app.models.dao.CustomerDao;
 import com.damiangroup.springboot.JPA.app.models.dao.InvoiceDao;
 import com.damiangroup.springboot.JPA.app.models.dao.ProductDao;
-import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
-import com.damiangroup.springboot.JPA.app.models.entity.Factura;
+import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
 import com.damiangroup.springboot.JPA.app.models.entity.Producto;
 
 @Service
@@ -30,19 +30,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public List<Cliente> findAll() {
-        return (List<Cliente>) customerDao.findAll();
+    public List<Customer> findAll() {
+        return (List<Customer>) customerDao.findAll();
     }
 
     @Override
     @Transactional
-    public void save(Cliente cliente) {
-        customerDao.save(cliente);
+    public void save(Customer customer) {
+        customerDao.save(customer);
     }
 
     @Override
     @Transactional
-    public Cliente findOne(Long id) {
+    public Customer findOne(Long id) {
         return customerDao.findById(id).orElse(null);
     }
 
@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Page<Cliente> findAll(Pageable pageable) {
+    public Page<Customer> findAll(Pageable pageable) {
         return customerDao.findAll(pageable);
     }
 
@@ -72,8 +72,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public void saveFactura(Factura factura) {
-        invoiceDao.save(factura);
+    public void saveFactura(Invoice invoice) {
+        invoiceDao.save(invoice);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Factura findFacturaById(Long id) {
+    public Invoice findFacturaById(Long id) {
         return invoiceDao.findById(id).orElse(null);
     }
 

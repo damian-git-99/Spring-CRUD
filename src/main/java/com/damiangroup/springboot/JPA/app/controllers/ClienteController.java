@@ -7,7 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
+import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.service.IUploadFileService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
@@ -45,14 +45,14 @@ public class ClienteController {
      */
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Cliente cliente = clienteService.findOne(id);
-        if (cliente == null) {
-            flash.addFlashAttribute("error", "El cliente no existe");
+        Customer customer = clienteService.findOne(id);
+        if (customer == null) {
+            flash.addFlashAttribute("error", "El customer no existe");
             return "redirect:/listar";
         }
 
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("titulo", "Detalle cliente: " + cliente.getNombre());
+        model.addAttribute("cliente", customer);
+        model.addAttribute("titulo", "Detalle customer: " + customer.getName());
         return "ver";
     }
 
@@ -82,8 +82,8 @@ public class ClienteController {
         // Authentication auth= SecurityContextHolder.getContext().getAuthentication();
 
         // Page es un iterable
-        Page<Cliente> clientes = clienteService.findAll(pageRequest);
-        PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
+        Page<Customer> clientes = clienteService.findAll(pageRequest);
+        PageRender<Customer> pageRender = new PageRender<>("/listar", clientes);
 
         model.addAttribute("page", pageRender);
         model.addAttribute("titulo", "listado de clientes");
@@ -97,38 +97,38 @@ public class ClienteController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/form")
     public String form(Model model) {
-        Cliente cliente = new Cliente();
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("titulo", "Formulario de Cliente");
+        Customer customer = new Customer();
+        model.addAttribute("cliente", customer);
+        model.addAttribute("titulo", "Formulario de Customer");
         return "form";
     }
 
     /*
-     * Formulario POST para registrar o actualizar un cliente
+     * Formulario POST para registrar o actualizar un customer
      */
     @Secured("ROLE_ADMIN")
     @PostMapping("/form")
-    public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
+    public String guardar(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
                           @RequestParam("file") MultipartFile foto, SessionStatus status) {
 
         String urlFoto;
         try {
-            urlFoto = uploadFile.guardarFoto(foto, cliente);
+            urlFoto = uploadFile.guardarFoto(foto, customer);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             urlFoto = "";
         }
-        cliente.setFoto(urlFoto);
+        customer.setPhoto(urlFoto);
 
         if (result.hasErrors()) {
-            model.addAttribute("cliente", cliente);
+            model.addAttribute("cliente", customer);
             return "/form";
         }
 
-        clienteService.save(cliente);
+        clienteService.save(customer);
         flash.addFlashAttribute("info", "Imagen subida correctamente");
-        flash.addFlashAttribute("success", "Cliente Creado o actualizado con exito");
+        flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
         return "redirect:/listar";
     }
@@ -136,11 +136,11 @@ public class ClienteController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/form/{id}")
     public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Cliente cliente = null;
+        Customer customer = null;
         if (id > 0) {
-            cliente = clienteService.findOne(id);
-            if (cliente == null) {
-                flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
+            customer = clienteService.findOne(id);
+            if (customer == null) {
+                flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
                 return "redirect:/listar";
             }
         } else {
@@ -148,8 +148,8 @@ public class ClienteController {
             return "redirect:/listar";
         }
 
-        model.addAttribute("titulo", "Editar Cliente");
-        model.addAttribute("cliente", cliente);
+        model.addAttribute("titulo", "Editar Customer");
+        model.addAttribute("cliente", customer);
         return "form";
     }
 
@@ -158,21 +158,21 @@ public class ClienteController {
     public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
         if (id > 0) {
-            Cliente cliente = clienteService.findOne(id);
-            if (cliente == null) {
-                flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
+            Customer customer = clienteService.findOne(id);
+            if (customer == null) {
+                flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
                 return "redirect:/listar";
             }
-            if (uploadFile.eliminarFoto(cliente)) {
-                flash.addFlashAttribute("success", "Imagen Borrada: ".concat(cliente.getFoto()));
+            if (uploadFile.eliminarFoto(customer)) {
+                flash.addFlashAttribute("success", "Imagen Borrada: ".concat(customer.getPhoto()));
             } else
                 flash.addFlashAttribute("error",
-                        "La imagen no se pudo borrar: (El cliente no tiene imagen o hubo un error al intentar borrarla)"
-                                .concat(cliente.getFoto()));
+                        "La imagen no se pudo borrar: (El customer no tiene imagen o hubo un error al intentar borrarla)"
+                                .concat(customer.getPhoto()));
             clienteService.delete(id);
         }
 
-        flash.addFlashAttribute("success", "Cliente eliminado con exito");
+        flash.addFlashAttribute("success", "Customer eliminado con exito");
         return "redirect:/listar";
     }
 
@@ -201,7 +201,7 @@ public class ClienteController {
     //REST API
     @GetMapping("/listarRest")
     @ResponseBody
-    public List<Cliente> listarRest() {
+    public List<Customer> listarRest() {
         ;
         return clienteService.findAll();
     }

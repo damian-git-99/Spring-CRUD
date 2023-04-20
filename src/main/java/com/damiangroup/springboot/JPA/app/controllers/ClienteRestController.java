@@ -1,6 +1,6 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
-import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
+import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class ClienteRestController {
     private CustomerService clienteService;
 
     @GetMapping("/listar")
-    public List<Cliente> listar(){
+    public List<Customer> listar(){
         return clienteService.findAll();
     }
 

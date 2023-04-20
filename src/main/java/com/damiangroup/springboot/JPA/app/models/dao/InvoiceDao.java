@@ -1,8 +1,8 @@
 package com.damiangroup.springboot.JPA.app.models.dao;
 
+import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
 import org.springframework.data.repository.CrudRepository;
-import com.damiangroup.springboot.JPA.app.models.entity.Factura;
 
-public interface InvoiceDao extends CrudRepository<Factura, Long> {
+public interface InvoiceDao extends CrudRepository<Invoice, Long> {
 
 }
