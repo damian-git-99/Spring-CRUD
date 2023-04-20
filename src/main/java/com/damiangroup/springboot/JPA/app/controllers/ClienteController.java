@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,7 +50,7 @@ public class ClienteController {
             return "redirect:/listar";
         }
 
-        model.addAttribute("cliente", customer);
+        model.addAttribute("customer", customer);
         model.addAttribute("titulo", "Detalle customer: " + customer.getName());
         return "ver";
     }
@@ -145,28 +144,6 @@ public class ClienteController {
 
         flash.addFlashAttribute("success", "Customer eliminado con exito");
         return "redirect:/listar";
-    }
-
-    private boolean hasRole(String role) {
-
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            return false;
-        }
-
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) {
-            return false;
-        }
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        for (GrantedAuthority grantedAuthority : authorities) {
-            if (role.equals(grantedAuthority.getAuthority())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     //REST API

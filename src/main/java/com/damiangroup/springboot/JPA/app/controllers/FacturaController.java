@@ -95,7 +95,7 @@ public class FacturaController {
 			return "redirect:/listar";
 		}
 		
-		model.addAttribute("factura", invoice);
+		model.addAttribute("invoice", invoice);
 		model.addAttribute("titulo","Invoice : ".concat(invoice.getDescription()));
 		return "factura/ver";
 		
