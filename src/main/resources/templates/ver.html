@@ -11,7 +11,7 @@
         <div class="card-header" th:text="${titulo}"></div>
         <div class="card-body">
             <h4 class="card-title">
-                <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/invoice/form/}+ ${customer.id}"
+                <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/factura/form/}+ ${customer.id}"
                                                                             class="btn btn-success">Crear invoice</a>
                 </td>
             </h4>
@@ -43,9 +43,9 @@
                     <td th:text="${invoice.description}"></td>
                     <td th:text="${invoice.createAt}"></td>
                     <td th:text="${invoice.granTotal()}"></td>
-                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/invoice/ver/}+${invoice.id}"
+                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/factura/ver/}+${invoice.id}"
                            class="btn btn-primary">Details</a></td>
-                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/invoice/eliminar/}+${invoice.id}"
+                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/factura/eliminar/}+${invoice.id}"
                            class="btn btn-danger">Eliminar</a></td>
                 </tr>
                 </tbody>

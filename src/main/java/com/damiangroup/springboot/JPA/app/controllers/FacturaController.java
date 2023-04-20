@@ -2,6 +2,7 @@ package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.util.List;
 import javax.validation.Valid;
+
 import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
 import com.damiangroup.springboot.JPA.app.models.entity.InvoiceItem;
@@ -32,97 +33,101 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @CrossOrigin(origins = "*")
 public class FacturaController {
 
-	@Autowired
-	private CustomerService clienteService;
-	
-	private final Logger logging = LoggerFactory.getLogger(getClass());
+    private final CustomerService customerService;
 
-	@GetMapping("/form/{clienteId}")
-	public String crear(@PathVariable(value = "clienteId") Long clienteId, Model model, RedirectAttributes flash) {
+    @Autowired
+    public FacturaController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
-		Customer customer = clienteService.findOne(clienteId);
+    private final Logger logging = LoggerFactory.getLogger(getClass());
 
-		if (customer == null) {
-			flash.addFlashAttribute("error", "No existe un customer con ese id");
-			return "redirect:/listar";
-		}
-		Invoice invoice = new Invoice();
-		invoice.setCustomer(customer);
-		model.addAttribute("factura", invoice);
-		return "factura/form";
+    @GetMapping("/form/{customerId}")
+    public String crear(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
 
-	}
+        Customer customer = customerService.findOne(customerId);
 
-	@PostMapping("/form/")
-	public String guardar(@Valid Invoice invoice, BindingResult result ,
-						  @RequestParam(name = "item_id[]", required = false) Long[] itemId,
-						  @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
-						  RedirectAttributes flash,
-						  SessionStatus status,
-						  Model model) {
-		
-		
-		if(result.hasErrors()) {
-			model.addAttribute("titulo","Crear invoice");
-			model.addAttribute("factura", invoice);
-			return "factura/form";
-		}
-		
-		if (itemId == null || itemId.length == 0) {
-			model.addAttribute("titulo","Crear invoice");
-			model.addAttribute("error","La invoice debe contener lineas" );
-			return "factura/form";
-		}
-		 
-		for (int i = 0; i < itemId.length; i++) {
-			Product product = clienteService.findProductoById(itemId[i]);
-			InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
-			invoice.addItemFactura(invoiceItem);
-			logging.info("ID: "+itemId[i],toString());
-		}
-		
-		clienteService.saveFactura(invoice);
-		status.setComplete();
-		flash.addFlashAttribute("success","Invoice Creada con éxito");
-		return "redirect:/ver/"+ invoice.getCustomer().getId();
-	}
-	
-	@GetMapping("/ver/{id}")
-	public String ver(@PathVariable(value  = "id") Long id,Model model,RedirectAttributes flash) {
-		Invoice invoice = clienteService.findFacturaById(id);
-		if (invoice == null) {
-			flash.addFlashAttribute("error","No existe esa invoice");
-			return "redirect:/listar";
-		}
-		
-		model.addAttribute("invoice", invoice);
-		model.addAttribute("titulo","Invoice : ".concat(invoice.getDescription()));
-		return "factura/ver";
-		
-	}
+        if (customer == null) {
+            flash.addFlashAttribute("error", "No existe un customer con ese id");
+            return "redirect:/listar";
+        }
+        Invoice invoice = new Invoice();
+        invoice.setCustomer(customer);
+        model.addAttribute("invoice", invoice);
+        return "factura/form";
 
-	@GetMapping("/eliminar/{id}")
-	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash){
+    }
 
-		Invoice invoice = clienteService.findFacturaById(id);
-		if(invoice ==null){
-			flash.addFlashAttribute("error","No existe una invoice con ese id");
-			return "redirect:/listar";
-		}
+    @PostMapping("/form/")
+    public String guardar(@Valid Invoice invoice, BindingResult result,
+                          @RequestParam(name = "item_id[]", required = false) Long[] itemId,
+                          @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
+                          RedirectAttributes flash,
+                          SessionStatus status,
+                          Model model) {
 
-		clienteService.deleteFactura(id);
-		flash.addFlashAttribute("success","Invoice eliminada con éxito");
-		return "redirect:/ver/"+ invoice.getId();
-	}
 
-	@GetMapping(value = "/cargar-productos/{term}", produces = { "application/json" })
-	public @ResponseBody List<Product> cargarProductos(@PathVariable(value = "term") String term) {
-		return clienteService.findByNombre(term);
-	}
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Crear invoice");
+            model.addAttribute("factura", invoice);
+            return "factura/form";
+        }
 
-	@GetMapping(value = "/cargar-todos-los-productos", produces = { "application/json" })
-	public @ResponseBody List<Product> cargarTodosProductos() {
-		return clienteService.findAllProducts();
-	}
+        if (itemId == null || itemId.length == 0) {
+            model.addAttribute("titulo", "Crear invoice");
+            model.addAttribute("error", "La invoice debe contener lineas");
+            return "factura/form";
+        }
+
+        for (int i = 0; i < itemId.length; i++) {
+            Product product = customerService.findProductoById(itemId[i]);
+            InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
+            invoice.addItemFactura(invoiceItem);
+            logging.info("ID: " + itemId[i], toString());
+        }
+
+        customerService.saveFactura(invoice);
+        status.setComplete();
+        flash.addFlashAttribute("success", "Invoice Creada con éxito");
+        return "redirect:/ver/" + invoice.getCustomer().getId();
+    }
+
+    @GetMapping("/ver/{id}")
+    public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        Invoice invoice = customerService.findFacturaById(id);
+        if (invoice == null) {
+            flash.addFlashAttribute("error", "No existe esa invoice");
+            return "redirect:/listar";
+        }
+
+        model.addAttribute("invoice", invoice);
+        model.addAttribute("titulo", "Invoice : ".concat(invoice.getDescription()));
+        return "factura/ver";
+
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+
+        Invoice invoice = customerService.findFacturaById(id);
+        if (invoice == null) {
+            flash.addFlashAttribute("error", "No existe una invoice con ese id");
+            return "redirect:/listar";
+        }
+
+        customerService.deleteFactura(id);
+        flash.addFlashAttribute("success", "Invoice eliminada con éxito");
+        return "redirect:/ver/" + invoice.getId();
+    }
+
+    @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})
+    public @ResponseBody List<Product> cargarProductos(@PathVariable(value = "term") String term) {
+        return customerService.findByNombre(term);
+    }
+
+    @GetMapping(value = "/cargar-todos-los-productos", produces = {"application/json"})
+    public @ResponseBody List<Product> cargarTodosProductos() {
+        return customerService.findAllProducts();
+    }
 
 }

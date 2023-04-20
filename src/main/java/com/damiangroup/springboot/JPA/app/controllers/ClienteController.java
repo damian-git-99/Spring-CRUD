@@ -49,7 +49,6 @@ public class ClienteController {
             flash.addFlashAttribute("error", "El customer no existe");
             return "redirect:/listar";
         }
-
         model.addAttribute("customer", customer);
         model.addAttribute("titulo", "Detalle customer: " + customer.getName());
         return "ver";
