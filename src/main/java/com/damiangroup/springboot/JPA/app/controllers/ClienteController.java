@@ -114,20 +114,13 @@ public class ClienteController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/form/{id}")
     public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Customer customer = null;
-        if (id > 0) {
-            customer = customerService.findOne(id);
-            if (customer == null) {
-                flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
-                return "redirect:/listar";
-            }
-        } else {
-            flash.addFlashAttribute("error", "Id invalido");
+        Customer customer = customerService.findOne(id);
+        if (customer == null) {
+            flash.addFlashAttribute("error", "User Not found");
             return "redirect:/listar";
         }
-
         model.addAttribute("titulo", "Editar Customer");
-        model.addAttribute("cliente", customer);
+        model.addAttribute("customer", customer);
         return "form";
     }
 
