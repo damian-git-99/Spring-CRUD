@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.damiangroup.springboot.JPA.app.models.dao.IClienteDao;
+import com.damiangroup.springboot.JPA.app.models.dao.CustomerDao;
 import com.damiangroup.springboot.JPA.app.models.dao.IFacturaDao;
 import com.damiangroup.springboot.JPA.app.models.dao.IProductoDao;
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
@@ -17,7 +17,7 @@ import com.damiangroup.springboot.JPA.app.models.entity.Producto;
 public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
-	private IClienteDao ClienteDao;
+	private CustomerDao ClienteDao;
 
 	@Autowired
 	private IProductoDao productoDao;

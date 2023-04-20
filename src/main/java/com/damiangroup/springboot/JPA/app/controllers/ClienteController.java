@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
 import com.damiangroup.springboot.JPA.app.models.service.IUploadFileService;
@@ -32,176 +33,177 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-	@Autowired
-	private IClienteService clienteService;
+    @Autowired
+    private IClienteService clienteService;
 
-	@Autowired
-	private IUploadFileService uploadFile;
+    @Autowired
+    private IUploadFileService uploadFile;
 
-	/*
-	 * 
-	 * Ver mas informacion del cliente, tambien la foto
-	 */
-	@GetMapping("/ver/{id}")
-	public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-		Cliente cliente = clienteService.findOne(id);
-		if (cliente == null) {
-			flash.addFlashAttribute("error", "El cliente no existe");
-			return "redirect:/listar";
-		}
+    /*
+     *
+     * Ver mas informacion del cliente, tambien la foto
+     */
+    @GetMapping("/ver/{id}")
+    public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        Cliente cliente = clienteService.findOne(id);
+        if (cliente == null) {
+            flash.addFlashAttribute("error", "El cliente no existe");
+            return "redirect:/listar";
+        }
 
-		model.addAttribute("cliente", cliente);
-		model.addAttribute("titulo", "Detalle cliente: " + cliente.getNombre());
-		return "ver";
-	}
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("titulo", "Detalle cliente: " + cliente.getNombre());
+        return "ver";
+    }
 
-	/*
-	 * Listar clientes
-	 */
-	@GetMapping({ "/listar", "/" })
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
-			Authentication authentication,HttpServletRequest request) {
-		Pageable pageRequest = PageRequest.of(page, 5);
+    /*
+     * Listar clientes
+     */
+    @GetMapping({"/listar", "/"})
+    public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+                         Authentication authentication, HttpServletRequest request) {
+        Pageable pageRequest = PageRequest.of(page, 5);
 
-		if (authentication != null) {
-			// Hacer algo con el usuaruio
-		}
-		
-		//Manera programatica
-		if (hasRole("ROLE_ADMIN")) System.err.println("Rol ADMIN!!!");
-		else System.err.println("Rol Normal!!!");
-		
-		//Con spring
-		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,"ROLE_");
-		if (securityContext.isUserInRole("ADMIN")) System.err.println("Rol ADMIN (securityContext)!!!");
-		else System.err.println("Rol Normal (securityContext)!!!");
-		
+        if (authentication != null) {
+            // Hacer algo con el usuaruio
+        }
 
-		// Obtener authentication de forma estatica
-		// Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+        //Manera programatica
+        if (hasRole("ROLE_ADMIN")) System.err.println("Rol ADMIN!!!");
+        else System.err.println("Rol Normal!!!");
 
-		// Page es un iterable
-		Page<Cliente> clientes = clienteService.findAll(pageRequest);
-		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
+        //Con spring
+        SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request, "ROLE_");
+        if (securityContext.isUserInRole("ADMIN")) System.err.println("Rol ADMIN (securityContext)!!!");
+        else System.err.println("Rol Normal (securityContext)!!!");
 
-		model.addAttribute("page", pageRender);
-		model.addAttribute("titulo", "listado de clientes");
-		model.addAttribute("clientes", clientes);
-		return "listar";
-	}
 
-	/*
-	 * Formulario GET para registrar o actualizar un cliente
-	 */
-	@Secured("ROLE_ADMIN")
-	@GetMapping("/form")
-	public String form(Model model) {
-		Cliente cliente = new Cliente();
-		model.addAttribute("cliente", cliente);
-		model.addAttribute("titulo", "Formulario de Cliente");
-		return "form";
-	}
+        // Obtener authentication de forma estatica
+        // Authentication auth= SecurityContextHolder.getContext().getAuthentication();
 
-	/*
-	 * Formulario POST para registrar o actualizar un cliente
-	 */
-	@Secured("ROLE_ADMIN")
-	@PostMapping("/form")
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
-			@RequestParam("file") MultipartFile foto, SessionStatus status) {
+        // Page es un iterable
+        Page<Cliente> clientes = clienteService.findAll(pageRequest);
+        PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
 
-		String urlFoto;
-		try {
-			urlFoto = uploadFile.guardarFoto(foto, cliente);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			urlFoto = "";
-		}
-		cliente.setFoto(urlFoto);
+        model.addAttribute("page", pageRender);
+        model.addAttribute("titulo", "listado de clientes");
+        model.addAttribute("clientes", clientes);
+        return "listar";
+    }
 
-		if (result.hasErrors()) {
-			model.addAttribute("cliente", cliente);
-			return "/form";
-		}
+    /*
+     * Formulario GET para registrar o actualizar un cliente
+     */
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/form")
+    public String form(Model model) {
+        Cliente cliente = new Cliente();
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("titulo", "Formulario de Cliente");
+        return "form";
+    }
 
-		clienteService.save(cliente);
-		flash.addFlashAttribute("info", "Imagen subida correctamente");
-		flash.addFlashAttribute("success", "Cliente Creado o actualizado con exito");
-		status.setComplete();
-		return "redirect:/listar";
-	}
+    /*
+     * Formulario POST para registrar o actualizar un cliente
+     */
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/form")
+    public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash,
+                          @RequestParam("file") MultipartFile foto, SessionStatus status) {
 
-	@Secured("ROLE_ADMIN")
-	@GetMapping("/form/{id}")
-	public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-		Cliente cliente = null;
-		if (id > 0) {
-			cliente = clienteService.findOne(id);
-			if (cliente == null) {
-				flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
-				return "redirect:/listar";
-			}
-		} else {
-			flash.addFlashAttribute("error", "Id invalido");
-			return "redirect:/listar";
-		}
+        String urlFoto;
+        try {
+            urlFoto = uploadFile.guardarFoto(foto, cliente);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            urlFoto = "";
+        }
+        cliente.setFoto(urlFoto);
 
-		model.addAttribute("titulo", "Editar Cliente");
-		model.addAttribute("cliente", cliente);
-		return "form";
-	}
+        if (result.hasErrors()) {
+            model.addAttribute("cliente", cliente);
+            return "/form";
+        }
 
-	@Secured("ROLE_ADMIN")
-	@GetMapping("/eliminar/{id}")
-	public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        clienteService.save(cliente);
+        flash.addFlashAttribute("info", "Imagen subida correctamente");
+        flash.addFlashAttribute("success", "Cliente Creado o actualizado con exito");
+        status.setComplete();
+        return "redirect:/listar";
+    }
 
-		if (id > 0) {
-			Cliente cliente = clienteService.findOne(id);
-			if (cliente == null) {
-				flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
-				return "redirect:/listar";
-			}
-			if (uploadFile.eliminarFoto(cliente)) {
-				flash.addFlashAttribute("success", "Imagen Borrada: ".concat(cliente.getFoto()));
-			} else
-				flash.addFlashAttribute("error",
-						"La imagen no se pudo borrar: (El cliente no tiene imagen o hubo un error al intentar borrarla)"
-								.concat(cliente.getFoto()));
-			clienteService.delete(id);
-		}
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/form/{id}")
+    public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        Cliente cliente = null;
+        if (id > 0) {
+            cliente = clienteService.findOne(id);
+            if (cliente == null) {
+                flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
+                return "redirect:/listar";
+            }
+        } else {
+            flash.addFlashAttribute("error", "Id invalido");
+            return "redirect:/listar";
+        }
 
-		flash.addFlashAttribute("success", "Cliente eliminado con exito");
-		return "redirect:/listar";
-	}
+        model.addAttribute("titulo", "Editar Cliente");
+        model.addAttribute("cliente", cliente);
+        return "form";
+    }
 
-	private boolean hasRole(String role) {
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {
-			return false;
-		}
+        if (id > 0) {
+            Cliente cliente = clienteService.findOne(id);
+            if (cliente == null) {
+                flash.addFlashAttribute("error", "No existe un cliente con el id: ".concat(id.toString()));
+                return "redirect:/listar";
+            }
+            if (uploadFile.eliminarFoto(cliente)) {
+                flash.addFlashAttribute("success", "Imagen Borrada: ".concat(cliente.getFoto()));
+            } else
+                flash.addFlashAttribute("error",
+                        "La imagen no se pudo borrar: (El cliente no tiene imagen o hubo un error al intentar borrarla)"
+                                .concat(cliente.getFoto()));
+            clienteService.delete(id);
+        }
 
-		Authentication authentication = context.getAuthentication();
-		if (authentication == null) {
-			return false;
-		}
+        flash.addFlashAttribute("success", "Cliente eliminado con exito");
+        return "redirect:/listar";
+    }
 
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		for (GrantedAuthority grantedAuthority : authorities) {
-			if (role.equals(grantedAuthority.getAuthority())) {
-				return true;
-			}
-		}
+    private boolean hasRole(String role) {
 
-		return false;
-	}
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            return false;
+        }
 
-	//REST API
-	@GetMapping("/listarRest")
-	@ResponseBody
-	public List<Cliente> listarRest(){;
-		return clienteService.findAll();
-	}
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (role.equals(grantedAuthority.getAuthority())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //REST API
+    @GetMapping("/listarRest")
+    @ResponseBody
+    public List<Cliente> listarRest() {
+        ;
+        return clienteService.findAll();
+    }
 
 }
