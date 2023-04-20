@@ -15,11 +15,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users" )
-public class Usuario implements Serializable {
+public class User implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,7 +35,7 @@ public class Usuario implements Serializable {
 	@JoinColumn(name = "user_id")
 	private List<Role> roles;
 
-	public Usuario() {
+	public User() {
 		super();
 	}
 

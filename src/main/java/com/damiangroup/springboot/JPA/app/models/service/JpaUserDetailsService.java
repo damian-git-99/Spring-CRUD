@@ -6,14 +6,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.damiangroup.springboot.JPA.app.models.dao.UserDao;
 import com.damiangroup.springboot.JPA.app.models.entity.Role;
-import com.damiangroup.springboot.JPA.app.models.entity.Usuario;
+import com.damiangroup.springboot.JPA.app.models.entity.User;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
@@ -24,22 +23,22 @@ public class JpaUserDetailsService implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = usuarioDao.fetchByUsername(username);
+		User user = usuarioDao.fetchByUsername(username);
 
-		if (usuario == null) {
-			throw new UsernameNotFoundException("El usuario no existe");
+		if (user == null) {
+			throw new UsernameNotFoundException("El user no existe");
 		}
 
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (Role role : usuario.getRoles()) {
+		for (Role role : user.getRoles()) {
 			authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
 		}
 
 		if (authorities.isEmpty()) {
-			throw new UsernameNotFoundException("El usuario no tiene roles asignados");
+			throw new UsernameNotFoundException("El user no tiene roles asignados");
 		}
 
-		return new User(usuario.getUsername(), usuario.getPassword(), usuario.isEnabled(), true, true, true,
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
 				authorities);
 	}
 
