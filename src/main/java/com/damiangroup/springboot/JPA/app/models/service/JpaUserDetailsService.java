@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.damiangroup.springboot.JPA.app.models.dao.IUsuarioDao;
+import com.damiangroup.springboot.JPA.app.models.dao.UserDao;
 import com.damiangroup.springboot.JPA.app.models.entity.Role;
 import com.damiangroup.springboot.JPA.app.models.entity.Usuario;
 
@@ -19,7 +19,7 @@ import com.damiangroup.springboot.JPA.app.models.entity.Usuario;
 public class JpaUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private IUsuarioDao usuarioDao;
+	private UserDao usuarioDao;
 
 	@Override
 	@Transactional
