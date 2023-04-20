@@ -61,30 +61,11 @@ public class ClienteController {
                          Authentication authentication, HttpServletRequest request) {
         Pageable pageRequest = PageRequest.of(page, 5);
 
-        if (authentication != null) {
-            // Hacer algo con el usuaruio
-        }
-
-        //Manera programatica
-        if (hasRole("ROLE_ADMIN")) System.err.println("Rol ADMIN!!!");
-        else System.err.println("Rol Normal!!!");
-
-        //Con spring
-        SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request, "ROLE_");
-        if (securityContext.isUserInRole("ADMIN")) System.err.println("Rol ADMIN (securityContext)!!!");
-        else System.err.println("Rol Normal (securityContext)!!!");
-
-
-        // Obtener authentication de forma estatica
-        // Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-
-        // Page es un iterable
-        Page<Customer> clientes = customerService.findAll(pageRequest);
-        PageRender<Customer> pageRender = new PageRender<>("/listar", clientes);
+        Page<Customer> customers = customerService.findAll(pageRequest);
+        PageRender<Customer> pageRender = new PageRender<>("/listar", customers);
 
         model.addAttribute("page", pageRender);
-        model.addAttribute("titulo", "listado de clientes");
-        model.addAttribute("clientes", clientes);
+        model.addAttribute("customers", customers);
         return "listar";
     }
 
@@ -95,7 +76,7 @@ public class ClienteController {
     @GetMapping("/form")
     public String form(Model model) {
         Customer customer = new Customer();
-        model.addAttribute("cliente", customer);
+        model.addAttribute("customer", customer);
         model.addAttribute("titulo", "Formulario de Customer");
         return "form";
     }

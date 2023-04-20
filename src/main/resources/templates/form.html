@@ -1,84 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head th:replace="layout/layout :: head"></head>
 
 <body>
-    <header th:replace="layout/layout :: header"></header>
-    <div class="container mt-3">
-        <div class="card bg-light">
-            <div class="card-header">
-                <h3 class=" text-center text-secondary" th:text="${titulo}"></h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <form th:action="@{/form}" th:object="${customer}" method="POST" id="form" enctype="multipart/form-data">
-                            <!-- Errores en los campos -->
-                            <!-- <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
-                                <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
-                                <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
-                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-                                <p th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
-                                <p th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}"></p>
-                            </div> -->
+<header th:replace="layout/layout :: header"></header>
+<div class="container mt-3">
+    <div class="card bg-light">
+        <div class="card-header">
+            <h3 class=" text-center text-secondary" th:text="${titulo}"></h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <form th:action="@{/form}" th:object="${customer}" method="POST" id="form"
+                          enctype="multipart/form-data">
 
-                            <!-- Errores en los campos con un forEach -->
-                            <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
-                                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-                            </div>
+                        <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
+                            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                        </div>
 
-                            <table class="table  table-secondary table-bordered ">
+                        <table class="table table-secondary table-bordered">
 
-                                <tr>
-                                    <td>ID</td>
-                                    <td th:text="*{id}"></td>
-                                    <input class="form-control" type="hidden" th:field="*{id}">
-                                </tr>
+                            <tr>
+                                <td>ID</td>
+                                <td th:text="*{id}"></td>
+                                <input class="form-control" type="hidden" th:field="*{id}">
+                            </tr>
 
-                                <tr>
-                                    <td>Nombre</td>
-                                    <td><input class=" form-control" type="text" th:field="*{nombre}" th:errorclass="'form-control is-invalid'"></td>
-                                </tr>
+                            <tr>
+                                <td>Nombre</td>
+                                <td><input class=" form-control" type="text" th:field="*{name}"
+                                           th:errorclass="'form-control is-invalid'"></td>
+                            </tr>
 
-                                <tr>
-                                    <td>Apellido</td>
-                                    <td><input class=" form-control" type="text" th:field="*{apellido}" th:errorclass="'form-control is-invalid'"></td>
-                                </tr>
+                            <tr>
+                                <td>Apellido</td>
+                                <td><input class=" form-control" type="text" th:field="*{lastName}"
+                                           th:errorclass="'form-control is-invalid'"></td>
+                            </tr>
 
-                                <tr>
-                                    <td>Email</td>
-                                    <td><input class=" form-control" type="email" th:field="*{email}" th:errorclass="'form-control is-invalid'"></td>
-                                </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><input class=" form-control" type="email" th:field="*{email}"
+                                           th:errorclass="'form-control is-invalid'"></td>
+                            </tr>
 
-                                <tr>
-                                    <td>Fecha</td>
-                                    <td><input class=" form-control" type="date" th:field="*{createAt}" th:errorclass="'form-control is-invalid'"> </td>
-                                </tr>
+                            <tr>
+                                <td>Fecha</td>
+                                <td><input class=" form-control" type="date" th:field="*{createAt}"
+                                           th:errorclass="'form-control is-invalid'"></td>
+                            </tr>
 
-                                <tr>
-                                    <td>Foto</td>
-                                    <td><input class="form-control-file" type="file" name="file"></td>
-                                </tr>
+                            <tr>
+                                <td>Foto</td>
+                                <td><input class="form-control-file" type="file" name="file"></td>
+                            </tr>
 
-                                <tr>
-                                    <td></td>
-                                    <td class=" text-center"><button class="btn btn-info" type="submit">Guardar</button></td>
-                                </tr>
+                            <tr>
+                                <td></td>
+                                <td class=" text-center">
+                                    <button class="btn btn-info" type="submit">Guardar</button>
+                                </td>
+                            </tr>
 
-                            </table>
+                        </table>
 
-                        </form>
+                    </form>
 
-                    </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 
-    <footer th:replace="layout/layout :: footer"></footer>
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
 </body>
 
 </html>

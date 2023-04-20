@@ -1,58 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 <head th:replace="layout/layout :: head"></head>
 
 <body>
-    <header th:replace="layout/layout :: header"></header>
-    <div class="container mt-3 mb-4">
-        <div class="card bg-light">
-            <div class="card-header">
-                <h1 class=" text-center text-secondary" th:text="${titulo}"></h1>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/form}" class="btn btn-info mb-2"><i class="fas fa-user-plus"></i> Crear Cliente</a>
-                        <table class="table table-dark table-bordered table-hover ">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th th:text="#{text.customer.nombre}">Nombre</th>
-                                    <th th:text="#{text.customer.apellido}">Apellido</th>
-                                    <th th:text="#{text.customer.email}"><i class="far fa-envelope"></i> Email</th>
-                                    <th th:text="#{text.customer.createat}"><i class="fas fa-calendar-week"></i> Fecha</th>
-                                    <th sec:authorize="hasRole('ADMIN')">Crear Factura</th>
-                                    <th sec:authorize="hasRole('ADMIN')"><i class="fas fa-user-edit"></i> Editar</th>
-                                    <th sec:authorize="hasRole('ADMIN')"><i class="far fa-trash-alt"></i> Eliminar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="customer: ${customers}">
-                                    <td>
-                                        <a class=" btn btn-info" th:href="@{/ver/}+${customer.id}" th:text="${customer.id}"></a>
-                                    </td>
-                                    <td th:text="${customer.nombre}"></td>
-                                    <td th:text="${customer.apellido}"></td>
-                                    <td th:text="${customer.email}"></td>
-                                    <td th:text="${customer.createAt}"></td>
-                                    <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/invoice/form/}+ ${customer.id}" class="btn btn-success">Crear</a></td>
-                                    <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/form/}+ ${customer.id}" class="btn btn-primary">Editar</a></td>
-                                    <td sec:authorize="hasRole('ADMIN')" class="text-center"><a th:href="@{/eliminar/}+ ${customer.id}" class="btn btn-danger" onclick="return confirm('Eliminar ?')">Eliminar</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <nav th:replace="paginator-nav :: paginator"></nav>
-                    </div>
+<header th:replace="layout/layout :: header"></header>
+<div class="container mt-3 mb-4">
+    <div class="card bg-light">
+        <div class="card-header">
+            <h1 class=" text-center text-secondary">Customers</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/form}" class="btn btn-info mb-2"><i
+                            class="fas fa-user-plus"></i>Create Customer</a>
+                    <table class="table table-dark table-bordered table-hover ">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>LastName</th>
+                            <th><i class="far fa-envelope"></i> Email</th>
+                            <th><i class="fas fa-calendar-week"></i> Date</th>
+                            <th sec:authorize="hasRole('ADMIN')">Create Invoice</th>
+                            <th sec:authorize="hasRole('ADMIN')"><i class="fas fa-user-edit"></i> Edit</th>
+                            <th sec:authorize="hasRole('ADMIN')"><i class="far fa-trash-alt"></i> Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="customer: ${customers}">
+                            <td>
+                                <a class=" btn btn-info" th:href="@{/ver/}+${customer.id}" th:text="${customer.id}"></a>
+                            </td>
+                            <td th:text="${customer.name}"></td>
+                            <td th:text="${customer.lastName}"></td>
+                            <td th:text="${customer.email}"></td>
+                            <td th:text="${customer.createAt}"></td>
+                            <td sec:authorize="hasRole('ADMIN')" class="text-center"><a
+                                    th:href="@{/invoice/form/}+ ${customer.id}" class="btn btn-success">Create</a></td>
+                            <td sec:authorize="hasRole('ADMIN')" class="text-center"><a
+                                    th:href="@{/form/}+ ${customer.id}" class="btn btn-primary">Edit</a></td>
+                            <td sec:authorize="hasRole('ADMIN')" class="text-center"><a
+                                    th:href="@{/eliminar/}+ ${customer.id}" class="btn btn-danger"
+                                    onclick="return confirm('Eliminar ?')">Delete</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav th:replace="paginator-nav :: paginator"></nav>
                 </div>
             </div>
         </div>
-
-
-
     </div>
 
-    <footer th:replace="layout/layout :: footer"></footer>
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
 </body>
 
 </html>
