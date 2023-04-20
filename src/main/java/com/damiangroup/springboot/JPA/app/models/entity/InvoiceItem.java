@@ -1,9 +1,5 @@
-/**
- * 
- */
 package com.damiangroup.springboot.JPA.app.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -15,36 +11,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
- * @author Damian
- * 
- */
 @Entity
-@Table(name = "facturas_items")
-public class ItemFactura implements Serializable {
+@Table(name = "invoice_items")
+public class InvoiceItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Integer cantidad;
+	private Integer quantity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-	private Producto producto;
+	private Product product;
 
-	public ItemFactura(Integer cantidad, Producto producto) {
-		this.cantidad = cantidad;
-		this.producto = producto;
+	public InvoiceItem(Integer quantity, Product product) {
+		this.quantity = quantity;
+		this.product = product;
 	}
 
-	public ItemFactura() {
+	public InvoiceItem() {
 
 	}
 
@@ -56,24 +46,24 @@ public class ItemFactura implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCantidad() {
-		return cantidad;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
-	public double calcularImporte() {
-		return cantidad * producto.getPrecio();
+	public double calculateAmount() {
+		return quantity * product.getPrice();
 	}
 
-	public Producto getProducto() {
-		return producto;
+	public Product getProducto() {
+		return product;
 	}
 
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public void setProducto(Product product) {
+		this.product = product;
 	}
 
 }

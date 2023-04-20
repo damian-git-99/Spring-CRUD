@@ -35,8 +35,8 @@
                     </thead>
                     <tbody>
                         <tr th:each="linea : ${invoice.listaItemsFactura}">
-                            <td th:text="${linea.producto.nombre}"></td>
-                            <td th:text="${linea.producto.precio}"></td>
+                            <td th:text="${linea.product.nombre}"></td>
+                            <td th:text="${linea.product.precio}"></td>
                             <td th:text="${linea.cantidad}"></td>
                             <td th:text="${linea.calcularImporte()}"></td>
                         </tr>

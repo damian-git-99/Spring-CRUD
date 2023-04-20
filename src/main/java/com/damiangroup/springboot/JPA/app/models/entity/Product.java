@@ -12,16 +12,17 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "productos")
-public class Producto implements Serializable {
+@Table(name = "products")
+public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nombre;
-	private Double precio;
+	@Column(name = "product_name")
+	private String productName;
+	private Double price;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
 	private Date createAt;
@@ -38,20 +39,20 @@ public class Producto implements Serializable {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
-	public Double getPrecio() {
-		return precio;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setPrecio(Double precio) {
-		this.precio = precio;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public Date getCreateAt() {

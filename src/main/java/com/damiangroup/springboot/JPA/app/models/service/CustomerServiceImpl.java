@@ -3,6 +3,7 @@ package com.damiangroup.springboot.JPA.app.models.service;
 import java.util.List;
 
 import com.damiangroup.springboot.JPA.app.models.entity.Customer;
+import com.damiangroup.springboot.JPA.app.models.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,6 @@ import com.damiangroup.springboot.JPA.app.models.dao.CustomerDao;
 import com.damiangroup.springboot.JPA.app.models.dao.InvoiceDao;
 import com.damiangroup.springboot.JPA.app.models.dao.ProductDao;
 import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
-import com.damiangroup.springboot.JPA.app.models.entity.Producto;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -60,13 +60,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public List<Producto> findByNombre(String term) {
+    public List<Product> findByNombre(String term) {
         return productDao.findByNombre(term);
     }
 
     @Override
     @Transactional
-    public List<Producto> findAllProducts() {
+    public List<Product> findAllProducts() {
         return productDao.findAll();
     }
 
@@ -78,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Producto findProductoById(Long id) {
+    public Product findProductoById(Long id) {
         return productDao.findById(id).orElse(null);
     }
 

@@ -45,7 +45,7 @@ public class Invoice implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
-    private List<ItemFactura> invoiceItems;
+    private List<InvoiceItem> invoiceItems;
 
     @PrePersist
     public void prePersist() {
@@ -96,22 +96,22 @@ public class Invoice implements Serializable {
         this.customer = customer;
     }
 
-    public List<ItemFactura> getInvoiceItems() {
+    public List<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
     }
 
-    public void setInvoiceItems(List<ItemFactura> invoiceItems) {
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
 
-    public void addItemFactura(ItemFactura item) {
+    public void addItemFactura(InvoiceItem item) {
         invoiceItems.add(item);
     }
 
     public Double granTotal() {
         double total = 0;
-        for (ItemFactura itemFactura : invoiceItems)
-            total += itemFactura.calcularImporte();
+        for (InvoiceItem invoiceItem : invoiceItems)
+            total += invoiceItem.calculateAmount();
         return total;
     }
 

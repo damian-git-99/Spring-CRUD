@@ -4,8 +4,8 @@ import java.util.List;
 import javax.validation.Valid;
 import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
-import com.damiangroup.springboot.JPA.app.models.entity.ItemFactura;
-import com.damiangroup.springboot.JPA.app.models.entity.Producto;
+import com.damiangroup.springboot.JPA.app.models.entity.InvoiceItem;
+import com.damiangroup.springboot.JPA.app.models.entity.Product;
 import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +75,9 @@ public class FacturaController {
 		}
 		 
 		for (int i = 0; i < itemId.length; i++) {
-			Producto producto = clienteService.findProductoById(itemId[i]);
-			ItemFactura itemFactura = new ItemFactura(cantidad[i],producto);
-			invoice.addItemFactura(itemFactura);
+			Product product = clienteService.findProductoById(itemId[i]);
+			InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
+			invoice.addItemFactura(invoiceItem);
 			logging.info("ID: "+itemId[i],toString());
 		}
 		
@@ -116,12 +116,12 @@ public class FacturaController {
 	}
 
 	@GetMapping(value = "/cargar-productos/{term}", produces = { "application/json" })
-	public @ResponseBody List<Producto> cargarProductos(@PathVariable(value = "term") String term) {
+	public @ResponseBody List<Product> cargarProductos(@PathVariable(value = "term") String term) {
 		return clienteService.findByNombre(term);
 	}
 
 	@GetMapping(value = "/cargar-todos-los-productos", produces = { "application/json" })
-	public @ResponseBody List<Producto> cargarTodosProductos() {
+	public @ResponseBody List<Product> cargarTodosProductos() {
 		return clienteService.findAllProducts();
 	}
 

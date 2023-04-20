@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.damiangroup.springboot.JPA.app.models.entity.Customer;
 import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
-import com.damiangroup.springboot.JPA.app.models.entity.Producto;
+import com.damiangroup.springboot.JPA.app.models.entity.Product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +22,13 @@ public interface CustomerService {
 
     public void delete(Long id);
 
-    public List<Producto> findByNombre(String term);
+    public List<Product> findByNombre(String term);
 
-    public List<Producto> findAllProducts();
+    public List<Product> findAllProducts();
 
     public void saveFactura(Invoice invoice);
 
-    public Producto findProductoById(Long id);
+    public Product findProductoById(Long id);
 
     public Invoice findFacturaById(Long id);
 
