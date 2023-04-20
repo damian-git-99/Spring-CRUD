@@ -15,84 +15,84 @@ import com.damiangroup.springboot.JPA.app.models.entity.Factura;
 import com.damiangroup.springboot.JPA.app.models.entity.Producto;
 
 @Service
-public class CustomerServiceImpl implements IClienteService {
+public class CustomerServiceImpl implements CustomerService {
 
-    private CustomerDao ClienteDao;
-    private ProductDao productoDao;
-    private InvoiceDao facturaDao;
+    private final CustomerDao customerDao;
+    private final ProductDao productDao;
+    private final InvoiceDao invoiceDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao clienteDao, ProductDao productoDao, InvoiceDao facturaDao) {
-        ClienteDao = clienteDao;
-        this.productoDao = productoDao;
-        this.facturaDao = facturaDao;
+    public CustomerServiceImpl(CustomerDao customerDao, ProductDao productDao, InvoiceDao invoiceDao) {
+        this.customerDao = customerDao;
+        this.productDao = productDao;
+        this.invoiceDao = invoiceDao;
     }
 
     @Override
     @Transactional
     public List<Cliente> findAll() {
-        return (List<Cliente>) ClienteDao.findAll();
+        return (List<Cliente>) customerDao.findAll();
     }
 
     @Override
     @Transactional
     public void save(Cliente cliente) {
-        ClienteDao.save(cliente);
+        customerDao.save(cliente);
     }
 
     @Override
     @Transactional
     public Cliente findOne(Long id) {
-        return ClienteDao.findById(id).orElse(null);
+        return customerDao.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        ClienteDao.deleteById(id);
+        customerDao.deleteById(id);
     }
 
     @Override
     @Transactional
     public Page<Cliente> findAll(Pageable pageable) {
-        return ClienteDao.findAll(pageable);
+        return customerDao.findAll(pageable);
     }
 
     @Override
     @Transactional
     public List<Producto> findByNombre(String term) {
-        return productoDao.findByNombre(term);
+        return productDao.findByNombre(term);
     }
 
     @Override
     @Transactional
     public List<Producto> findAllProducts() {
-        return productoDao.findAll();
+        return productDao.findAll();
     }
 
     @Override
     @Transactional
     public void saveFactura(Factura factura) {
-        facturaDao.save(factura);
+        invoiceDao.save(factura);
     }
 
     @Override
     @Transactional
     public Producto findProductoById(Long id) {
-        return productoDao.findById(id).orElse(null);
+        return productDao.findById(id).orElse(null);
     }
 
 
     @Override
     @Transactional
     public Factura findFacturaById(Long id) {
-        return facturaDao.findById(id).orElse(null);
+        return invoiceDao.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public void deleteFactura(Long id) {
-        facturaDao.deleteById(id);
+        invoiceDao.deleteById(id);
     }
 
 

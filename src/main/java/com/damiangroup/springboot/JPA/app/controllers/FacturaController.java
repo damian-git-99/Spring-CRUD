@@ -6,7 +6,7 @@ import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
 import com.damiangroup.springboot.JPA.app.models.entity.Factura;
 import com.damiangroup.springboot.JPA.app.models.entity.ItemFactura;
 import com.damiangroup.springboot.JPA.app.models.entity.Producto;
-import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
+import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class FacturaController {
 
 	@Autowired
-	private IClienteService clienteService;
+	private CustomerService clienteService;
 	
 	private final Logger logging = LoggerFactory.getLogger(getClass());
 

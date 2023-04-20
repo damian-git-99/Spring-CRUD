@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
-import com.damiangroup.springboot.JPA.app.models.service.IClienteService;
+import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.service.IUploadFileService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ClienteController {
 
     @Autowired
-    private IClienteService clienteService;
+    private CustomerService clienteService;
 
     @Autowired
     private IUploadFileService uploadFile;
