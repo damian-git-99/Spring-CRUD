@@ -69,7 +69,7 @@ public class FacturaController {
 
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Crear invoice");
-            model.addAttribute("factura", invoice);
+            model.addAttribute("invoice", invoice);
             return "factura/form";
         }
 

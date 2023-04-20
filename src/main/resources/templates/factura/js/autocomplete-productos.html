@@ -9,7 +9,7 @@
 
                 source: function(request, response) {
                     $.ajax({
-                        url: "/invoice/cargar-productos/" + request.term,
+                        url: "/factura/cargar-productos/" + request.term,
                         dataType: "json",
                         data: {
                             term: request.term
@@ -18,8 +18,8 @@
                             response($.map(data, function(item) {
                                 return {
                                     value: item.id,
-                                    label: item.nombre,
-                                    precio: item.precio,
+                                    label: item.productName,
+                                    precio: item.price,
                                 };
                             }));
                         },
