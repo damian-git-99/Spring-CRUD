@@ -116,10 +116,14 @@ public class Customer implements Serializable {
         invoices.add(invoice);
     }
 
+
     @Override
     public String toString() {
-        return "Customer [apellido=" + lastName + ", nombre=" + name + "]";
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
-
-
 }

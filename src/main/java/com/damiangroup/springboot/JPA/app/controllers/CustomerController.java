@@ -99,9 +99,7 @@ public class CustomerController {
             model.addAttribute("customer", customer);
             return "/form";
         }
-
         customerService.save(customer);
-        flash.addFlashAttribute("info", "Imagen subida correctamente");
         flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
         return "redirect:/";
@@ -109,7 +107,7 @@ public class CustomerController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         if (id > 0) {
             Customer customer = customerService.findOne(id);
