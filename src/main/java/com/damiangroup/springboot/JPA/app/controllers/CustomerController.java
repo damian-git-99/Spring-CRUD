@@ -30,7 +30,6 @@ public class CustomerController {
     private final CustomerService customerService;
     private final IUploadFileService uploadFile;
 
-
     @Autowired
     public CustomerController(CustomerService customerService, IUploadFileService uploadFile) {
         this.customerService = customerService;
@@ -60,28 +59,37 @@ public class CustomerController {
         return "home";
     }
 
-    /*
-     * Formulario GET para registrar o actualizar un cliente
-     */
     @Secured("ROLE_ADMIN")
     @GetMapping("/form")
-    public String editCustomerForm(Model model) {
+    public String createCustomerForm(Model model) {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
-        model.addAttribute("titulo", "Formulario de Customer");
+        model.addAttribute("titulo", "Customer Form");
+        return "form";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/form/{id}")
+    public String editCustomerForm(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        Customer customer = customerService.findOne(id);
+        if (customer == null) {
+            flash.addFlashAttribute("error", "User Not found");
+            return "redirect:/";
+        }
+        model.addAttribute("titulo", "Editar Customer");
+        model.addAttribute("customer", customer);
         return "form";
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/form")
-    public String guardar(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
+    public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
                           @RequestParam("file") MultipartFile foto, SessionStatus status) {
 
         String urlFoto;
         try {
             urlFoto = uploadFile.guardarFoto(foto, customer);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             urlFoto = "";
         }
@@ -97,19 +105,6 @@ public class CustomerController {
         flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
         return "redirect:/";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/form/{id}")
-    public String editar(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Customer customer = customerService.findOne(id);
-        if (customer == null) {
-            flash.addFlashAttribute("error", "User Not found");
-            return "redirect:/";
-        }
-        model.addAttribute("titulo", "Editar Customer");
-        model.addAttribute("customer", customer);
-        return "form";
     }
 
     @Secured("ROLE_ADMIN")
