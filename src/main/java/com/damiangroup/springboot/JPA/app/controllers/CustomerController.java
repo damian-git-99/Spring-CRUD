@@ -1,7 +1,6 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,15 +25,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@SessionAttributes("cliente")
-public class ClienteController {
+@SessionAttributes("customer")
+public class CustomerController {
 
     private final CustomerService customerService;
     private final IUploadFileService uploadFile;
 
 
     @Autowired
-    public ClienteController(CustomerService customerService, IUploadFileService uploadFile) {
+    public CustomerController(CustomerService customerService, IUploadFileService uploadFile) {
         this.customerService = customerService;
         this.uploadFile = uploadFile;
     }
@@ -58,7 +54,6 @@ public class ClienteController {
     public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
                          Authentication authentication, HttpServletRequest request) {
         Pageable pageRequest = PageRequest.of(page, 5);
-
         Page<Customer> customers = customerService.findAll(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/listar", customers);
 
@@ -98,7 +93,7 @@ public class ClienteController {
         customer.setPhoto(urlFoto);
 
         if (result.hasErrors()) {
-            model.addAttribute("cliente", customer);
+            model.addAttribute("customer", customer);
             return "/form";
         }
 
