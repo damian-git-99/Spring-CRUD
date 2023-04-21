@@ -13,7 +13,7 @@
         <div class="card-body">
             <h4 class="card-title">
                 <td class="text-center"><a th:href="@{/ver/}+ ${invoice.customer.id}" class="btn btn-info btn-xs"><i
-                        class="fas fa-long-arrow-alt-left"></i> Regresar</a></td>
+                                        class="fas fa-long-arrow-alt-left"></i> Regresar</a></td>
             </h4>
             <div class="row">
                 <div class="col">
@@ -46,29 +46,27 @@
                                               th:errorclass="'form-control is-invalid'"></textarea></td>
                             </tr>
 
-
                             <td>Producto</td>
-                            <td><input class=" form-control" type="text" name="buscar_producto" id="buscar_producto">
+                            <td>
+                                <input class=" form-control" type="text" name="buscar_producto" id="buscar_producto">
                             </td>
 
                             <table th:replace="factura/plantilla-items :: itemsFactura"></table>
 
                             <table id="cargarItemProductos" class=" table table-sm table-striped table-hover">
                                 <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Total</th>
-                                    <th>Eliminar</th>
-                                </tr>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Total</th>
+                                        <th>Eliminar</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
 
                                 </tbody>
                             </table>
-
-
                             <h5><span class=" badge badge-secondary" id="gran_total">0</span></h5>
                             <tr>
                                 <td></td>
@@ -76,13 +74,8 @@
                                     <button class="btn btn-info" type="submit">Guardar</button>
                                 </td>
                             </tr>
-
-
                         </table>
-
-
                     </form>
-
                 </div>
             </div>
         </div>

@@ -29,24 +29,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping("/factura")
-@SessionAttributes("factura")
+@SessionAttributes("invoice")
 @CrossOrigin(origins = "*")
-public class FacturaController {
+public class InvoiceController {
 
     private final CustomerService customerService;
 
     @Autowired
-    public FacturaController(CustomerService customerService) {
+    public InvoiceController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
     private final Logger logging = LoggerFactory.getLogger(getClass());
 
     @GetMapping("/form/{customerId}")
-    public String crear(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
-
+    public String createInvoiceForm(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findOne(customerId);
-
         if (customer == null) {
             flash.addFlashAttribute("error", "No existe un customer con ese id");
             return "redirect:/home";
@@ -55,16 +53,15 @@ public class FacturaController {
         invoice.setCustomer(customer);
         model.addAttribute("invoice", invoice);
         return "factura/form";
-
     }
 
     @PostMapping("/form/")
-    public String guardar(@Valid Invoice invoice, BindingResult result,
-                          @RequestParam(name = "item_id[]", required = false) Long[] itemId,
-                          @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
-                          RedirectAttributes flash,
-                          SessionStatus status,
-                          Model model) {
+    public String createInvoicePost(@Valid Invoice invoice, BindingResult result,
+                                    @RequestParam(name = "item_id[]", required = false) Long[] itemId,
+                                    @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
+                                    RedirectAttributes flash,
+                                    SessionStatus status,
+                                    Model model) {
 
 
         if (result.hasErrors()) {
