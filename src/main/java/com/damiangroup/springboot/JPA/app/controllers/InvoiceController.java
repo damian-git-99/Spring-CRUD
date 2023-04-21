@@ -40,8 +40,6 @@ public class InvoiceController {
         this.customerService = customerService;
     }
 
-    private final Logger logging = LoggerFactory.getLogger(getClass());
-
     @GetMapping("/form/{customerId}")
     public String createInvoiceForm(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findOne(customerId);
