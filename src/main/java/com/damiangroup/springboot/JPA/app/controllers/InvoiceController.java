@@ -63,7 +63,6 @@ public class InvoiceController {
                                     SessionStatus status,
                                     Model model) {
 
-
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Crear invoice");
             model.addAttribute("invoice", invoice);
@@ -80,7 +79,6 @@ public class InvoiceController {
             Product product = customerService.findProductoById(itemId[i]);
             InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
             invoice.addItemFactura(invoiceItem);
-            logging.info("ID: " + itemId[i], toString());
         }
 
         customerService.saveFactura(invoice);
