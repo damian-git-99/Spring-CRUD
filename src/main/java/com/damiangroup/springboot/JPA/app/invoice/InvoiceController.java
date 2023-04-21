@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.controllers;
+package com.damiangroup.springboot.JPA.app.invoice;
 
 import java.util.List;
 import javax.validation.Valid;

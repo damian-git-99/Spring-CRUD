@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.controllers;
+package com.damiangroup.springboot.JPA.app.customer;
 
 import java.io.IOException;
 
