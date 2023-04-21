@@ -140,11 +140,4 @@ public class CustomerController {
         return "redirect:/listar";
     }
 
-    //REST API
-    @GetMapping("/listarRest")
-    @ResponseBody
-    public List<Customer> listarRest() {
-        return customerService.findAll();
-    }
-
 }
