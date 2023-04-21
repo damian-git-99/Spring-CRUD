@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.damiangroup.springboot.JPA.app.models.dao.UserDao;
-import com.damiangroup.springboot.JPA.app.models.entity.Role;
-import com.damiangroup.springboot.JPA.app.models.entity.User;
+import com.damiangroup.springboot.JPA.app.auth.Role;
+import com.damiangroup.springboot.JPA.app.auth.User;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {

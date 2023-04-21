@@ -1,4 +1,6 @@
-package com.damiangroup.springboot.JPA.app.models.entity;
+package com.damiangroup.springboot.JPA.app.auth;
+
+import com.damiangroup.springboot.JPA.app.auth.Role;
 
 import java.io.Serializable;
 import java.util.List;

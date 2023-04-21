@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.models.entity;
+package com.damiangroup.springboot.JPA.app.customer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import com.damiangroup.springboot.JPA.app.invoice.Invoice;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;

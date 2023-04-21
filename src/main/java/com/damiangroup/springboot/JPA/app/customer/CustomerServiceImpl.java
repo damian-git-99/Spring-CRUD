@@ -1,18 +1,17 @@
-package com.damiangroup.springboot.JPA.app.models.service;
+package com.damiangroup.springboot.JPA.app.customer;
 
 import java.util.List;
 
-import com.damiangroup.springboot.JPA.app.models.entity.Customer;
-import com.damiangroup.springboot.JPA.app.models.entity.Product;
+import com.damiangroup.springboot.JPA.app.invoice.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.damiangroup.springboot.JPA.app.models.dao.CustomerDao;
-import com.damiangroup.springboot.JPA.app.models.dao.InvoiceDao;
+import com.damiangroup.springboot.JPA.app.invoice.InvoiceDao;
 import com.damiangroup.springboot.JPA.app.models.dao.ProductDao;
-import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
+import com.damiangroup.springboot.JPA.app.invoice.Invoice;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {

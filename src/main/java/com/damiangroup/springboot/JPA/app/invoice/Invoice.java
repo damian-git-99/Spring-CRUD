@@ -1,5 +1,6 @@
-package com.damiangroup.springboot.JPA.app.models.entity;
+package com.damiangroup.springboot.JPA.app.invoice;
 
+import com.damiangroup.springboot.JPA.app.customer.Customer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.models.entity;
+package com.damiangroup.springboot.JPA.app.invoice;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

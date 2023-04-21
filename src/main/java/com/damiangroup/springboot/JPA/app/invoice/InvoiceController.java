@@ -3,13 +3,8 @@ package com.damiangroup.springboot.JPA.app.invoice;
 import java.util.List;
 import javax.validation.Valid;
 
-import com.damiangroup.springboot.JPA.app.models.entity.Customer;
-import com.damiangroup.springboot.JPA.app.models.entity.Invoice;
-import com.damiangroup.springboot.JPA.app.models.entity.InvoiceItem;
-import com.damiangroup.springboot.JPA.app.models.entity.Product;
-import com.damiangroup.springboot.JPA.app.models.service.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.damiangroup.springboot.JPA.app.customer.Customer;
+import com.damiangroup.springboot.JPA.app.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
