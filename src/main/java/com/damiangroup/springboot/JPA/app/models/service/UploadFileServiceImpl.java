@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.UUID;
-import com.damiangroup.springboot.JPA.app.models.entity.Cliente;
+import com.damiangroup.springboot.JPA.app.customer.Customer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,19 +14,19 @@ public class UploadFileServiceImpl implements IUploadFileService {
 	private final String DIRECTORIO_IMAGENES = "uploads/";
 
 	@Override
-	public String guardarFoto(MultipartFile foto, Cliente cliente) throws IOException {
+	public String guardarFoto(MultipartFile foto, Customer customer) throws IOException {
 
-		if (cliente.getId() != null && cliente.getFoto() != null && foto.isEmpty()) 
-			return cliente.getFoto();
+		if (customer.getId() != null && customer.getPhoto() != null && foto.isEmpty())
+			return customer.getPhoto();
 		
 		if (foto.isEmpty() || foto == null)
 			return "";
 
-		// Si existe el id quiere decir que el cliente ya existe y si la foto
+		// Si existe el id quiere decir que el customer ya existe y si la foto
 		// es diferente de null quiere decir que el usuario actualizo la foto
 		// pr lo cual hay que borrar la foto anterior
-		if (cliente.getId() != null && cliente.getFoto() != null) {
-			eliminarFoto(cliente);
+		if (customer.getId() != null && customer.getPhoto() != null) {
+			eliminarFoto(customer);
 		}
 
 		// Creamos la carpeta si no existe
@@ -43,9 +43,9 @@ public class UploadFileServiceImpl implements IUploadFileService {
 	}
 
 	@Override
-	public boolean eliminarFoto(Cliente cliente) {
-		// Eliminar foto del cliente
-		String fileName = DIRECTORIO_IMAGENES + cliente.getFoto();
+	public boolean eliminarFoto(Customer customer) {
+		// Eliminar foto del customer
+		String fileName = DIRECTORIO_IMAGENES + customer.getPhoto();
 		File archivoFile = new File(fileName);
 		if (archivoFile.exists() && archivoFile.canRead()) {
 			if (archivoFile.delete())
