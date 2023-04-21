@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.controllers;
+package com.damiangroup.springboot.JPA.app.auth;
 
 import java.security.Principal;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class LoginController {
+public class AuthController {
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
@@ -31,6 +31,5 @@ public class LoginController {
 
         return "login";
     }
-
 
 }
