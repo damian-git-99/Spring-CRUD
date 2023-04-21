@@ -1,7 +1,6 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -42,24 +41,23 @@ public class CustomerController {
     public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findOne(id);
         if (customer == null) {
-            flash.addFlashAttribute("error", "El customer no existe");
-            return "redirect:/listar";
+            flash.addFlashAttribute("error", "Customer does not exist");
+            return "redirect:/";
         }
         model.addAttribute("customer", customer);
         model.addAttribute("titulo", "Detalle customer: " + customer.getName());
         return "ver";
     }
 
-    @GetMapping({"/listar", "/"})
-    public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
-                         Authentication authentication, HttpServletRequest request) {
+    @GetMapping("/")
+    public String home(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
         Pageable pageRequest = PageRequest.of(page, 5);
         Page<Customer> customers = customerService.findAll(pageRequest);
-        PageRender<Customer> pageRender = new PageRender<>("/listar", customers);
+        PageRender<Customer> pageRender = new PageRender<>("/", customers);
 
         model.addAttribute("page", pageRender);
         model.addAttribute("customers", customers);
-        return "listar";
+        return "home";
     }
 
     /*
@@ -67,16 +65,13 @@ public class CustomerController {
      */
     @Secured("ROLE_ADMIN")
     @GetMapping("/form")
-    public String form(Model model) {
+    public String editCustomerForm(Model model) {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
         model.addAttribute("titulo", "Formulario de Customer");
         return "form";
     }
 
-    /*
-     * Formulario POST para registrar o actualizar un customer
-     */
     @Secured("ROLE_ADMIN")
     @PostMapping("/form")
     public String guardar(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
@@ -101,7 +96,7 @@ public class CustomerController {
         flash.addFlashAttribute("info", "Imagen subida correctamente");
         flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
-        return "redirect:/listar";
+        return "redirect:/";
     }
 
     @Secured("ROLE_ADMIN")
@@ -110,7 +105,7 @@ public class CustomerController {
         Customer customer = customerService.findOne(id);
         if (customer == null) {
             flash.addFlashAttribute("error", "User Not found");
-            return "redirect:/listar";
+            return "redirect:/";
         }
         model.addAttribute("titulo", "Editar Customer");
         model.addAttribute("customer", customer);
@@ -125,7 +120,7 @@ public class CustomerController {
             Customer customer = customerService.findOne(id);
             if (customer == null) {
                 flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
-                return "redirect:/listar";
+                return "redirect:/";
             }
             if (uploadFile.eliminarFoto(customer)) {
                 flash.addFlashAttribute("success", "Imagen Borrada: ".concat(customer.getPhoto()));
@@ -137,7 +132,7 @@ public class CustomerController {
         }
 
         flash.addFlashAttribute("success", "Customer eliminado con exito");
-        return "redirect:/listar";
+        return "redirect:/";
     }
 
 }

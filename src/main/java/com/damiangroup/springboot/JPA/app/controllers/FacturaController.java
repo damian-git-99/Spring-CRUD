@@ -49,7 +49,7 @@ public class FacturaController {
 
         if (customer == null) {
             flash.addFlashAttribute("error", "No existe un customer con ese id");
-            return "redirect:/listar";
+            return "redirect:/home";
         }
         Invoice invoice = new Invoice();
         invoice.setCustomer(customer);
@@ -97,7 +97,7 @@ public class FacturaController {
         Invoice invoice = customerService.findFacturaById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "No existe esa invoice");
-            return "redirect:/listar";
+            return "redirect:/home";
         }
 
         model.addAttribute("invoice", invoice);
@@ -112,7 +112,7 @@ public class FacturaController {
         Invoice invoice = customerService.findFacturaById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "No existe una invoice con ese id");
-            return "redirect:/listar";
+            return "redirect:/home";
         }
 
         customerService.deleteFactura(id);
