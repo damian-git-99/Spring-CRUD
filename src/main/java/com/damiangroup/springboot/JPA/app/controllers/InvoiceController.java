@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Secured("ROLE_ADMIN")
 @Controller
-@RequestMapping("/factura")
+@RequestMapping("/invoice")
 @SessionAttributes("invoice")
 @CrossOrigin(origins = "*")
 public class InvoiceController {
@@ -41,20 +41,20 @@ public class InvoiceController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/form/{customerId}")
+    @GetMapping("/invoiceForm/{customerId}")
     public String createInvoiceForm(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(customerId);
         if (customer == null) {
             flash.addFlashAttribute("error", "User Not found: ".concat(customerId.toString()));
-            return "redirect:/home";
+            return "redirect:/";
         }
         Invoice invoice = new Invoice();
         invoice.setCustomer(customer);
         model.addAttribute("invoice", invoice);
-        return "factura/form";
+        return "invoice/form";
     }
 
-    @PostMapping("/form/")
+    @PostMapping("/invoiceForm")
     public String createInvoicePost(@Valid Invoice invoice, BindingResult result,
                                     @RequestParam(name = "item_id[]", required = false) Long[] itemId,
                                     @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
@@ -65,13 +65,13 @@ public class InvoiceController {
         if (result.hasErrors()) {
             model.addAttribute("title", "Create Invoice");
             model.addAttribute("invoice", invoice);
-            return "factura/form";
+            return "invoice/form";
         }
 
         if (itemId == null || itemId.length == 0) {
             model.addAttribute("title", "Create Invoice");
             model.addAttribute("error", "Invoice must contain at least one item");
-            return "factura/form";
+            return "invoice/form";
         }
 
         for (int i = 0; i < itemId.length; i++) {
@@ -83,21 +83,21 @@ public class InvoiceController {
         invoiceService.saveInvoice(invoice);
         status.setComplete();
         flash.addFlashAttribute("success", "Invoice was created successfully");
-        return "redirect:/ver/" + invoice.getCustomer().getId();
+        System.out.println("entro");
+        return "redirect:/customerDetails/" + invoice.getCustomer().getId();
     }
 
-    @GetMapping("/ver/{id}")
+    @GetMapping("/invoiceDetails/{id}")
     public String invoiceDetails(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "Invoice not found");
-            return "redirect:/home";
+            return "redirect:/";
         }
 
         model.addAttribute("invoice", invoice);
         model.addAttribute("title", "Invoice : ".concat(invoice.getDescription()));
-        return "factura/ver";
-
+        return "invoice/ver";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -106,7 +106,7 @@ public class InvoiceController {
         Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "Invoice not found");
-            return "redirect:/home";
+            return "redirect:/";
         }
 
         invoiceService.deleteInvoiceById(id);

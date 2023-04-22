@@ -10,8 +10,8 @@
         <div class=" card-header" th:text="${title}"></div>
         <div class=" card-body">
             <h4 class=" card-title">
-                <a th:href="@{'/ver/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
-                        class="fas fa-long-arrow-alt-left"></i> Volver</a>
+                <a th:href="@{'/customerDetails/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
+                        class="fas fa-long-arrow-alt-left"></i>Return Back</a>
             </h4>
             <ul class=" list-group my-2">
                 <li class=" list-group-item list-group-item-primary" th:text="'Datos del customer'"></li>
@@ -54,7 +54,7 @@
 
             </div>
             <h4 class=" card-title">
-                <a th:href="@{'/ver/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
+                <a th:href="@{'/customerDetails/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
                         class="fas fa-long-arrow-alt-left"></i> Volver</a>
             </h4>
         </div>
