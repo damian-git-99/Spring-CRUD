@@ -35,14 +35,14 @@ public class CustomerController {
     }
 
     @GetMapping("/ver/{id}")
-    public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+    public String customerDetails(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(id);
         if (customer == null) {
             flash.addFlashAttribute("error", "Customer does not exist");
             return "redirect:/";
         }
         model.addAttribute("customer", customer);
-        model.addAttribute("titulo", "Detalle customer: " + customer.getName());
+        model.addAttribute("title", "Customer Details: " + customer.getName());
         return "ver";
     }
 
@@ -62,7 +62,7 @@ public class CustomerController {
     public String createCustomerForm(Model model) {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
-        model.addAttribute("titulo", "Customer Form");
+        model.addAttribute("title", "Customer Form");
         return "form";
     }
 
@@ -74,7 +74,7 @@ public class CustomerController {
             flash.addFlashAttribute("error", "User Not found");
             return "redirect:/";
         }
-        model.addAttribute("titulo", "Editar Customer");
+        model.addAttribute("title", "Edit Customer");
         model.addAttribute("customer", customer);
         return "form";
     }
@@ -82,7 +82,7 @@ public class CustomerController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/form")
     public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
-                          @RequestParam("file") MultipartFile foto, SessionStatus status) {
+                                       @RequestParam("file") MultipartFile foto, SessionStatus status) {
 
         String urlFoto;
         try {
@@ -105,23 +105,16 @@ public class CustomerController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    public String deleteCustomerById(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+        Customer customer = customerService.findCustomerById(id);
 
-        if (id > 0) {
-            Customer customer = customerService.findCustomerById(id);
-            if (customer == null) {
-                flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
-                return "redirect:/";
-            }
-            if (uploadFile.eliminarFoto(customer)) {
-                flash.addFlashAttribute("success", "Imagen Borrada: ".concat(customer.getPhoto()));
-            } else
-                flash.addFlashAttribute("error",
-                        "La imagen no se pudo borrar: (El customer no tiene imagen o hubo un error al intentar borrarla)"
-                                .concat(customer.getPhoto()));
-            customerService.deleteCustomerById(id);
+        if (customer == null) {
+            flash.addFlashAttribute("error", "User Not found: ".concat(id.toString()));
+            return "redirect:/";
         }
 
+        uploadFile.eliminarFoto(customer); // todo move this to the service layer
+        customerService.deleteCustomerById(id);
         flash.addFlashAttribute("success", "Customer eliminado con exito");
         return "redirect:/";
     }

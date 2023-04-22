@@ -45,7 +45,7 @@ public class InvoiceController {
     public String createInvoiceForm(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(customerId);
         if (customer == null) {
-            flash.addFlashAttribute("error", "No existe un customer con ese id");
+            flash.addFlashAttribute("error", "User Not found: ".concat(customerId.toString()));
             return "redirect:/home";
         }
         Invoice invoice = new Invoice();
@@ -63,14 +63,14 @@ public class InvoiceController {
                                     Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute("titulo", "Crear invoice");
+            model.addAttribute("title", "Create Invoice");
             model.addAttribute("invoice", invoice);
             return "factura/form";
         }
 
         if (itemId == null || itemId.length == 0) {
-            model.addAttribute("titulo", "Crear invoice");
-            model.addAttribute("error", "La invoice debe contener lineas");
+            model.addAttribute("title", "Create Invoice");
+            model.addAttribute("error", "Invoice must contain at least one item");
             return "factura/form";
         }
 
@@ -82,45 +82,45 @@ public class InvoiceController {
 
         invoiceService.saveInvoice(invoice);
         status.setComplete();
-        flash.addFlashAttribute("success", "Invoice Creada con éxito");
+        flash.addFlashAttribute("success", "Invoice was created successfully");
         return "redirect:/ver/" + invoice.getCustomer().getId();
     }
 
     @GetMapping("/ver/{id}")
-    public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+    public String invoiceDetails(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
-            flash.addFlashAttribute("error", "No existe esa invoice");
+            flash.addFlashAttribute("error", "Invoice not found");
             return "redirect:/home";
         }
 
         model.addAttribute("invoice", invoice);
-        model.addAttribute("titulo", "Invoice : ".concat(invoice.getDescription()));
+        model.addAttribute("title", "Invoice : ".concat(invoice.getDescription()));
         return "factura/ver";
 
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    public String deleteInvoice(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
-            flash.addFlashAttribute("error", "No existe una invoice con ese id");
+            flash.addFlashAttribute("error", "Invoice not found");
             return "redirect:/home";
         }
 
         invoiceService.deleteInvoiceById(id);
-        flash.addFlashAttribute("success", "Invoice eliminada con éxito");
+        flash.addFlashAttribute("success", "Invoice deleted successfully");
         return "redirect:/ver/" + invoice.getId();
     }
 
     @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})
-    public @ResponseBody List<Product> cargarProductos(@PathVariable(value = "term") String term) {
+    public @ResponseBody List<Product> findProducts(@PathVariable(value = "term") String term) {
         return invoiceService.findProductByProductName(term);
     }
 
     @GetMapping(value = "/cargar-todos-los-productos", produces = {"application/json"})
-    public @ResponseBody List<Product> cargarTodosProductos() {
+    public @ResponseBody List<Product> findAllProducts() {
         return invoiceService.findAllProducts();
     }
 
