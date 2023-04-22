@@ -6,15 +6,15 @@ import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
 import java.util.List;
 
 public interface InvoiceService {
-    public List<Product> findByNombre(String term);
+    List<Product> findProductByProductName(String term);
 
-    public List<Product> findAllProducts();
+    List<Product> findAllProducts();
 
-    public void saveFactura(Invoice invoice);
+    void saveInvoice(Invoice invoice);
 
-    public Product findProductoById(Long id);
+    Product findProductById(Long id);
 
-    public Invoice findFacturaById(Long id);
+    Invoice findInvoiceById(Long id);
 
-    public void deleteFactura(Long id);
+    void deleteInvoiceById(Long id);
 }

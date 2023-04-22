@@ -75,12 +75,12 @@ public class InvoiceController {
         }
 
         for (int i = 0; i < itemId.length; i++) {
-            Product product = invoiceService.findProductoById(itemId[i]);
+            Product product = invoiceService.findProductById(itemId[i]);
             InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
             invoice.addItemFactura(invoiceItem);
         }
 
-        invoiceService.saveFactura(invoice);
+        invoiceService.saveInvoice(invoice);
         status.setComplete();
         flash.addFlashAttribute("success", "Invoice Creada con éxito");
         return "redirect:/ver/" + invoice.getCustomer().getId();
@@ -88,7 +88,7 @@ public class InvoiceController {
 
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Invoice invoice = invoiceService.findFacturaById(id);
+        Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "No existe esa invoice");
             return "redirect:/home";
@@ -103,20 +103,20 @@ public class InvoiceController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
-        Invoice invoice = invoiceService.findFacturaById(id);
+        Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "No existe una invoice con ese id");
             return "redirect:/home";
         }
 
-        invoiceService.deleteFactura(id);
+        invoiceService.deleteInvoiceById(id);
         flash.addFlashAttribute("success", "Invoice eliminada con éxito");
         return "redirect:/ver/" + invoice.getId();
     }
 
     @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})
     public @ResponseBody List<Product> cargarProductos(@PathVariable(value = "term") String term) {
-        return invoiceService.findByNombre(term);
+        return invoiceService.findProductByProductName(term);
     }
 
     @GetMapping(value = "/cargar-todos-los-productos", produces = {"application/json"})

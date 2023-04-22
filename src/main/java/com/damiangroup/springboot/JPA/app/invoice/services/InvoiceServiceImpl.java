@@ -24,8 +24,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     @Transactional
-    public List<Product> findByNombre(String term) {
-        return productDao.findByNombre(term);
+    public List<Product> findProductByProductName(String term) {
+        return productDao.findProductByProductName(term);
     }
 
     @Override
@@ -36,26 +36,26 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     @Transactional
-    public void saveFactura(Invoice invoice) {
+    public void saveInvoice(Invoice invoice) {
         invoiceDao.save(invoice);
     }
 
     @Override
     @Transactional
-    public Product findProductoById(Long id) {
+    public Product findProductById(Long id) {
         return productDao.findById(id).orElse(null);
     }
 
 
     @Override
     @Transactional
-    public Invoice findFacturaById(Long id) {
+    public Invoice findInvoiceById(Long id) {
         return invoiceDao.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
-    public void deleteFactura(Long id) {
+    public void deleteInvoiceById(Long id) {
         invoiceDao.deleteById(id);
     }
 }
