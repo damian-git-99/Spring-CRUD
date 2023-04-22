@@ -1,20 +1,20 @@
 package com.damiangroup.springboot.JPA.app.customer.service;
 
+import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDaoCrudRepository;
 import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDao;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerDao customerDao;
+    private final CustomerDaoCrudRepository customerDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao) {
+    public CustomerServiceImpl(CustomerDaoCrudRepository customerDao) {
         this.customerDao = customerDao;
     }
 
