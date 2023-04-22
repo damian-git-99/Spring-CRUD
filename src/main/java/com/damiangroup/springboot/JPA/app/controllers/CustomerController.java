@@ -34,7 +34,7 @@ public class CustomerController {
         this.uploadFile = uploadFile;
     }
 
-    @GetMapping("/ver/{id}")
+    @GetMapping("/customerDetails/{id}")
     public String customerDetails(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(id);
         if (customer == null) {
@@ -43,7 +43,7 @@ public class CustomerController {
         }
         model.addAttribute("customer", customer);
         model.addAttribute("title", "Customer Details: " + customer.getName());
-        return "ver";
+        return "customerDetails";
     }
 
     @GetMapping("/")
@@ -58,16 +58,16 @@ public class CustomerController {
     }
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/form")
+    @GetMapping("/customerForm")
     public String createCustomerForm(Model model) {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
         model.addAttribute("title", "Customer Form");
-        return "form";
+        return "customerForm";
     }
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/form/{id}")
+    @GetMapping("/customerForm/{id}")
     public String editCustomerForm(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(id);
         if (customer == null) {
@@ -76,11 +76,11 @@ public class CustomerController {
         }
         model.addAttribute("title", "Edit Customer");
         model.addAttribute("customer", customer);
-        return "form";
+        return "customerForm";
     }
 
     @Secured("ROLE_ADMIN")
-    @PostMapping("/form")
+    @PostMapping("/customerForm")
     public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
                                        @RequestParam("file") MultipartFile foto, SessionStatus status) {
 
@@ -95,16 +95,16 @@ public class CustomerController {
 
         if (result.hasErrors()) {
             model.addAttribute("customer", customer);
-            return "/form";
+            return "customerForm";
         }
         customerService.saveCustomer(customer);
-        flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
+        flash.addFlashAttribute("success", "Customer created successfully");
         status.setComplete();
         return "redirect:/";
     }
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/deleteCustomer/{id}")
     public String deleteCustomerById(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
         Customer customer = customerService.findCustomerById(id);
 
@@ -115,7 +115,7 @@ public class CustomerController {
 
         uploadFile.eliminarFoto(customer); // todo move this to the service layer
         customerService.deleteCustomerById(id);
-        flash.addFlashAttribute("success", "Customer eliminado con exito");
+        flash.addFlashAttribute("success", "Customer deleted successfully");
         return "redirect:/";
     }
 

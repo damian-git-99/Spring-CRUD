@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <form th:action="@{/form}" th:object="${customer}" method="POST" id="form"
+                    <form th:action="@{/customerForm}" th:object="${customer}" method="POST" id="form"
                           enctype="multipart/form-data">
 
                         <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
@@ -29,13 +29,13 @@
                             </tr>
 
                             <tr>
-                                <td>Nombre</td>
+                                <td>Name</td>
                                 <td><input class=" form-control" type="text" th:field="*{name}"
                                            th:errorclass="'form-control is-invalid'"></td>
                             </tr>
 
                             <tr>
-                                <td>Apellido</td>
+                                <td>LastName</td>
                                 <td><input class=" form-control" type="text" th:field="*{lastName}"
                                            th:errorclass="'form-control is-invalid'"></td>
                             </tr>
@@ -47,20 +47,20 @@
                             </tr>
 
                             <tr>
-                                <td>Fecha</td>
+                                <td>Date</td>
                                 <td><input class=" form-control" type="date" th:field="*{createAt}"
                                            th:errorclass="'form-control is-invalid'"></td>
                             </tr>
 
                             <tr>
-                                <td>Foto</td>
+                                <td>Photo</td>
                                 <td><input class="form-control-file" type="file" name="file"></td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td class=" text-center">
-                                    <button class="btn btn-info" type="submit">Guardar</button>
+                                    <button class="btn btn-info" type="submit">Save</button>
                                 </td>
                             </tr>
 
