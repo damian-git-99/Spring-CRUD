@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app;
+package com.damiangroup.springboot.JPA.app.config;
 
 import java.nio.file.Paths;
 import java.util.Locale;

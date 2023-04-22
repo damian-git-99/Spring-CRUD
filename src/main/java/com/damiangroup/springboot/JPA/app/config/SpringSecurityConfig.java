@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app;
+package com.damiangroup.springboot.JPA.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
