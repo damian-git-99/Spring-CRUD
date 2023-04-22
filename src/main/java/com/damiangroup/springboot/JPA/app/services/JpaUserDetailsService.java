@@ -1,9 +1,11 @@
-package com.damiangroup.springboot.JPA.app.auth;
+package com.damiangroup.springboot.JPA.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 
+import com.damiangroup.springboot.JPA.app.models.Role;
+import com.damiangroup.springboot.JPA.app.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.damiangroup.springboot.JPA.app.invoice.daos.UserDao;
-import com.damiangroup.springboot.JPA.app.auth.Role;
-import com.damiangroup.springboot.JPA.app.auth.User;
+import com.damiangroup.springboot.JPA.app.daos.UserDao;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {

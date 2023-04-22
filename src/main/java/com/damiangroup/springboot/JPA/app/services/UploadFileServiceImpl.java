@@ -1,10 +1,10 @@
-package com.damiangroup.springboot.JPA.app.models.service;
+package com.damiangroup.springboot.JPA.app.services;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.UUID;
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
+import com.damiangroup.springboot.JPA.app.models.Customer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

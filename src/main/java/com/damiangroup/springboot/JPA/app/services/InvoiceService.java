@@ -1,7 +1,7 @@
-package com.damiangroup.springboot.JPA.app.invoice.services;
+package com.damiangroup.springboot.JPA.app.services;
 
-import com.damiangroup.springboot.JPA.app.invoice.entities.Invoice;
-import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
+import com.damiangroup.springboot.JPA.app.models.Invoice;
+import com.damiangroup.springboot.JPA.app.models.Product;
 
 import java.util.List;
 

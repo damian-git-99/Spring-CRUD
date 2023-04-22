@@ -1,6 +1,6 @@
-package com.damiangroup.springboot.JPA.app.customer.service;
+package com.damiangroup.springboot.JPA.app.services;
 
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
+import com.damiangroup.springboot.JPA.app.models.Customer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

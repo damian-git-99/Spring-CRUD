@@ -1,7 +1,7 @@
-package com.damiangroup.springboot.JPA.app.models.service;
+package com.damiangroup.springboot.JPA.app.services;
 
 import java.io.IOException;
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
+import com.damiangroup.springboot.JPA.app.models.Customer;
 import org.springframework.web.multipart.MultipartFile;
 
 

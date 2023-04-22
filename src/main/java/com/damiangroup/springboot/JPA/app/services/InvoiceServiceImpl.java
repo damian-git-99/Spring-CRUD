@@ -1,9 +1,9 @@
-package com.damiangroup.springboot.JPA.app.invoice.services;
+package com.damiangroup.springboot.JPA.app.services;
 
-import com.damiangroup.springboot.JPA.app.invoice.daos.InvoiceDao;
-import com.damiangroup.springboot.JPA.app.invoice.daos.ProductDao;
-import com.damiangroup.springboot.JPA.app.invoice.entities.Invoice;
-import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
+import com.damiangroup.springboot.JPA.app.daos.InvoiceDao;
+import com.damiangroup.springboot.JPA.app.daos.ProductDao;
+import com.damiangroup.springboot.JPA.app.models.Invoice;
+import com.damiangroup.springboot.JPA.app.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

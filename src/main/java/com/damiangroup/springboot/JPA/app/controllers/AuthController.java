@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.auth;
+package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.security.Principal;
 

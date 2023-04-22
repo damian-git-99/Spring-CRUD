@@ -1,12 +1,12 @@
-package com.damiangroup.springboot.JPA.app.customer.controllers;
+package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.io.IOException;
 
 import javax.validation.Valid;
 
-import com.damiangroup.springboot.JPA.app.customer.service.CustomerService;
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
-import com.damiangroup.springboot.JPA.app.models.service.IUploadFileService;
+import com.damiangroup.springboot.JPA.app.services.CustomerService;
+import com.damiangroup.springboot.JPA.app.models.Customer;
+import com.damiangroup.springboot.JPA.app.services.IUploadFileService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

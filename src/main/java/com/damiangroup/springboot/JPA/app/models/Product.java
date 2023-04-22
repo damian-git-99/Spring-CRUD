@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.invoice.entities;
+package com.damiangroup.springboot.JPA.app.models;
 
 import java.io.Serializable;
 import java.util.Date;

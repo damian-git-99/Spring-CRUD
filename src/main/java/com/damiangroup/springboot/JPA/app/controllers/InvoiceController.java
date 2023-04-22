@@ -1,14 +1,14 @@
-package com.damiangroup.springboot.JPA.app.invoice.controllers;
+package com.damiangroup.springboot.JPA.app.controllers;
 
 import java.util.List;
 import javax.validation.Valid;
 
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
-import com.damiangroup.springboot.JPA.app.customer.service.CustomerService;
-import com.damiangroup.springboot.JPA.app.invoice.entities.Invoice;
-import com.damiangroup.springboot.JPA.app.invoice.entities.InvoiceItem;
-import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
-import com.damiangroup.springboot.JPA.app.invoice.services.InvoiceService;
+import com.damiangroup.springboot.JPA.app.models.Customer;
+import com.damiangroup.springboot.JPA.app.services.CustomerService;
+import com.damiangroup.springboot.JPA.app.models.Invoice;
+import com.damiangroup.springboot.JPA.app.models.InvoiceItem;
+import com.damiangroup.springboot.JPA.app.models.Product;
+import com.damiangroup.springboot.JPA.app.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

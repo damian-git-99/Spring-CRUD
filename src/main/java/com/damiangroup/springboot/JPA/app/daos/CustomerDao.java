@@ -1,6 +1,6 @@
-package com.damiangroup.springboot.JPA.app.customer.daos;
+package com.damiangroup.springboot.JPA.app.daos;
 
-import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
+import com.damiangroup.springboot.JPA.app.models.Customer;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CustomerDao extends PagingAndSortingRepository<Customer, Long> {

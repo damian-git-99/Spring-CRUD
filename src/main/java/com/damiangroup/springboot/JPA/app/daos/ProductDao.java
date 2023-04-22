@@ -1,8 +1,8 @@
-package com.damiangroup.springboot.JPA.app.invoice.daos;
+package com.damiangroup.springboot.JPA.app.daos;
 
 import java.util.List;
 
-import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
+import com.damiangroup.springboot.JPA.app.models.Product;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
