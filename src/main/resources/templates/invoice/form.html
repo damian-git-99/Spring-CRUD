@@ -12,14 +12,14 @@
         </div>
         <div class="card-body">
             <h4 class="card-title">
-                <td class="text-center"><a th:href="@{/ver/}+ ${invoice.customer.id}" class="btn btn-info btn-xs"><i
-                                        class="fas fa-long-arrow-alt-left"></i> Regresar</a></td>
+                <td class="text-center"><a th:href="@{/customerDetails/}+ ${invoice.customer.id}" class="btn btn-info btn-xs"><i
+                                        class="fas fa-long-arrow-alt-left"></i> Return Back</a></td>
             </h4>
             <div class="row">
                 <div class="col">
                     <form th:action="@{/invoice/invoiceForm}" th:object="${invoice}" method="POST" id="form">
 
-                        <!-- Errores en los campos con un forEach -->
+                        <!-- Errors in fields with a forEach -->
                         <div th:if="${#fields.hasErrors()}" class="alert alert-danger mt-1" role="alert">
                             <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
                         </div>
@@ -27,7 +27,7 @@
                         <table class="table  table-secondary table-bordered ">
 
                             <tr>
-                                <td>Nombre del customer</td>
+                                <td>Customer name</td>
                                 <td><input class=" form-control"
                                            th:value="${invoice.customer.name} + ' ' + ${invoice.customer.lastName} "
                                            disabled></td>
@@ -35,18 +35,18 @@
 
 
                             <tr>
-                                <td>Descripción</td>
+                                <td>Description</td>
                                 <td><input class=" form-control" type="text" th:field="*{description}"
                                            th:errorclass="'form-control is-invalid'"></td>
                             </tr>
 
                             <tr>
-                                <td>Observación</td>
+                                <td>Observation</td>
                                 <td><textarea class=" form-control" th:field="*{observation}"
                                               th:errorclass="'form-control is-invalid'"></textarea></td>
                             </tr>
 
-                            <td>Producto</td>
+                            <td>Product</td>
                             <td>
                                 <input class=" form-control" type="text" name="buscar_producto" id="buscar_producto">
                             </td>
@@ -56,11 +56,11 @@
                             <table id="cargarItemProductos" class=" table table-sm table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Cantidad</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
                                         <th>Total</th>
-                                        <th>Eliminar</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,7 +71,7 @@
                             <tr>
                                 <td></td>
                                 <td class="text-center">
-                                    <button class="btn btn-info" type="submit">Guardar</button>
+                                    <button class="btn btn-info" type="submit">save</button>
                                 </td>
                             </tr>
                         </table>
