@@ -58,42 +58,4 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.findAll(pageable);
     }
 
-    @Override
-    @Transactional
-    public List<Product> findByNombre(String term) {
-        return productDao.findByNombre(term);
-    }
-
-    @Override
-    @Transactional
-    public List<Product> findAllProducts() {
-        return productDao.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void saveFactura(Invoice invoice) {
-        invoiceDao.save(invoice);
-    }
-
-    @Override
-    @Transactional
-    public Product findProductoById(Long id) {
-        return productDao.findById(id).orElse(null);
-    }
-
-
-    @Override
-    @Transactional
-    public Invoice findFacturaById(Long id) {
-        return invoiceDao.findById(id).orElse(null);
-    }
-
-    @Override
-    @Transactional
-    public void deleteFactura(Long id) {
-        invoiceDao.deleteById(id);
-    }
-
-
 }

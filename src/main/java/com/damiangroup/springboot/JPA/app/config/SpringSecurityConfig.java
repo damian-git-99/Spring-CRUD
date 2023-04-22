@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.damiangroup.springboot.JPA.app.auth.handler.LoginSuccessHandler;
+import com.damiangroup.springboot.JPA.app.auth.LoginSuccessHandler;
 
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @Configuration

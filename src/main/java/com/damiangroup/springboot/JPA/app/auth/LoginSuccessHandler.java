@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.auth.handler;
+package com.damiangroup.springboot.JPA.app.auth;
 
 import java.io.IOException;
 

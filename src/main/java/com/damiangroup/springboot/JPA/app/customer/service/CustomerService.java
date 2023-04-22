@@ -9,7 +9,6 @@ import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-// todo: separate interface
 public interface CustomerService {
 
     public List<Customer> findAll();
@@ -21,18 +20,5 @@ public interface CustomerService {
     public Customer findOne(Long id);
 
     public void delete(Long id);
-
-    public List<Product> findByNombre(String term);
-
-    public List<Product> findAllProducts();
-
-    public void saveFactura(Invoice invoice);
-
-    public Product findProductoById(Long id);
-
-    public Invoice findFacturaById(Long id);
-
-    public void deleteFactura(Long id);
-
 
 }
