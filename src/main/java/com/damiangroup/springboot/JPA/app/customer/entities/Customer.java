@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.customer;
+package com.damiangroup.springboot.JPA.app.customer.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;

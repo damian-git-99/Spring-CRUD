@@ -1,7 +1,8 @@
-package com.damiangroup.springboot.JPA.app.customer;
+package com.damiangroup.springboot.JPA.app.customer.service;
 
 import java.util.List;
 
+import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
 import com.damiangroup.springboot.JPA.app.invoice.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
