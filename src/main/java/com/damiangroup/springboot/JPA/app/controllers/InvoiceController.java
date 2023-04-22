@@ -83,7 +83,6 @@ public class InvoiceController {
         invoiceService.saveInvoice(invoice);
         status.setComplete();
         flash.addFlashAttribute("success", "Invoice was created successfully");
-        System.out.println("entro");
         return "redirect:/customerDetails/" + invoice.getCustomer().getId();
     }
 
@@ -100,7 +99,7 @@ public class InvoiceController {
         return "invoice/ver";
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/deleteInvoice/{id}")
     public String deleteInvoice(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         Invoice invoice = invoiceService.findInvoiceById(id);
@@ -111,7 +110,7 @@ public class InvoiceController {
 
         invoiceService.deleteInvoiceById(id);
         flash.addFlashAttribute("success", "Invoice deleted successfully");
-        return "redirect:/ver/" + invoice.getId();
+        return "redirect:/customerDetails/" + invoice.getId();
     }
 
     @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})

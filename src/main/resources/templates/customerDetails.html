@@ -45,8 +45,8 @@
                     <td th:text="${invoice.granTotal()}"></td>
                     <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/invoice/invoiceDetails/}+${invoice.id}"
                            class="btn btn-primary">Details</a></td>
-                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/templates/invoice/eliminar/}+${invoice.id}"
-                           class="btn btn-danger">Eliminar</a></td>
+                    <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/invoice/deleteInvoice/}+${invoice.id}"
+                           class="btn btn-danger">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
