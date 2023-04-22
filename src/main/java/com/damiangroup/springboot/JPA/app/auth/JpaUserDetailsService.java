@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.models.service;
+package com.damiangroup.springboot.JPA.app.auth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.fetchByUsername(username);
+        User user = userDao.findUserByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
