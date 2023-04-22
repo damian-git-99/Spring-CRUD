@@ -43,7 +43,7 @@ public class InvoiceController {
 
     @GetMapping("/form/{customerId}")
     public String createInvoiceForm(@PathVariable(value = "customerId") Long customerId, Model model, RedirectAttributes flash) {
-        Customer customer = customerService.findOne(customerId);
+        Customer customer = customerService.findCustomerById(customerId);
         if (customer == null) {
             flash.addFlashAttribute("error", "No existe un customer con ese id");
             return "redirect:/home";

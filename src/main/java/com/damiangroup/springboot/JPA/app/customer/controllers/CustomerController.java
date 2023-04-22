@@ -36,7 +36,7 @@ public class CustomerController {
 
     @GetMapping("/ver/{id}")
     public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Customer customer = customerService.findOne(id);
+        Customer customer = customerService.findCustomerById(id);
         if (customer == null) {
             flash.addFlashAttribute("error", "Customer does not exist");
             return "redirect:/";
@@ -49,7 +49,7 @@ public class CustomerController {
     @GetMapping("/")
     public String home(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
         Pageable pageRequest = PageRequest.of(page, 5);
-        Page<Customer> customers = customerService.findAll(pageRequest);
+        Page<Customer> customers = customerService.findAllCustomers(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/", customers);
 
         model.addAttribute("page", pageRender);
@@ -69,7 +69,7 @@ public class CustomerController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/form/{id}")
     public String editCustomerForm(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
-        Customer customer = customerService.findOne(id);
+        Customer customer = customerService.findCustomerById(id);
         if (customer == null) {
             flash.addFlashAttribute("error", "User Not found");
             return "redirect:/";
@@ -97,7 +97,7 @@ public class CustomerController {
             model.addAttribute("customer", customer);
             return "/form";
         }
-        customerService.save(customer);
+        customerService.saveCustomer(customer);
         flash.addFlashAttribute("success", "Customer Creado o actualizado con exito");
         status.setComplete();
         return "redirect:/";
@@ -108,7 +108,7 @@ public class CustomerController {
     public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         if (id > 0) {
-            Customer customer = customerService.findOne(id);
+            Customer customer = customerService.findCustomerById(id);
             if (customer == null) {
                 flash.addFlashAttribute("error", "No existe un customer con el id: ".concat(id.toString()));
                 return "redirect:/";
@@ -119,7 +119,7 @@ public class CustomerController {
                 flash.addFlashAttribute("error",
                         "La imagen no se pudo borrar: (El customer no tiene imagen o hubo un error al intentar borrarla)"
                                 .concat(customer.getPhoto()));
-            customerService.delete(id);
+            customerService.deleteCustomerById(id);
         }
 
         flash.addFlashAttribute("success", "Customer eliminado con exito");
