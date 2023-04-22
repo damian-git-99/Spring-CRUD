@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.damiangroup.springboot.JPA.app.models.dao.CustomerDao;
+import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDao;
 import com.damiangroup.springboot.JPA.app.invoice.daos.InvoiceDao;
-import com.damiangroup.springboot.JPA.app.models.dao.ProductDao;
+import com.damiangroup.springboot.JPA.app.invoice.daos.ProductDao;
 import com.damiangroup.springboot.JPA.app.invoice.entities.Invoice;
 
 @Service

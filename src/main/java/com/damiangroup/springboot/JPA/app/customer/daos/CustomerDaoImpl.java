@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.models.dao;
+package com.damiangroup.springboot.JPA.app.customer.daos;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDao;
 import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

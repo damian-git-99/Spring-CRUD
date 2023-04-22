@@ -1,4 +1,4 @@
-package com.damiangroup.springboot.JPA.app.models.dao;
+package com.damiangroup.springboot.JPA.app.invoice.daos;
 
 import com.damiangroup.springboot.JPA.app.auth.User;
 import org.springframework.data.jpa.repository.Query;
