@@ -1,6 +1,6 @@
 package com.damiangroup.springboot.JPA.app.customer.service;
 
-import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDaoCrudRepository;
+import com.damiangroup.springboot.JPA.app.customer.daos.CustomerDao;
 import com.damiangroup.springboot.JPA.app.customer.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerDaoCrudRepository customerDao;
+    private final CustomerDao customerDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDaoCrudRepository customerDao) {
+    public CustomerServiceImpl(CustomerDao customerDao) {
         this.customerDao = customerDao;
     }
 
