@@ -113,13 +113,9 @@ public class InvoiceController {
     }
 
     @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})
-    public @ResponseBody List<Product> findProducts(@PathVariable(value = "term") String term) {
+    @ResponseBody
+    public List<Product> findProducts(@PathVariable(value = "term") String term) {
         return invoiceService.findProductByProductName(term);
     }
-
-    @GetMapping(value = "/cargar-todos-los-productos", produces = {"application/json"})
-    public @ResponseBody List<Product> findAllProducts() {
-        return invoiceService.findAllProducts();
-    }
-
+    
 }

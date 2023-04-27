@@ -14,11 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    public SpringSecurityConfig(LoginSuccessHandler loginSuccessHandler, UserDetailsService userDetailsService) {
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -34,13 +37,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/css/**", "/js/**", "/listar**", "/api/clientes/**").permitAll()
-                .antMatchers("/ver/**").hasAnyRole("USER")
-                .antMatchers("/uploads/**").hasAnyRole("USER")
-                .antMatchers("/form/**").hasAnyRole("ADMIN")
-                .antMatchers("/eliminar/**").hasAnyRole("ADMIN")
-                .antMatchers("/factura/**").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(loginSuccessHandler)
                 .loginPage("/login").permitAll()
