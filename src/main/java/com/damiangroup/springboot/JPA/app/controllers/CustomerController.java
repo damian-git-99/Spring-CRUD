@@ -1,7 +1,5 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
-import java.io.IOException;
-
 import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
@@ -43,7 +41,7 @@ public class CustomerController {
         }
         model.addAttribute("customer", customer);
         model.addAttribute("title", "Customer Details: " + customer.getName());
-        return "customerDetails";
+        return "customer/customerDetails";
     }
 
     @GetMapping("/")
@@ -63,7 +61,7 @@ public class CustomerController {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
         model.addAttribute("title", "Customer Form");
-        return "customerForm";
+        return "customer/customerForm";
     }
 
     @Secured("ROLE_ADMIN")
@@ -76,7 +74,7 @@ public class CustomerController {
         }
         model.addAttribute("title", "Edit Customer");
         model.addAttribute("customer", customer);
-        return "customerForm";
+        return "customer/customerForm";
     }
 
     @Secured("ROLE_ADMIN")
@@ -85,7 +83,7 @@ public class CustomerController {
                                        @RequestParam("file") MultipartFile photo, SessionStatus status) {
         if (result.hasErrors()) {
             model.addAttribute("customer", customer);
-            return "customerForm";
+            return "customer/customerForm";
         }
         customerService.saveCustomer(customer, photo);
         flash.addFlashAttribute("success", "Customer created successfully");
