@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.Customer;
-import com.damiangroup.springboot.JPA.app.services.PhotoService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final PhotoService uploadFile;
 
     @Autowired
-    public CustomerController(CustomerService customerService, PhotoService uploadFile) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.uploadFile = uploadFile;
     }
 
     @GetMapping("/customerDetails/{id}")
@@ -49,7 +46,6 @@ public class CustomerController {
         Pageable pageRequest = PageRequest.of(page, 5);
         Page<Customer> customers = customerService.findAllCustomers(pageRequest);
         PageRender<Customer> pageRender = new PageRender<>("/", customers);
-
         model.addAttribute("page", pageRender);
         model.addAttribute("customers", customers);
         return "home";
