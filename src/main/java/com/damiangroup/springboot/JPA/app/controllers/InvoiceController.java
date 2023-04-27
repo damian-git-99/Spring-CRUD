@@ -112,10 +112,10 @@ public class InvoiceController {
         return "redirect:/customerDetails/" + invoice.getId();
     }
 
-    @GetMapping(value = "/cargar-productos/{term}", produces = {"application/json"})
+    @GetMapping(value = "/products/{term}", produces = {"application/json"})
     @ResponseBody
     public List<Product> findProducts(@PathVariable(value = "term") String term) {
         return invoiceService.findProductByProductName(term);
     }
-    
+
 }

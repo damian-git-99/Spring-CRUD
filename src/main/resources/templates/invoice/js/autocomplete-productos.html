@@ -9,7 +9,7 @@
 
                 source: function(request, response) {
                     $.ajax({
-                        url: "/invoice/cargar-productos/" + request.term,
+                        url: "/invoice/products/" + request.term,
                         dataType: "json",
                         data: {
                             term: request.term
@@ -45,7 +45,7 @@
                     return false;
                 }
             });
-            
+
             $("form").submit(function(){
             	$("#plantillaItemsFactura").remove();
             	return;
