@@ -6,7 +6,7 @@ import com.damiangroup.springboot.JPA.app.models.Customer;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PhotoService {
-    String savePhoto(MultipartFile photo, Customer customer) throws IOException;
+    String savePhoto(MultipartFile photo, Customer customer);
 
     boolean deletePhoto(Customer customer);
 }

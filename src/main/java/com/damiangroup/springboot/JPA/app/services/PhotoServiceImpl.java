@@ -22,27 +22,16 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public String savePhoto(MultipartFile photo, Customer customer) throws IOException {
-        // todo: remove all customer code
-        if (customer.getId() != null && customer.getPhoto() != null && photo.isEmpty())
-            return customer.getPhoto();
-
-        if (photo.isEmpty() || photo == null)
-            return "";
-
-        // Si existe el id quiere decir que el customer ya existe y si la foto
-        // es diferente de null quiere decir que el usuario actualizo la foto
-        // pr lo cual hay que borrar la foto anterior
-        if (customer.getId() != null && customer.getPhoto() != null && !customer.getPhoto().isEmpty()) {
-            deletePhoto(customer);
+    public String savePhoto(MultipartFile photo, Customer customer) {
+        String uniqueFilename = UUID.randomUUID() + "_" + photo.getOriginalFilename();
+        String path = DIRECTORY + uniqueFilename;
+        File file = new File(path);
+        try {
+            Files.copy(photo.getInputStream(), file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
-        String rutaDestino = DIRECTORY + uniqueFilename;
-        File destinoFile = new File(rutaDestino);
-        Files.copy(photo.getInputStream(), destinoFile.toPath());
         return uniqueFilename;
-
     }
 
     private void createDirectory() {

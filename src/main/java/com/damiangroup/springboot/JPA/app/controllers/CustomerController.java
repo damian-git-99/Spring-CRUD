@@ -82,21 +82,12 @@ public class CustomerController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/customerForm")
     public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
-                                       @RequestParam("file") MultipartFile foto, SessionStatus status) {
-        String urlFoto;
-        try {
-            urlFoto = uploadFile.savePhoto(foto, customer);
-        } catch (IOException e) {
-            e.printStackTrace();
-            urlFoto = "";
-        }
-        customer.setPhoto(urlFoto);
-
+                                       @RequestParam("file") MultipartFile photo, SessionStatus status) {
         if (result.hasErrors()) {
             model.addAttribute("customer", customer);
             return "customerForm";
         }
-        customerService.saveCustomer(customer);
+        customerService.saveCustomer(customer, photo);
         flash.addFlashAttribute("success", "Customer created successfully");
         status.setComplete();
         return "redirect:/";
