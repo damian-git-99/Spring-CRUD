@@ -28,19 +28,20 @@ public class PageRender<T> {
         this.elementsPerPage = page.getSize();
         this.totalPages = page.getTotalPages();
         this.currentPage = page.getNumber() + 1;
-        int from, to;
+        int from, pageItem;
 
-        // Calculates where to start displaying the paginator and where to end.
+        // Calculates where pageItem start displaying the paginator and where pageItem end.
         if (totalPages <= elementsPerPage) {
             // Case 1: There are fewer pages than elements per page.
             // All pages are shown.
             from = 1;
-            to = totalPages;
+            pageItem = totalPages;
         } else {
+            pageItem = elementsPerPage;
             // Case 2: There are more pages than elements per page.
             // A subset of the pages is shown.
 
-            // First, calculate the range of pages to be shown.
+            // First, calculate the range of pages pageItem be shown.
             int half = elementsPerPage / 2;
             int remainingPages = totalPages - currentPage;
 
@@ -48,22 +49,19 @@ public class PageRender<T> {
                 // Case 2.1: The current page is near the beginning.
                 // The first 'elementsPerPage' pages are shown.
                 from = 1;
-                to = elementsPerPage;
             } else if (remainingPages <= half) {
                 // Case 2.2: The current page is near the end.
                 // The last 'elementsPerPage' pages are shown.
                 from = totalPages - elementsPerPage + 1;
-                to = elementsPerPage;
             } else {
                 // Case 2.3: The current page is in the middle.
                 // 'elementsPerPage' pages are shown around the current page.
                 from = currentPage - half;
-                to = elementsPerPage;
             }
         }
 
         // Saves the different page numbers that the paginator has, so that they can be printed in the view later.
-        for (int i = 0; i < to; i++) {
+        for (int i = 0; i < pageItem; i++) {
             pages.add(new PageItem(from + i, currentPage == from + i));
         }
 
