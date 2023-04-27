@@ -2,8 +2,15 @@ package com.damiangroup.springboot.JPA.app.util.paginator;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.data.domain.Page;
 
+/**
+ * The PageRender class represents a pagination object that is used to render a list of items in a web page.
+ * It takes in a Page object containing the list of items and renders it using the specified URL.
+ * The class also calculates the page numbers to be displayed in the pagination based on the current page and the total number of pages.
+ * The PageItem class represents a single page number in the pagination, along with a boolean flag indicating if it is the current page.
+ */
 public class PageRender<T> {
 
     private String url;
@@ -21,37 +28,43 @@ public class PageRender<T> {
         this.elementsPerPage = page.getSize();
         this.totalPages = page.getTotalPages();
         this.currentPage = page.getNumber() + 1;
+        int from, to;
 
-        int desde, hasta;
-        /**
-         * 
-         * Calcula desde donde se va a empezar ha mostrar el paginador y hasta donde
-         * terminar
-         * 
-         */
+        // Calculates where to start displaying the paginator and where to end.
         if (totalPages <= elementsPerPage) {
-            desde = 1;
-            hasta = totalPages;
+            // Case 1: There are fewer pages than elements per page.
+            // All pages are shown.
+            from = 1;
+            to = totalPages;
         } else {
-            if (currentPage <= elementsPerPage / 2) {
-                desde = 1;
-                hasta = elementsPerPage;
-            } else if (currentPage >= totalPages - elementsPerPage / 2) {
-                desde = totalPages - elementsPerPage + 1;
-                hasta = elementsPerPage;
+            // Case 2: There are more pages than elements per page.
+            // A subset of the pages is shown.
+
+            // First, calculate the range of pages to be shown.
+            int half = elementsPerPage / 2;
+            int remainingPages = totalPages - currentPage;
+
+            if (currentPage <= half) {
+                // Case 2.1: The current page is near the beginning.
+                // The first 'elementsPerPage' pages are shown.
+                from = 1;
+                to = elementsPerPage;
+            } else if (remainingPages <= half) {
+                // Case 2.2: The current page is near the end.
+                // The last 'elementsPerPage' pages are shown.
+                from = totalPages - elementsPerPage + 1;
+                to = elementsPerPage;
             } else {
-                desde = currentPage - elementsPerPage / 2;
-                hasta = elementsPerPage;
+                // Case 2.3: The current page is in the middle.
+                // 'elementsPerPage' pages are shown around the current page.
+                from = currentPage - half;
+                to = elementsPerPage;
             }
         }
 
-        /**
-         * Guarda los diferentes numeros de paginas que tiene el paginador para despues
-         * poder imprimirlos la vista
-         * 
-         */
-        for (int i = 0; i < hasta; i++) {
-            pages.add(new PageItem(desde + i, currentPage == desde + i));
+        // Saves the different page numbers that the paginator has, so that they can be printed in the view later.
+        for (int i = 0; i < to; i++) {
+            pages.add(new PageItem(from + i, currentPage == from + i));
         }
 
     }
