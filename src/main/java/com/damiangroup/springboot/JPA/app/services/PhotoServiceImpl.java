@@ -3,21 +3,22 @@ package com.damiangroup.springboot.JPA.app.services;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.UUID;
 
 import com.damiangroup.springboot.JPA.app.models.Customer;
-import org.hibernate.hql.internal.ast.util.PathHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
-public class UploadFileServiceImpl implements UploadFileService {
+public class PhotoServiceImpl implements PhotoService {
 
     private final String DIRECTORY = "uploads/";
 
-    public UploadFileServiceImpl() {
-        this.createDirectory(DIRECTORY);
+    public PhotoServiceImpl() {
+        this.createDirectory();
     }
 
     @Override
@@ -44,12 +45,10 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     }
 
-    protected void createDirectory(String directoryName) {
-        File directory = new File(directoryName);
-        System.out.println(directory.exists());
+    private void createDirectory() {
+        File directory = new File(DIRECTORY);
         if (directory.exists() && directory.isDirectory()) return;
         directory.mkdirs();
-        System.out.println(directory.exists());
     }
 
     @Override

@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.Customer;
-import com.damiangroup.springboot.JPA.app.services.UploadFileService;
+import com.damiangroup.springboot.JPA.app.services.PhotoService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,10 +26,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final UploadFileService uploadFile;
+    private final PhotoService uploadFile;
 
     @Autowired
-    public CustomerController(CustomerService customerService, UploadFileService uploadFile) {
+    public CustomerController(CustomerService customerService, PhotoService uploadFile) {
         this.customerService = customerService;
         this.uploadFile = uploadFile;
     }
@@ -83,7 +83,6 @@ public class CustomerController {
     @PostMapping("/customerForm")
     public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
                                        @RequestParam("file") MultipartFile foto, SessionStatus status) {
-        System.out.println(foto);
         String urlFoto;
         try {
             urlFoto = uploadFile.savePhoto(foto, customer);
