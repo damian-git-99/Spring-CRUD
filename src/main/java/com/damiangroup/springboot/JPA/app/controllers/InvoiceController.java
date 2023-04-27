@@ -101,7 +101,6 @@ public class InvoiceController {
 
     @GetMapping("/deleteInvoice/{id}")
     public String deleteInvoice(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
-
         Invoice invoice = invoiceService.findInvoiceById(id);
         if (invoice == null) {
             flash.addFlashAttribute("error", "Invoice not found");
