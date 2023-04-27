@@ -96,7 +96,7 @@ public class InvoiceController {
 
         model.addAttribute("invoice", invoice);
         model.addAttribute("title", "Invoice : ".concat(invoice.getDescription()));
-        return "invoice/ver";
+        return "invoice/invoiceDetails";
     }
 
     @GetMapping("/deleteInvoice/{id}")
