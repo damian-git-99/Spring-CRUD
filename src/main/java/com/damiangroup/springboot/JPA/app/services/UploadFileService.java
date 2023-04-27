@@ -1,11 +1,12 @@
 package com.damiangroup.springboot.JPA.app.services;
 
 import java.io.IOException;
+
 import com.damiangroup.springboot.JPA.app.models.Customer;
 import org.springframework.web.multipart.MultipartFile;
 
+public interface UploadFileService {
+    String savePhoto(MultipartFile photo, Customer customer) throws IOException;
 
-public interface IUploadFileService {
-    public String guardarFoto(MultipartFile foto, Customer customer) throws IOException;
-    public boolean eliminarFoto(Customer customer);
+    boolean deletePhoto(Customer customer);
 }

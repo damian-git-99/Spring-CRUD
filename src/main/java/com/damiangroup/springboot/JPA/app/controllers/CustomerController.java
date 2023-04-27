@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.Customer;
-import com.damiangroup.springboot.JPA.app.services.IUploadFileService;
+import com.damiangroup.springboot.JPA.app.services.UploadFileService;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,10 +26,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final IUploadFileService uploadFile;
+    private final UploadFileService uploadFile;
 
     @Autowired
-    public CustomerController(CustomerService customerService, IUploadFileService uploadFile) {
+    public CustomerController(CustomerService customerService, UploadFileService uploadFile) {
         this.customerService = customerService;
         this.uploadFile = uploadFile;
     }
@@ -83,10 +83,10 @@ public class CustomerController {
     @PostMapping("/customerForm")
     public String createOrEditCustomer(@Valid Customer customer, BindingResult result, Model model, RedirectAttributes flash,
                                        @RequestParam("file") MultipartFile foto, SessionStatus status) {
-
+        System.out.println(foto);
         String urlFoto;
         try {
-            urlFoto = uploadFile.guardarFoto(foto, customer);
+            urlFoto = uploadFile.savePhoto(foto, customer);
         } catch (IOException e) {
             e.printStackTrace();
             urlFoto = "";
@@ -113,7 +113,7 @@ public class CustomerController {
             return "redirect:/";
         }
 
-        uploadFile.eliminarFoto(customer); // todo move this to the service layer
+        uploadFile.deletePhoto(customer); // todo move this to the service layer
         customerService.deleteCustomerById(id);
         flash.addFlashAttribute("success", "Customer deleted successfully");
         return "redirect:/";
