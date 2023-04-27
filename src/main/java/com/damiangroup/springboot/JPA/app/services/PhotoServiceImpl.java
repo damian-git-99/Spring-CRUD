@@ -19,7 +19,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public String savePhoto(MultipartFile photo, Customer customer) {
+    public String savePhoto(MultipartFile photo) {
         String uniqueFilename = UUID.randomUUID() + "_" + photo.getOriginalFilename();
         String path = DIRECTORY + uniqueFilename;
         File file = new File(path);
@@ -38,8 +38,8 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public boolean deletePhoto(Customer customer) {
-        String fileName = DIRECTORY + customer.getPhoto();
+    public boolean deletePhoto(String photoName) {
+        String fileName = DIRECTORY + photoName;
         File file = new File(fileName);
         if (file.exists() && file.canRead()) {
             return file.delete();

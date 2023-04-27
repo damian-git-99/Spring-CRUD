@@ -38,9 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
                 && customer.getPhoto() != null
                 && !customer.getPhoto().isEmpty()) {
             // Delete previous photo
-            photoService.deletePhoto(customer);
+            photoService.deletePhoto(customer.getPhoto());
         }
-        return photoService.savePhoto(photo, customer);
+        return photoService.savePhoto(photo);
     }
 
     @Override
@@ -52,6 +52,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteCustomerById(Long id) {
+        Customer customer = findCustomerById(id);
+        if (customer == null) return;
+        photoService.deletePhoto(customer.getPhoto());
         customerDao.deleteById(id);
     }
 

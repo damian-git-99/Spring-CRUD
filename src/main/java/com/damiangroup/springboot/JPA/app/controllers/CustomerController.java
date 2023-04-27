@@ -94,14 +94,6 @@ public class CustomerController {
     @Secured("ROLE_ADMIN")
     @GetMapping("/deleteCustomer/{id}")
     public String deleteCustomerById(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
-        Customer customer = customerService.findCustomerById(id);
-
-        if (customer == null) {
-            flash.addFlashAttribute("error", "User Not found: ".concat(id.toString()));
-            return "redirect:/";
-        }
-
-        uploadFile.deletePhoto(customer); // todo move this to the service layer
         customerService.deleteCustomerById(id);
         flash.addFlashAttribute("success", "Customer deleted successfully");
         return "redirect:/";
