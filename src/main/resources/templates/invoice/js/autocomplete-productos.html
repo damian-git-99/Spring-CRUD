@@ -4,10 +4,10 @@
 <body>
 
 <script type="text/javascript" th:fragment="javascript">
-    document.addEventListener("DOMContentLoaded", function () {
-
+    document.addEventListener("DOMContentLoaded", function ()
+    {
         const buscarProducto = document.getElementById("buscar_producto");
-        const cargarItemProductos = document.getElementById("cargarItemProductos");
+        document.getElementById("cargarItemProductos");
 
         buscarProducto.addEventListener("input", async function () {
 
@@ -55,7 +55,7 @@
             results.forEach(function (item) {
                 const li = document.createElement("li");
                 li.innerHTML = item.label;
-                li.classList.add('list-group-item', 'list-group-item-action', 'cursor')
+                li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
                 li.setAttribute("data-value", item.value);
                 li.setAttribute("data-precio", item.precio);
                 autocompleteList.appendChild(li);
@@ -86,12 +86,14 @@
                 .replace(/{NOMBRE}/g, nombre)
                 .replace(/{PRECIO}/g, precio);
             const row = document.createElement("tr");
+            row.id = `row_${id}`
             row.innerHTML = linea;
             const table = document.querySelector("#cargarItemProductos tbody");
             table.appendChild(row);
             itemsHelper.calcularImporte(id, precio, 1);
         }
-    });
+    }
+);
 
     const itemsHelper = {
         calcularImporte: function (id, precio, cantidad) {
@@ -116,7 +118,8 @@
         },
 
         eliminarLineaFactura: function (id) {
-            document.querySelector(`#row_${id}`).remove();
+            const row = document.querySelector(`#row_${id}`)
+            row.remove()
             this.calcularGranTotal();
         },
 
