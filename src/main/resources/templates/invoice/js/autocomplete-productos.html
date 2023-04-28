@@ -4,17 +4,18 @@
 <body>
 
 <script type="text/javascript" th:fragment="javascript">
+    const buscarProducto = document.getElementById("buscar_producto");
     document.addEventListener("DOMContentLoaded", function () {
-            const buscarProducto = document.getElementById("buscar_producto");
+
             document.getElementById("cargarItemProductos");
 
             buscarProducto.addEventListener("input", async function () {
-
                 const term = this.value;
 
                 if (!term) {
                     let ac = document.getElementById("autocomplete");
                     if (ac) {
+                        // remove list if term is empty
                         ac.parentNode.removeChild(ac);
                     }
                     return;
@@ -39,96 +40,96 @@
                 }
 
             });
-
-            function autocomplete(results) {
-                let ac = document.getElementById("autocomplete");
-
-                if (ac) {
-                    ac.parentNode.removeChild(ac);
-                }
-
-                const autocompleteList = document.createElement("ul");
-                autocompleteList.id = "autocomplete";
-                autocompleteList.classList.add('list-group')
-
-                results.forEach(function (item) {
-                    const li = document.createElement("li");
-                    li.innerHTML = item.label;
-                    li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
-                    li.setAttribute("data-value", item.value);
-                    li.setAttribute("data-precio", item.precio);
-                    autocompleteList.appendChild(li);
-                });
-
-                buscarProducto.parentNode.appendChild(autocompleteList);
-
-                autocompleteList.addEventListener("click", function (event) {
-                    const productId = event.target.getAttribute("data-value");
-                    const productPrice = event.target.getAttribute("data-precio");
-                    const productName = event.target.innerHTML;
-
-                    if (itemsHelper.hasProducto(productId)) {
-                        itemsHelper.incrementaCantidad(productId, productPrice);
-                    } else {
-                        agregarLineaFactura(productId, productName, productPrice);
-                    }
-
-                    autocompleteList.parentNode.removeChild(autocompleteList);
-                    buscarProducto.value = "";
-                });
-
-            }
-
-            function agregarLineaFactura(id, nombre, precio) {
-                const lineaTemplate = document.getElementById("plantillaItemsFactura").innerHTML;
-                const linea = lineaTemplate.replace(/{ID}/g, id)
-                    .replace(/{NOMBRE}/g, nombre)
-                    .replace(/{PRECIO}/g, precio);
-                const table = document.querySelector("#cargarItemProductos tbody");
-                // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
-                table.insertAdjacentHTML('beforeend', linea);
-                itemsHelper.calcularImporte(id, precio, 1);
-            }
         }
     );
 
-    const itemsHelper = {
-        calcularImporte: function (id, precio, cantidad) {
-            document.querySelector(`#total_importe_${id}`).innerHTML = parseInt(precio) * parseInt(cantidad);
-            this.calcularGranTotal();
-        },
+    function autocomplete(results) {
+        let ac = document.getElementById("autocomplete");
 
-        hasProducto: function (id) {
-            const items = document.querySelectorAll('input[name="item_id[]"]');
-            for (let i = 0; i < items.length; i++) {
-                if (parseInt(id) === parseInt(items[i].value)) {
-                    return true;
-                }
-            }
-            return false;
-        },
-
-        incrementaCantidad: function (id, precio) {
-            let cantidad = document.querySelector(`#cantidad_${id}`).value ? parseInt(document.querySelector(`#cantidad_${id}`).value) : 0;
-            document.querySelector(`#cantidad_${id}`).value = ++cantidad;
-            this.calcularImporte(id, precio, cantidad);
-        },
-
-        eliminarLineaFactura: function (id) {
-            const row = document.querySelector(`#row_${id}`)
-            row.remove()
-            this.calcularGranTotal();
-        },
-
-        calcularGranTotal: function () {
-            let total = 0;
-            const totalImportes = document.querySelectorAll('span[id^="total_importe_"]');
-            for (let i = 0; i < totalImportes.length; i++) {
-                total += parseInt(totalImportes[i].innerHTML);
-            }
-            document.querySelector('#gran_total').innerHTML = total;
+        if (ac) {
+            // remove before list
+            ac.parentNode.removeChild(ac);
         }
-    };
+
+        const autocompleteList = document.createElement("ul");
+        autocompleteList.id = "autocomplete";
+        autocompleteList.classList.add('list-group')
+
+        results.forEach(function (item) {
+            const li = document.createElement("li");
+            li.innerHTML = item.label;
+            li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
+            li.setAttribute("data-value", item.value);
+            li.setAttribute("data-precio", item.precio);
+            autocompleteList.appendChild(li);
+        });
+
+        buscarProducto.parentNode.appendChild(autocompleteList);
+
+        autocompleteList.addEventListener("click", function (event) {
+            const productId = event.target.getAttribute("data-value");
+            const productPrice = event.target.getAttribute("data-precio");
+            const productName = event.target.innerHTML;
+
+            if (hasProducto(productId)) {
+                incrementaCantidad(productId, productPrice);
+            } else {
+                agregarLineaFactura(productId, productName, productPrice);
+            }
+
+            autocompleteList.parentNode.removeChild(autocompleteList);
+            buscarProducto.value = "";
+        });
+
+    }
+
+    function agregarLineaFactura(id, nombre, precio) {
+        const lineaTemplate = document.getElementById("plantillaItemsFactura").innerHTML;
+        const linea = lineaTemplate.replace(/{ID}/g, id)
+            .replace(/{NOMBRE}/g, nombre)
+            .replace(/{PRECIO}/g, precio);
+        const table = document.querySelector("#cargarItemProductos tbody");
+        // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
+        table.insertAdjacentHTML('beforeend', linea);
+        calcularImporte(id, precio, 1);
+    }
+
+    function calcularImporte(id, precio, cantidad) {
+        document.querySelector(`#total_importe_${id}`).innerHTML = parseInt(precio) * parseInt(cantidad);
+        this.calcularGranTotal();
+    }
+
+    function hasProducto(id) {
+        const items = document.querySelectorAll('input[name="item_id[]"]');
+        for (let i = 0; i < items.length; i++) {
+            if (parseInt(id) === parseInt(items[i].value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function incrementaCantidad(id, precio) {
+        let cantidad = document.querySelector(`#cantidad_${id}`).value ? parseInt(document.querySelector(`#cantidad_${id}`).value) : 0;
+        document.querySelector(`#cantidad_${id}`).value = ++cantidad;
+        this.calcularImporte(id, precio, cantidad);
+    }
+
+    function eliminarLineaFactura(id) {
+        const row = document.querySelector(`#row_${id}`)
+        row.remove()
+        this.calcularGranTotal();
+    }
+
+    function calcularGranTotal() {
+        let total = 0;
+        const totalImportes = document.querySelectorAll('span[id^="total_importe_"]');
+        for (let i = 0; i < totalImportes.length; i++) {
+            total += parseInt(totalImportes[i].innerHTML);
+        }
+        document.querySelector('#gran_total').innerHTML = total;
+    }
+
 </script>
 </body>
 
