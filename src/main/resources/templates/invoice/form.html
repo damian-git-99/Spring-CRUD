@@ -51,7 +51,6 @@
                                 <input class=" form-control" type="text" name="buscar_producto" id="buscar_producto">
                             </td>
 
-                            <table th:replace="invoice/plantilla-items :: itemsFactura"></table>
 
                             <table id="cargarItemProductos" class=" table table-sm table-striped table-hover">
                                 <thead>
@@ -85,6 +84,7 @@
 </div>
 
 <footer th:replace="layout/layout :: footer"></footer>
+<table th:replace="invoice/plantilla-items :: itemsFactura"></table>
 <script th:replace="invoice/js/autocomplete-productos :: javascript"></script>
 </body>
 
