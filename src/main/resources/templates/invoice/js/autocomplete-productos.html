@@ -65,8 +65,9 @@
         });
 
         buscarProducto.parentNode.appendChild(autocompleteList);
+        autocompleteList.addEventListener("click", handleClick);
 
-        autocompleteList.addEventListener("click", function (event) {
+        function handleClick(event) {
             const productId = event.target.getAttribute("data-value");
             const productPrice = event.target.getAttribute("data-precio");
             const productName = event.target.innerHTML;
@@ -79,7 +80,7 @@
 
             autocompleteList.parentNode.removeChild(autocompleteList);
             buscarProducto.value = "";
-        });
+        }
 
     }
 
