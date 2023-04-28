@@ -26,7 +26,6 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/}" tabindex="-1" aria-disabled="true">Customers</a>
                 </li>
-
             </ul>
             <ul class="navbar-nav navbar-right">
                 <li sec:authorize="not isAuthenticated()"><a class="btn  btn-primary " th:href="@{/login}">Log In</a>
@@ -54,23 +53,18 @@
     <div class="alert alert-danger" id="danger" th:if="${error != null}" th:text="${error}"></div>
     <div class="alert alert-warning " th:if="${warning != null}" th:text="${warning}"></div>
     <div class="alert alert-info " id="info" th:if="${info != null}" th:text="${info}"></div>
-    <script th:src="@{eliminarAlertas.js}"></script>
-
 </header>
-
-
-<div class="container mt-3 "></div>
 
 <footer th:fragment="footer " class="">
     <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/eliminarAlertas.js}"></script>
     <div class="container">
         <div class="row">
             <div class="col text-center text-primary">
                 <p sec:authorize="isAuthenticated()">Logged in User: <span sec:authentication="name"></span> | Roles:
-                    <span
-                            sec:authentication="principal.authorities"></span>
+                    <span sec:authentication="principal.authorities"></span>
                 </p>
             </div>
         </div>
