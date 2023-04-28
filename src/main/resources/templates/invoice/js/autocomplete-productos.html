@@ -4,96 +4,93 @@
 <body>
 
 <script type="text/javascript" th:fragment="javascript">
-    document.addEventListener("DOMContentLoaded", function ()
-    {
-        const buscarProducto = document.getElementById("buscar_producto");
-        document.getElementById("cargarItemProductos");
+    document.addEventListener("DOMContentLoaded", function () {
+            const buscarProducto = document.getElementById("buscar_producto");
+            document.getElementById("cargarItemProductos");
 
-        buscarProducto.addEventListener("input", async function () {
+            buscarProducto.addEventListener("input", async function () {
 
-            const term = this.value;
+                const term = this.value;
 
-            if (!term) {
+                if (!term) {
+                    let ac = document.getElementById("autocomplete");
+                    if (ac) {
+                        ac.parentNode.removeChild(ac);
+                    }
+                    return;
+                }
+
+                try {
+                    const response = await fetch("/invoice/products/" + term);
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok.");
+                    }
+                    const data = await response.json();
+                    const results = data.map(function (item) {
+                        return {
+                            value: item.id,
+                            label: item.productName,
+                            precio: item.price
+                        };
+                    });
+                    autocomplete(results);
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+
+            });
+
+            function autocomplete(results) {
                 let ac = document.getElementById("autocomplete");
+
                 if (ac) {
                     ac.parentNode.removeChild(ac);
                 }
-                return;
-            }
 
-            try {
-                const response = await fetch("/invoice/products/" + term);
-                if (!response.ok) {
-                    throw new Error("Network response was not ok.");
-                }
-                const data = await response.json();
-                const results = data.map(function (item) {
-                    return {
-                        value: item.id,
-                        label: item.productName,
-                        precio: item.price
-                    };
+                const autocompleteList = document.createElement("ul");
+                autocompleteList.id = "autocomplete";
+                autocompleteList.classList.add('list-group')
+
+                results.forEach(function (item) {
+                    const li = document.createElement("li");
+                    li.innerHTML = item.label;
+                    li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
+                    li.setAttribute("data-value", item.value);
+                    li.setAttribute("data-precio", item.precio);
+                    autocompleteList.appendChild(li);
                 });
-                autocomplete(results);
-            } catch (error) {
-                console.error("Error fetching products:", error);
+
+                buscarProducto.parentNode.appendChild(autocompleteList);
+
+                autocompleteList.addEventListener("click", function (event) {
+                    const productId = event.target.getAttribute("data-value");
+                    const productPrice = event.target.getAttribute("data-precio");
+                    const productName = event.target.innerHTML;
+
+                    if (itemsHelper.hasProducto(productId)) {
+                        itemsHelper.incrementaCantidad(productId, productPrice);
+                    } else {
+                        agregarLineaFactura(productId, productName, productPrice);
+                    }
+
+                    autocompleteList.parentNode.removeChild(autocompleteList);
+                    buscarProducto.value = "";
+                });
+
             }
 
-        });
-
-        function autocomplete(results) {
-            let ac = document.getElementById("autocomplete");
-
-            if (ac) {
-                ac.parentNode.removeChild(ac);
+            function agregarLineaFactura(id, nombre, precio) {
+                const lineaTemplate = document.getElementById("plantillaItemsFactura").innerHTML;
+                const linea = lineaTemplate.replace(/{ID}/g, id)
+                    .replace(/{NOMBRE}/g, nombre)
+                    .replace(/{PRECIO}/g, precio);
+                const table = document.querySelector("#cargarItemProductos tbody");
+                // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
+                table.insertAdjacentHTML('beforeend', linea);
+                itemsHelper.calcularImporte(id, precio, 1);
             }
-
-            const autocompleteList = document.createElement("ul");
-            autocompleteList.id = "autocomplete";
-            autocompleteList.classList.add('list-group')
-
-            results.forEach(function (item) {
-                const li = document.createElement("li");
-                li.innerHTML = item.label;
-                li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
-                li.setAttribute("data-value", item.value);
-                li.setAttribute("data-precio", item.precio);
-                autocompleteList.appendChild(li);
-            });
-
-            buscarProducto.parentNode.appendChild(autocompleteList);
-
-            autocompleteList.addEventListener("click", function (event) {
-                const productId = event.target.getAttribute("data-value");
-                const productPrice = event.target.getAttribute("data-precio");
-                const productName = event.target.innerHTML;
-
-                if (itemsHelper.hasProducto(productId)) {
-                    itemsHelper.incrementaCantidad(productId, productPrice);
-                } else {
-                    agregarLineaFactura(productId, productName, productPrice);
-                }
-
-                autocompleteList.parentNode.removeChild(autocompleteList);
-                buscarProducto.value = "";
-            });
-
         }
-
-        function agregarLineaFactura(id, nombre, precio) {
-            const lineaTemplate = document.getElementById("plantillaItemsFactura").innerHTML;
-            const linea = lineaTemplate.replace(/{ID}/g, id)
-                .replace(/{NOMBRE}/g, nombre)
-                .replace(/{PRECIO}/g, precio);
-            const row = document.createElement("tr");
-            row.id = `row_${id}`
-            row.innerHTML = linea;
-            const table = document.querySelector("#cargarItemProductos tbody");
-            table.appendChild(row);
-            itemsHelper.calcularImporte(id, precio, 1);
-        }
-    }
-);
+    );
 
     const itemsHelper = {
         calcularImporte: function (id, precio, cantidad) {
