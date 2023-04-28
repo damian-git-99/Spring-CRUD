@@ -9,10 +9,10 @@
         <td>{NOMBRE}</td>
         <td>{PRECIO}</td>
         <td><input type="number" value="1" name="cantidad[]" id="cantidad_{ID}" class="form-control col-sm-4"
-                   onchange="calcularImporte({ID},{PRECIO},this.value)">
+                   onchange="calculateAmount({ID},{PRECIO},this.value)">
         </td>
-        <td><span id="total_importe_{ID}">0</span></td>
-        <td><a href="#" class="btn btn-danger btn-sm" onclick="eliminarLineaFactura({ID})">X</a></td>
+        <td><span id="subtotal_{ID}">0</span></td>
+        <td><a href="#" class="btn btn-danger btn-sm" onclick="deleteInvoiceLine({ID})">X</a></td>
     </tr>
     </tbody>
 </table>

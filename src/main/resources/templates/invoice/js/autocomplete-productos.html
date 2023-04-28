@@ -4,12 +4,12 @@
 <body>
 
 <script type="text/javascript" th:fragment="javascript">
-    const buscarProducto = document.getElementById("buscar_producto");
+    const findProduct = document.getElementById("buscar_producto");
     document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("cargarItemProductos");
 
-            buscarProducto.addEventListener("input", async function () {
+            findProduct.addEventListener("input", async function () {
                 const term = this.value;
 
                 if (!term) {
@@ -64,7 +64,7 @@
             autocompleteList.appendChild(li);
         });
 
-        buscarProducto.parentNode.appendChild(autocompleteList);
+        findProduct.parentNode.appendChild(autocompleteList);
         autocompleteList.addEventListener("click", handleClick);
 
         function handleClick(event) {
@@ -72,35 +72,35 @@
             const productPrice = event.target.getAttribute("data-precio");
             const productName = event.target.innerHTML;
 
-            if (hasProducto(productId)) {
-                incrementaCantidad(productId, productPrice);
+            if (hasProduct(productId)) {
+                increaseQuantity(productId, productPrice);
             } else {
-                agregarLineaFactura(productId, productName, productPrice);
+                addInvoiceLine(productId, productName, productPrice);
             }
 
             autocompleteList.parentNode.removeChild(autocompleteList);
-            buscarProducto.value = "";
+            findProduct.value = "";
         }
 
     }
 
-    function agregarLineaFactura(id, nombre, precio) {
-        const lineaTemplate = document.getElementById("plantillaItemsFactura").innerHTML;
-        const linea = lineaTemplate.replace(/{ID}/g, id)
+    function addInvoiceLine(id, nombre, precio) {
+        const templateLine = document.getElementById("plantillaItemsFactura").innerHTML;
+        const line = templateLine.replace(/{ID}/g, id)
             .replace(/{NOMBRE}/g, nombre)
             .replace(/{PRECIO}/g, precio);
         const table = document.querySelector("#cargarItemProductos tbody");
         // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
-        table.insertAdjacentHTML('beforeend', linea);
-        calcularImporte(id, precio, 1);
+        table.insertAdjacentHTML('beforeend', line);
+        calculateAmount(id, precio, 1);
     }
 
-    function calcularImporte(id, precio, cantidad) {
-        document.querySelector(`#total_importe_${id}`).innerHTML = parseInt(precio) * parseInt(cantidad);
-        this.calcularGranTotal();
+    function calculateAmount(id, precio, cantidad) {
+        document.querySelector(`#subtotal_${id}`).innerHTML = parseInt(precio) * parseInt(cantidad);
+        this.calculateTotal();
     }
 
-    function hasProducto(id) {
+    function hasProduct(id) {
         const items = document.querySelectorAll('input[name="item_id[]"]');
         for (let i = 0; i < items.length; i++) {
             if (parseInt(id) === parseInt(items[i].value)) {
@@ -110,25 +110,25 @@
         return false;
     }
 
-    function incrementaCantidad(id, precio) {
-        let cantidad = document.querySelector(`#cantidad_${id}`).value ? parseInt(document.querySelector(`#cantidad_${id}`).value) : 0;
-        document.querySelector(`#cantidad_${id}`).value = ++cantidad;
-        this.calcularImporte(id, precio, cantidad);
+    function increaseQuantity(id, precio) {
+        let quantity = document.querySelector(`#cantidad_${id}`).value ? parseInt(document.querySelector(`#cantidad_${id}`).value) : 0;
+        document.querySelector(`#cantidad_${id}`).value = ++quantity;
+        this.calculateAmount(id, precio, quantity);
     }
 
-    function eliminarLineaFactura(id) {
+    function deleteInvoiceLine(id) {
         const row = document.querySelector(`#row_${id}`)
         row.remove()
-        this.calcularGranTotal();
+        this.calculateTotal();
     }
 
-    function calcularGranTotal() {
+    function calculateTotal() {
         let total = 0;
-        const totalImportes = document.querySelectorAll('span[id^="total_importe_"]');
-        for (let i = 0; i < totalImportes.length; i++) {
-            total += parseInt(totalImportes[i].innerHTML);
+        const subtotals = document.querySelectorAll('span[id^="subtotal_"]');
+        for (let i = 0; i < subtotals.length; i++) {
+            total += parseInt(subtotals[i].innerHTML);
         }
-        document.querySelector('#gran_total').innerHTML = total;
+        document.querySelector('#total').innerHTML = total;
     }
 
 </script>
