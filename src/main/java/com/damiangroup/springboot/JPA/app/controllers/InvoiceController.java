@@ -109,7 +109,7 @@ public class InvoiceController {
 
         invoiceService.deleteInvoiceById(id);
         flash.addFlashAttribute("success", "Invoice deleted successfully");
-        return "redirect:/customerDetails/" + invoice.getId();
+        return "redirect:/customerDetails/" + invoice.getCustomer().getId();
     }
 
     @GetMapping(value = "/products/{term}", produces = {"application/json"})
