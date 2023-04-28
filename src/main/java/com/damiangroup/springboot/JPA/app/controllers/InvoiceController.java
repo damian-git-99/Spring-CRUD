@@ -1,5 +1,6 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -61,7 +62,6 @@ public class InvoiceController {
                                     RedirectAttributes flash,
                                     SessionStatus status,
                                     Model model) {
-
         if (result.hasErrors()) {
             model.addAttribute("title", "Create Invoice");
             model.addAttribute("invoice", invoice);
