@@ -1,6 +1,5 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -57,8 +56,8 @@ public class InvoiceController {
 
     @PostMapping("/invoiceForm")
     public String createInvoicePost(@Valid Invoice invoice, BindingResult result,
-                                    @RequestParam(name = "item_id[]", required = false) Long[] itemId,
-                                    @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
+                                    @RequestParam(name = "item_id[]", required = true) Long[] itemId,
+                                    @RequestParam(name = "quantity[]", required = true) Integer[] quantity,
                                     RedirectAttributes flash,
                                     SessionStatus status,
                                     Model model) {
@@ -76,7 +75,7 @@ public class InvoiceController {
 
         for (int i = 0; i < itemId.length; i++) {
             Product product = invoiceService.findProductById(itemId[i]);
-            InvoiceItem invoiceItem = new InvoiceItem(cantidad[i], product);
+            InvoiceItem invoiceItem = new InvoiceItem(quantity[i], product);
             invoice.addItemFactura(invoiceItem);
         }
 
