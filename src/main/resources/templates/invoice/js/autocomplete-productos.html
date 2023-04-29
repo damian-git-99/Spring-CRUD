@@ -108,8 +108,8 @@
     }
 
     function increaseQuantity(id, price) {
-        let quantity = document.querySelector(`#quantity${id}`).value ? parseInt(document.querySelector(`#cantidad_${id}`).value) : 0;
-        document.querySelector(`#cantidad_${id}`).value = ++quantity;
+        let quantity = document.querySelector(`#quantity_${id}`).value ? parseInt(document.querySelector(`#quantity_${id}`).value) : 0;
+        document.querySelector(`#quantity_${id}`).value = ++quantity;
         this.calculateAmount(id, price, quantity);
     }
 
