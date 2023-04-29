@@ -57,7 +57,7 @@
             li.innerHTML = item.label;
             li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
             li.setAttribute("data-value", item.value);
-            li.setAttribute("data-precio", item.precio);
+            li.setAttribute("data-price", item.precio);
             autocompleteList.appendChild(li);
         });
 
@@ -66,7 +66,7 @@
 
         function handleClick(event) {
             const productId = event.target.getAttribute("data-value");
-            const productPrice = event.target.getAttribute("data-precio");
+            const productPrice = event.target.getAttribute("data-price");
             const productName = event.target.innerHTML;
 
             if (hasProduct(productId)) {
