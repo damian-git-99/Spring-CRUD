@@ -56,8 +56,8 @@ public class InvoiceController {
 
     @PostMapping("/invoiceForm")
     public String createInvoicePost(@Valid Invoice invoice, BindingResult result,
-                                    @RequestParam(name = "item_id[]", required = true) Long[] itemId,
-                                    @RequestParam(name = "quantity[]", required = true) Integer[] quantity,
+                                    @RequestParam(name = "item_id[]") Long[] itemId,
+                                    @RequestParam(name = "quantity[]") Integer[] quantity,
                                     RedirectAttributes flash,
                                     SessionStatus status,
                                     Model model) {
