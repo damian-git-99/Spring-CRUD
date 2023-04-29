@@ -1,37 +1,29 @@
 package com.damiangroup.springboot.JPA.app.util.paginator;
-/**
- * Se encarga de ir guardando los diferentes pages del paginador
- * 
- */
-
 
 public class PageItem {
     
-    private int numero;
-    private boolean actual;
+    private int number;
+    private boolean current;
 
-    public PageItem(int numero, boolean actual) {
-        this.numero = numero;
-        this.actual = actual;
+    public PageItem(int number, boolean current) {
+        this.number = number;
+        this.current = current;
     }
 
-    public int getNumero() {
-        return numero;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public boolean isActual() {
-        return actual;
+    public boolean isCurrent() {
+        return current;
     }
 
-    public void setActual(boolean actual) {
-        this.actual = actual;
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
-    
-
-    
 }

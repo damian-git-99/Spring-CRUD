@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<script type="text/javascript" th:fragment="javascript">
+    const findProduct = document.getElementById("buscar_producto");
+    document.addEventListener("DOMContentLoaded", function () {
+            findProduct.addEventListener("input", async function () {
+                const term = this.value;
+
+                if (!term) {
+                    let ac = document.getElementById("autocomplete");
+                    if (ac) {
+                        // remove list if term is empty
+                        ac.parentNode.removeChild(ac);
+                    }
+                    return;
+                }
+
+                try {
+                    const response = await fetch("/invoice/products/" + term);
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok.");
+                    }
+                    const data = await response.json();
+                    const results = data.map(function (item) {
+                        return {
+                            value: item.id,
+                            label: item.productName,
+                            precio: item.price
+                        };
+                    });
+                    autocomplete(results);
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+
+            });
+        }
+    );
+
+    function autocomplete(results) {
+        let ac = document.getElementById("autocomplete");
+
+        if (ac) {
+            // remove before list
+            ac.parentNode.removeChild(ac);
+        }
+
+        const autocompleteList = document.createElement("ul");
+        autocompleteList.id = "autocomplete";
+        autocompleteList.classList.add('list-group')
+
+        results.forEach(function (item) {
+            const li = document.createElement("li");
+            li.innerHTML = item.label;
+            li.classList.add('list-group-item', 'list-group-item-action', 'pointer')
+            li.setAttribute("data-value", item.value);
+            li.setAttribute("data-price", item.precio);
+            autocompleteList.appendChild(li);
+        });
+
+        findProduct.parentNode.appendChild(autocompleteList);
+        autocompleteList.addEventListener("click", handleClick);
+
+        function handleClick(event) {
+            const productId = event.target.getAttribute("data-value");
+            const productPrice = event.target.getAttribute("data-price");
+            const productName = event.target.innerHTML;
+
+            if (hasProduct(productId)) {
+                increaseQuantity(productId, productPrice);
+            } else {
+                addInvoiceLine(productId, productName, productPrice);
+            }
+
+            autocompleteList.parentNode.removeChild(autocompleteList);
+            findProduct.value = "";
+        }
+
+    }
+
+    function addInvoiceLine(id, productName, price) {
+        const templateLine = document.getElementById("templateItemsInvoice").innerHTML;
+        const line = templateLine.replace(/{ID}/g, id)
+            .replace(/{NAME}/g, productName)
+            .replace(/{PRICE}/g, price);
+        const table = document.querySelector("#loadItemProducts tbody");
+        // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
+        table.insertAdjacentHTML('beforeend', line);
+        calculateAmount(id, price, 1);
+    }
+
+    function calculateAmount(id, price, quantity) {
+        document.querySelector(`#subtotal_${id}`).innerHTML = parseInt(price) * parseInt(quantity);
+        this.calculateTotal();
+    }
+
+    function hasProduct(id) {
+        const items = document.querySelectorAll('input[name="item_id[]"]');
+        for (let i = 0; i < items.length; i++) {
+            if (parseInt(id) === parseInt(items[i].value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function increaseQuantity(id, price) {
+        let quantity = document.querySelector(`#quantity_${id}`).value ? parseInt(document.querySelector(`#quantity_${id}`).value) : 0;
+        document.querySelector(`#quantity_${id}`).value = ++quantity;
+        this.calculateAmount(id, price, quantity);
+    }
+
+    function deleteInvoiceLine(id) {
+        const row = document.querySelector(`#row_${id}`)
+        row.remove()
+        this.calculateTotal();
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        const subtotals = document.querySelectorAll('span[id^="subtotal_"]');
+        for (let i = 0; i < subtotals.length; i++) {
+            total += parseInt(subtotals[i].innerHTML);
+        }
+        document.querySelector('#total').innerHTML = total;
+    }
+
+</script>
+</body>
+
+</html>

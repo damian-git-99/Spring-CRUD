@@ -2,56 +2,67 @@ package com.damiangroup.springboot.JPA.app.util.paginator;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.data.domain.Page;
 
+/**
+ * The PageRender class represents a pagination object that is used to render a list of items in a web page.
+ * It takes in a Page object containing the list of items and renders it using the specified URL.
+ * The class also calculates the page numbers to be displayed in the pagination based on the current page and the total number of pages.
+ * The PageItem class represents a single page number in the pagination, along with a boolean flag indicating if it is the current page.
+ */
 public class PageRender<T> {
 
     private String url;
     private Page<T> page;
-    private int totalPaginas;
-    private int numeroElementosPorPagina;
-    private int paginaActual;
-    private List<PageItem> paginas;
+    private int totalPages;
+    private int elementsPerPage;
+    private int currentPage;
+    private List<PageItem> pages;
 
     public PageRender(String url, Page<T> page) {
 
         this.url = url;
         this.page = page;
-        this.paginas = new ArrayList<>();
-        this.numeroElementosPorPagina = page.getSize();
-        this.totalPaginas = page.getTotalPages();
-        this.paginaActual = page.getNumber() + 1;
+        this.pages = new ArrayList<>();
+        this.elementsPerPage = page.getSize();
+        this.totalPages = page.getTotalPages();
+        this.currentPage = page.getNumber() + 1;
+        int from, pageItem;
 
-        int desde, hasta;
-        /**
-         * 
-         * Calcula desde donde se va a empezar ha mostrar el paginador y hasta donde
-         * terminar
-         * 
-         */
-        if (totalPaginas <= numeroElementosPorPagina) {
-            desde = 1;
-            hasta = totalPaginas;
+        // Calculates where pageItem start displaying the paginator and where pageItem end.
+        if (totalPages <= elementsPerPage) {
+            // Case 1: There are fewer pages than elements per page.
+            // All pages are shown.
+            from = 1;
+            pageItem = totalPages;
         } else {
-            if (paginaActual <= numeroElementosPorPagina / 2) {
-                desde = 1;
-                hasta = numeroElementosPorPagina;
-            } else if (paginaActual >= totalPaginas - numeroElementosPorPagina / 2) {
-                desde = totalPaginas - numeroElementosPorPagina + 1;
-                hasta = numeroElementosPorPagina;
+            pageItem = elementsPerPage;
+            // Case 2: There are more pages than elements per page.
+            // A subset of the pages is shown.
+
+            // First, calculate the range of pages pageItem be shown.
+            int half = elementsPerPage / 2;
+            int remainingPages = totalPages - currentPage;
+
+            if (currentPage <= half) {
+                // Case 2.1: The current page is near the beginning.
+                // The first 'elementsPerPage' pages are shown.
+                from = 1;
+            } else if (remainingPages <= half) {
+                // Case 2.2: The current page is near the end.
+                // The last 'elementsPerPage' pages are shown.
+                from = totalPages - elementsPerPage + 1;
             } else {
-                desde = paginaActual - numeroElementosPorPagina / 2;
-                hasta = numeroElementosPorPagina;
+                // Case 2.3: The current page is in the middle.
+                // 'elementsPerPage' pages are shown around the current page.
+                from = currentPage - half;
             }
         }
 
-        /**
-         * Guarda los diferentes numeros de paginas que tiene el paginador para despues
-         * poder imprimirlos la vista
-         * 
-         */
-        for (int i = 0; i < hasta; i++) {
-            paginas.add(new PageItem(desde + i, paginaActual == desde + i));
+        // Saves the different page numbers that the paginator has, so that they can be printed in the view later.
+        for (int i = 0; i < pageItem; i++) {
+            pages.add(new PageItem(from + i, currentPage == from + i));
         }
 
     }
@@ -72,36 +83,36 @@ public class PageRender<T> {
         this.page = page;
     }
 
-    public int getTotalPaginas() {
-        return totalPaginas;
+    public int getTotalPages() {
+        return totalPages;
     }
 
-    public void setTotalPaginas(int totalPaginas) {
-        this.totalPaginas = totalPaginas;
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 
-    public int getNumeroElementosPorPagina() {
-        return numeroElementosPorPagina;
+    public int getElementsPerPage() {
+        return elementsPerPage;
     }
 
-    public void setNumeroElementosPorPagina(int numeroElementosPorPagina) {
-        this.numeroElementosPorPagina = numeroElementosPorPagina;
+    public void setElementsPerPage(int elementsPerPage) {
+        this.elementsPerPage = elementsPerPage;
     }
 
-    public int getPaginaActual() {
-        return paginaActual;
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public void setPaginaActual(int paginaActual) {
-        this.paginaActual = paginaActual;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
-    public List<PageItem> getPaginas() {
-        return paginas;
+    public List<PageItem> getPages() {
+        return pages;
     }
 
-    public void setPaginas(List<PageItem> paginas) {
-        this.paginas = paginas;
+    public void setPages(List<PageItem> pages) {
+        this.pages = pages;
     }
 
     public boolean isFirst() {

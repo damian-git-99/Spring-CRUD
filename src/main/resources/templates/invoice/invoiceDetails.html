@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+<header th:replace="layout/layout :: header"></header>
+<div class=" container py-4">
+    <div class=" card bg-light">
+        <div class=" card-header" th:text="${title}"></div>
+        <div class=" card-body">
+            <h4 class=" card-title">
+                <a th:href="@{'/customerDetails/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
+                        class="fas fa-long-arrow-alt-left"></i> Return Back</a>
+            </h4>
+            <ul class=" list-group my-2">
+                <li class=" list-group-item list-group-item-primary" th:text="'Customer info'"></li>
+                <li class="list-group-item" th:text="${invoice.customer}"></li>
+                <li class="list-group-item" th:text="'Email: '+${invoice.customer.email}"></li>
+            </ul>
+            <ul class=" list-group">
+                <li class=" list-group-item list-group-item-success" th:text="'Invoice info'"></li>
+                <li class="list-group-item" th:text="'ID: '+${invoice.id}"></li>
+                <li class="list-group-item" th:text="'Description: '+${invoice.description}"></li>
+                <li class="list-group-item" th:text="'Date: '+${invoice.createAt}"></li>
+            </ul>
+            <table class=" table table-striped table-hover table-bordered my-3">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>SubTotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${invoice.invoiceItems}">
+                    <td th:text="${item.producto.productName}"></td>
+                    <td th:text="${item.producto.price}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.calculateAmount()}"></td>
+                </tr>
+                </tbody>
+
+            </table>
+            <h5><span class=" badge badge-secondary float-right" th:text="'Total: '+${invoice.granTotal()}"></span></h5>
+            <div class=" card border-info mb-4" style="max-width: 20rem;">
+                <div class=" card-header">Observations</div>
+                <div class=" card-body">
+                    <p th:if="${ not #strings.isEmpty(invoice.observation)}" th:text="${invoice.observation} "
+                       class=" card-text"></p>
+                    <h4 th:if="${#strings.isEmpty(invoice.observation)}">has no observations</h4>
+                </div>
+
+            </div>
+            <h4 class=" card-title">
+                <a th:href="@{'/customerDetails/'+ ${invoice.customer.id}}" class=" btn btn-light"><i
+                        class="fas fa-long-arrow-alt-left"></i>Return Back</a>
+            </h4>
+        </div>
+    </div>
+</div>
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>
