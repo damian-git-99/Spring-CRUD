@@ -84,8 +84,8 @@
     function addInvoiceLine(id, productName, price) {
         const templateLine = document.getElementById("templateItemsInvoice").innerHTML;
         const line = templateLine.replace(/{ID}/g, id)
-            .replace(/{NOMBRE}/g, productName)
-            .replace(/{PRECIO}/g, price);
+            .replace(/{NAME}/g, productName)
+            .replace(/{PRICE}/g, price);
         const table = document.querySelector("#loadItemProducts tbody");
         // insertAdjacentHTML parses the specified text as HTML. beforeend = Just inside the element, after its last child.
         table.insertAdjacentHTML('beforeend', line);
