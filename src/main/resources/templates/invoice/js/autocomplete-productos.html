@@ -6,9 +6,6 @@
 <script type="text/javascript" th:fragment="javascript">
     const findProduct = document.getElementById("buscar_producto");
     document.addEventListener("DOMContentLoaded", function () {
-
-            document.getElementById("cargarItemProductos");
-
             findProduct.addEventListener("input", async function () {
                 const term = this.value;
 
