@@ -1,7 +1,6 @@
 package com.damiangroup.springboot.JPA.app.controllers;
 
 import com.damiangroup.springboot.JPA.app.config.LoginSuccessHandler;
-import com.damiangroup.springboot.JPA.app.config.SpringSecurityConfig;
 import com.damiangroup.springboot.JPA.app.models.Customer;
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
 import org.junit.jupiter.api.Nested;
@@ -9,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -26,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(CustomerController.class)
-@Import(SpringSecurityConfig.class)
 class CustomerControllerTest {
 
     @Autowired
@@ -91,18 +89,15 @@ class CustomerControllerTest {
                     .id(1L)
                     .name("John Doe")
                     .build();
-            // Mock the customerService to return a page of customers
             Page<Customer> customers = new PageImpl<>(Collections.singletonList(customer));
             when(customerService.findAllCustomers(any(PageRequest.class))).thenReturn(customers);
 
-            // Perform the GET request to the home endpoint
             mockMvc.perform(get("/"))
                     .andExpect(status().isOk())
                     .andExpect(view().name("home"))
                     .andExpect(model().attributeExists("page"))
                     .andExpect(model().attributeExists("customers"));
 
-            // Verify that the customerService was called with the correct arguments
             verify(customerService).findAllCustomers(PageRequest.of(0, 5));
         }
 
@@ -115,15 +110,33 @@ class CustomerControllerTest {
             Page<Customer> customers = new PageImpl<>(Collections.singletonList(customer));
             when(customerService.findAllCustomers(any(PageRequest.class))).thenReturn(customers);
 
-            // Perform the GET request to the home endpoint with a custom page parameter
             mockMvc.perform(get("/?page=2"))
                     .andExpect(status().isOk())
                     .andExpect(view().name("home"))
                     .andExpect(model().attributeExists("page"))
                     .andExpect(model().attributeExists("customers"));
 
-            // Verify that the customerService was called with the correct arguments
             verify(customerService).findAllCustomers(PageRequest.of(2, 5));
+        }
+    }
+
+    @Nested
+    class CreateCustomerForm {
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        public void testCreateCustomerForm() throws Exception {
+            mockMvc.perform(get("/customerForm"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("customer/customerForm"))
+                    .andExpect(model().attributeExists("customer"))
+                    .andExpect(model().attributeExists("title"));
+        }
+
+        @Test
+        @WithMockUser(roles = "USER")
+        public void testCreateCustomerFormWithUserRole() throws Exception {
+            mockMvc.perform(get("/customerForm"))
+                    .andExpect(status().isForbidden());
         }
     }
 
