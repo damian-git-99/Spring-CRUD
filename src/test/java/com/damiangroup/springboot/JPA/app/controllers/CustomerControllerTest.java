@@ -140,4 +140,43 @@ class CustomerControllerTest {
         }
     }
 
+    @Nested
+    class EditCustomerForm {
+        @Test
+        @WithMockUser(roles="ADMIN")
+        public void shouldEditCustomerFormAndReturnForm() throws Exception {
+            Customer customer = new Customer();
+            customer.setId(1L);
+            customer.setName("John Doe");
+            customer.setEmail("john.doe@example.com");
+
+            when(customerService.findCustomerById(1L)).thenReturn(customer);
+
+            mockMvc.perform(get("/customerForm/{id}", 1L))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("customer/customerForm"))
+                    .andExpect(model().attributeExists("customer"))
+                    .andExpect(model().attributeExists("title"));
+        }
+
+        @Test
+        @WithMockUser(roles="ADMIN")
+        public void shouldRedirectToHomePageWithErrorWhenCustomerNotFound() throws Exception {
+            when(customerService.findCustomerById(1L)).thenReturn(null);
+
+            mockMvc.perform(get("/customerForm/{id}", 1L))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(flash().attributeExists("error"))
+                    .andExpect(flash().attribute("error", "User Not found"))
+                    .andExpect(redirectedUrl("/"));
+        }
+
+        @Test
+        @WithMockUser(roles="USER")
+        public void shouldNotEditCustomerFormWithUserRole() throws Exception {
+            mockMvc.perform(get("/customerForm/{id}", 1L))
+                    .andExpect(status().isForbidden());
+        }
+    }
+
 }
