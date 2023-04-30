@@ -39,14 +39,18 @@ class CustomerControllerTest {
     @MockBean
     private CustomerService customerService;
 
+    public Customer createCustomer() {
+        return Customer.builder()
+                .id(1L)
+                .name("John Doe")
+                .build();
+    }
+
     @Nested
     class CustomerDetailsTests {
         @Test
         public void testCustomerDetailsPage() throws Exception {
-            Customer customer = Customer.builder()
-                    .id(1L)
-                    .name("John Doe")
-                    .build();
+            Customer customer = createCustomer();
             when(customerService.findCustomerById(1L)).thenReturn(customer);
             mockMvc.perform(get("/customerDetails/{id}", 1L))
                     .andExpect(status().isOk())
@@ -71,10 +75,7 @@ class CustomerControllerTest {
 
         @Test
         public void testCustomerDetailsName() throws Exception {
-            Customer customer = Customer.builder()
-                    .id(1L)
-                    .name("John Doe")
-                    .build();
+            Customer customer = createCustomer();
             when(customerService.findCustomerById(1L)).thenReturn(customer);
             mockMvc.perform(get("/customerDetails/{id}", 1L))
                     .andExpect(model().attribute("title", "Customer Details: John Doe"));
@@ -85,10 +86,8 @@ class CustomerControllerTest {
     class HomeTests {
         @Test
         public void testHome() throws Exception {
-            Customer customer = Customer.builder()
-                    .id(1L)
-                    .name("John Doe")
-                    .build();
+            Customer customer = createCustomer();
+            ;
             Page<Customer> customers = new PageImpl<>(Collections.singletonList(customer));
             when(customerService.findAllCustomers(any(PageRequest.class))).thenReturn(customers);
 
@@ -103,10 +102,7 @@ class CustomerControllerTest {
 
         @Test
         public void testHomeWithCustomPage() throws Exception {
-            Customer customer = Customer.builder()
-                    .id(1L)
-                    .name("John Doe")
-                    .build();
+            Customer customer = createCustomer();
             Page<Customer> customers = new PageImpl<>(Collections.singletonList(customer));
             when(customerService.findAllCustomers(any(PageRequest.class))).thenReturn(customers);
 
@@ -143,12 +139,9 @@ class CustomerControllerTest {
     @Nested
     class EditCustomerForm {
         @Test
-        @WithMockUser(roles="ADMIN")
+        @WithMockUser(roles = "ADMIN")
         public void shouldEditCustomerFormAndReturnForm() throws Exception {
-            Customer customer = new Customer();
-            customer.setId(1L);
-            customer.setName("John Doe");
-            customer.setEmail("john.doe@example.com");
+            Customer customer = createCustomer();
 
             when(customerService.findCustomerById(1L)).thenReturn(customer);
 
@@ -160,7 +153,7 @@ class CustomerControllerTest {
         }
 
         @Test
-        @WithMockUser(roles="ADMIN")
+        @WithMockUser(roles = "ADMIN")
         public void shouldRedirectToHomePageWithErrorWhenCustomerNotFound() throws Exception {
             when(customerService.findCustomerById(1L)).thenReturn(null);
 
@@ -172,7 +165,7 @@ class CustomerControllerTest {
         }
 
         @Test
-        @WithMockUser(roles="USER")
+        @WithMockUser(roles = "USER")
         public void shouldNotEditCustomerFormWithUserRole() throws Exception {
             mockMvc.perform(get("/customerForm/{id}", 1L))
                     .andExpect(status().isForbidden());
