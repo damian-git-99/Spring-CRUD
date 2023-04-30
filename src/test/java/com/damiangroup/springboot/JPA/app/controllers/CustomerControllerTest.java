@@ -11,16 +11,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.Date;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -170,6 +173,64 @@ class CustomerControllerTest {
             mockMvc.perform(get("/customerForm/{id}", 1L))
                     .andExpect(status().isForbidden());
         }
+    }
+
+    @Nested
+    class CreateOrEditCustomer {
+
+        @Test
+        @WithMockUser(roles="ADMIN")
+        public void shouldCreateCustomerAndRedirectToHomePageWithSuccessMessage() throws Exception {
+            Customer customer = new Customer();
+            customer.setName("John");
+            customer.setLastName("Doe");
+            customer.setEmail("john.doe@example.com");
+            customer.setCreateAt(new Date());
+            MockMultipartFile file = new MockMultipartFile("file", "file.jpg", "image/jpeg", new byte[0]);
+
+            mockMvc.perform(multipart("/customerForm")
+                            .file(file)
+                            .param("name", customer.getName())
+                            .param("email", customer.getEmail())
+                            .param("lastName", customer.getLastName())
+                            // we have to attach a valid token to the request or it will fail with 403 error
+                            .with(csrf()))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(flash().attributeExists("success"))
+                    .andExpect(flash().attribute("success", "Customer created successfully"))
+                    .andExpect(redirectedUrl("/"));
+
+            verify(customerService).saveCustomer(any(Customer.class), any());
+        }
+
+        @Test
+        @WithMockUser(roles="ADMIN")
+        public void shouldReturnCustomerFormWhenValidationErrorsOccur() throws Exception {
+            Customer customer = new Customer();
+            customer.setName("");
+            customer.setEmail("invalid-email");
+
+            MockMultipartFile file = new MockMultipartFile("file", "file.jpg", "image/jpeg", new byte[0]);
+
+            mockMvc.perform(multipart("/customerForm")
+                            .file(file)
+                            .param("name", customer.getName())
+                            .param("email", customer.getEmail())
+                            // we have to attach a valid token to the request or it will fail with 403 error
+                            .with(csrf()))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("customer/customerForm"))
+                    .andExpect(model().attributeExists("customer"))
+                    .andExpect(model().attributeHasFieldErrors("customer", "name", "email"));
+        }
+
+        @Test
+        @WithMockUser(roles="USER")
+        public void shouldNotCreateCustomerWithUserRole() throws Exception {
+            mockMvc.perform(post("/customerForm"))
+                    .andExpect(status().isForbidden());
+        }
+
     }
 
 }
