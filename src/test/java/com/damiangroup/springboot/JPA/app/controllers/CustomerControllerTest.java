@@ -21,8 +21,7 @@ import java.util.Date;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -231,6 +230,30 @@ class CustomerControllerTest {
                     .andExpect(status().isForbidden());
         }
 
+    }
+
+    @Nested
+    class DeleteCustomerById {
+        @Test
+        @WithMockUser(roles="ADMIN")
+        public void shouldDeleteCustomerByIdAndRedirectToHomePageWithSuccessMessage() throws Exception {
+            Long customerId = 1L;
+            mockMvc.perform(get("/deleteCustomer/{id}", customerId))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(flash().attributeExists("success"))
+                    .andExpect(flash().attribute("success", "Customer deleted successfully"))
+                    .andExpect(redirectedUrl("/"));
+            verify(customerService, times(1)).deleteCustomerById(customerId);
+        }
+
+        @Test
+        @WithMockUser(roles="USER")
+        public void shouldNotDeleteCustomerByIdWithUserRole() throws Exception {
+            Long customerId = 1L;
+            mockMvc.perform(get("/deleteCustomer/{id}", customerId))
+                    .andExpect(status().isForbidden());
+            verify(customerService, never()).deleteCustomerById(customerId);
+        }
     }
 
 }
