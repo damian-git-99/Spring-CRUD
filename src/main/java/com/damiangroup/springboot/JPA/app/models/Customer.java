@@ -54,6 +54,7 @@ public class Customer implements Serializable {
 
     public Customer() {
         invoices = new ArrayList<>();
+        photo = "";
     }
 
     public Long getId() {

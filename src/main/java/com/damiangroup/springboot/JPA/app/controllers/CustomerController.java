@@ -2,6 +2,7 @@ package com.damiangroup.springboot.JPA.app.controllers;
 
 import javax.validation.Valid;
 
+import com.damiangroup.springboot.JPA.app.config.LoginSuccessHandler;
 import com.damiangroup.springboot.JPA.app.services.CustomerService;
 import com.damiangroup.springboot.JPA.app.models.Customer;
 import com.damiangroup.springboot.JPA.app.util.paginator.PageRender;
