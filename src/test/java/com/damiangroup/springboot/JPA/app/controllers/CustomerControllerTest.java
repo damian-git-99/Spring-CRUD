@@ -35,7 +35,10 @@ class CustomerControllerTest {
 
     @Test
     public void testCustomerDetailsPage() throws Exception {
-        Customer customer = new Customer();
+        Customer customer = Customer.builder()
+                .id(1L)
+                .name("John Doe")
+                .build();
         when(customerService.findCustomerById(1L)).thenReturn(customer);
         mockMvc.perform(get("/customerDetails/{id}", 1L))
                 .andExpect(status().isOk())
@@ -60,11 +63,11 @@ class CustomerControllerTest {
 
     @Test
     public void testCustomerDetailsName() throws Exception {
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("John Doe");
+        Customer customer = Customer.builder()
+                .id(1L)
+                .name("John Doe")
+                .build();
         when(customerService.findCustomerById(1L)).thenReturn(customer);
-
         mockMvc.perform(get("/customerDetails/{id}", 1L))
                 .andExpect(model().attribute("title", "Customer Details: John Doe"));
     }
